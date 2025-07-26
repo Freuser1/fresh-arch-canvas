@@ -14,33 +14,38 @@ export const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-        <h1 className="text-monument mb-6 animate-fade-in-up">
-          ARCHITECTURAL
-          <br />
-          <span className="text-accent">ARTISTRY</span>
-        </h1>
+      <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
+        <div className="animate-fade-in-up">
+          <h1 className="text-monument mb-8 tracking-wide">
+            VISIONARY
+            <br />
+            <span className="text-accent animate-text-shimmer bg-gradient-to-r from-accent via-white to-accent bg-[length:200%_auto] bg-clip-text text-transparent">
+              DESIGN
+            </span>
+          </h1>
+        </div>
         
-        <p className="text-xl md:text-2xl text-white/90 mb-8 font-light leading-relaxed animate-slide-in-right">
-          Crafting spaces where form meets function, where structure becomes sculpture, 
-          and where every line tells a story of modern design excellence.
+        <p className="text-xl md:text-2xl text-white/85 mb-12 font-light leading-relaxed animate-slide-in-left max-w-3xl mx-auto">
+          Creating ethereal spaces that breathe life into Nordic minimalism. 
+          Where every element speaks of intentional simplicity and timeless elegance.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in">
+        <div className="flex flex-col sm:flex-row gap-6 justify-center animate-scale-in">
           <Button 
             size="lg" 
-            className="material-brass text-primary-foreground px-8 py-3 text-lg font-medium
-                       hover:shadow-[var(--shadow-elevation)] transition-[var(--transition-structure)]"
+            className="material-wood text-primary-foreground px-10 py-4 text-lg font-light
+                       hover:shadow-[var(--shadow-elevation)] transition-[var(--transition-structure)]
+                       rounded-sm tracking-wide"
           >
-            View Portfolio
+            Explore Vision
           </Button>
           <Button 
             variant="outline" 
             size="lg" 
-            className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg
-                       backdrop-blur-sm transition-[var(--transition-structure)]"
+            className="border-white/25 text-white hover:bg-white/5 px-10 py-4 text-lg font-light
+                       backdrop-blur-sm transition-[var(--transition-structure)] rounded-sm tracking-wide"
           >
-            Learn More
+            Connect
           </Button>
         </div>
       </div>

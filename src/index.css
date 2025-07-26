@@ -8,59 +8,59 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Architectural Color Palette */
-    --background: 0 0% 98%;
-    --foreground: 220 13% 18%;
+    /* Scandinavian Minimalist Palette */
+    --background: 0 0% 99%;
+    --foreground: 210 11% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card-foreground: 210 11% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 210 11% 15%;
 
-    /* Steel and Concrete Primary */
-    --primary: 220 13% 18%;
-    --primary-foreground: 0 0% 98%;
+    /* Natural Charcoal Primary */
+    --primary: 210 11% 15%;
+    --primary-foreground: 0 0% 99%;
 
-    /* Warm Concrete Secondary */
-    --secondary: 20 6% 90%;
-    --secondary-foreground: 220 13% 18%;
+    /* Soft Nordic Secondary */
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 210 11% 15%;
 
-    /* Muted Plaster */
-    --muted: 220 9% 94%;
-    --muted-foreground: 220 9% 46%;
+    /* Warm Nordic Muted */
+    --muted: 210 20% 95%;
+    --muted-foreground: 210 9% 45%;
 
-    /* Brass Accent */
-    --accent: 35 77% 49%;
-    --accent-foreground: 0 0% 98%;
+    /* Natural Wood Accent */
+    --accent: 25 30% 60%;
+    --accent-foreground: 0 0% 99%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 220 13% 18%;
+    --border: 210 16% 89%;
+    --input: 210 16% 89%;
+    --ring: 210 11% 15%;
 
-    /* Architectural Design Tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 13%, 18%), hsl(220, 13%, 28%));
-    --gradient-hero: linear-gradient(180deg, hsl(220, 13%, 18%), hsl(220, 13%, 25%));
-    --gradient-accent: linear-gradient(135deg, hsl(35, 77%, 49%), hsl(35, 77%, 59%));
+    /* Scandinavian Design Tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(210, 11%, 15%), hsl(210, 11%, 25%));
+    --gradient-hero: linear-gradient(180deg, hsl(210, 20%, 8%), hsl(210, 15%, 18%));
+    --gradient-accent: linear-gradient(135deg, hsl(25, 30%, 60%), hsl(25, 35%, 70%));
     
-    /* Shadows - Architectural lighting */
-    --shadow-structure: 0 20px 50px -10px hsl(220, 13%, 18% / 0.3);
-    --shadow-elevation: 0 8px 30px -8px hsl(220, 13%, 18% / 0.2);
-    --shadow-subtle: 0 2px 8px -2px hsl(220, 13%, 18% / 0.1);
+    /* Shadows - Nordic lighting */
+    --shadow-structure: 0 15px 40px -10px hsl(210, 11%, 15% / 0.15);
+    --shadow-elevation: 0 4px 20px -4px hsl(210, 11%, 15% / 0.1);
+    --shadow-subtle: 0 1px 6px -1px hsl(210, 11%, 15% / 0.08);
     
-    /* Typography scale */
-    --font-size-monument: 4.5rem;
-    --font-size-display: 3rem;
-    --font-size-title: 1.875rem;
+    /* Typography scale - Scandinavian minimalism */
+    --font-size-monument: 4rem;
+    --font-size-display: 2.5rem;
+    --font-size-title: 1.75rem;
     
-    /* Transitions */
-    --transition-structure: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transitions - Gentle Nordic motion */
+    --transition-structure: all 0.6s cubic-bezier(0.25, 0, 0.25, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0, 0.25, 1);
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -80,41 +80,41 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark Architectural Palette */
-    --background: 220 13% 9%;
-    --foreground: 0 0% 95%;
+    /* Dark Scandinavian Palette */
+    --background: 210 15% 8%;
+    --foreground: 0 0% 96%;
 
-    --card: 220 13% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 210 15% 10%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 220 13% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 210 15% 10%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 0 0% 95%;
-    --primary-foreground: 220 13% 9%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 210 15% 8%;
 
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 210 15% 12%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 210 15% 12%;
+    --muted-foreground: 210 10% 70%;
 
-    --accent: 35 77% 49%;
-    --accent-foreground: 220 13% 9%;
+    --accent: 25 35% 65%;
+    --accent-foreground: 210 15% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 220 13% 15%;
-    --input: 220 13% 15%;
-    --ring: 35 77% 49%;
+    --border: 210 15% 15%;
+    --input: 210 15% 15%;
+    --ring: 25 35% 65%;
 
-    /* Dark mode architectural gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 13%, 9%), hsl(220, 13%, 15%));
-    --gradient-hero: linear-gradient(180deg, hsl(220, 13%, 9%), hsl(220, 13%, 12%));
-    --shadow-structure: 0 20px 50px -10px hsl(0, 0%, 0% / 0.5);
-    --shadow-elevation: 0 8px 30px -8px hsl(0, 0%, 0% / 0.3);
-    --shadow-subtle: 0 2px 8px -2px hsl(0, 0%, 0% / 0.2);
+    /* Dark mode Scandinavian gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210, 15%, 8%), hsl(210, 15%, 12%));
+    --gradient-hero: linear-gradient(180deg, hsl(210, 20%, 5%), hsl(210, 15%, 10%));
+    --shadow-structure: 0 15px 40px -10px hsl(0, 0%, 0% / 0.3);
+    --shadow-elevation: 0 4px 20px -4px hsl(0, 0%, 0% / 0.2);
+    --shadow-subtle: 0 1px 6px -1px hsl(0, 0%, 0% / 0.15);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -137,51 +137,84 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Architectural Typography */
+  /* Scandinavian Typography */
   .text-monument {
     font-size: var(--font-size-monument);
-    line-height: 0.9;
-    font-weight: 300;
-    letter-spacing: -0.02em;
+    line-height: 0.95;
+    font-weight: 200;
+    letter-spacing: -0.01em;
   }
   
   .text-display {
     font-size: var(--font-size-display);
-    line-height: 1.1;
-    font-weight: 300;
-    letter-spacing: -0.01em;
+    line-height: 1.15;
+    font-weight: 200;
+    letter-spacing: 0;
   }
   
   .text-title {
     font-size: var(--font-size-title);
-    line-height: 1.2;
-    font-weight: 400;
+    line-height: 1.25;
+    font-weight: 300;
   }
 
-  /* Architectural Components */
-  .structure-card {
-    @apply bg-card border border-border rounded-none shadow-[var(--shadow-elevation)] 
-           transition-[var(--transition-structure)] hover:shadow-[var(--shadow-structure)];
+  /* Scandinavian Components */
+  .nordic-card {
+    @apply bg-card border border-border rounded-sm shadow-[var(--shadow-elevation)] 
+           transition-[var(--transition-structure)] hover:shadow-[var(--shadow-structure)]
+           hover:translate-y-[-2px];
   }
   
-  .grid-structure {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+  .grid-nordic {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
   
-  .section-architecture {
-    @apply py-24 px-6;
+  .section-nordic {
+    @apply py-20 px-6;
   }
   
-  /* Material Effects */
-  .material-concrete {
+  /* Natural Material Effects */
+  .material-linen {
     background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--secondary)));
   }
   
-  .material-steel {
+  .material-charcoal {
     background: var(--gradient-primary);
   }
   
-  .material-brass {
+  .material-wood {
     background: var(--gradient-accent);
+  }
+
+  /* Floating animations */
+  .float-gentle {
+    animation: float-gentle 6s ease-in-out infinite;
+  }
+  
+  .fade-in-sequence {
+    opacity: 0;
+    animation: fade-in-sequence 0.8s ease-out forwards;
+  }
+  
+  .fade-in-sequence:nth-child(1) { animation-delay: 0.1s; }
+  .fade-in-sequence:nth-child(2) { animation-delay: 0.2s; }
+  .fade-in-sequence:nth-child(3) { animation-delay: 0.3s; }
+  .fade-in-sequence:nth-child(4) { animation-delay: 0.4s; }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes fade-in-sequence {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
   }
 }

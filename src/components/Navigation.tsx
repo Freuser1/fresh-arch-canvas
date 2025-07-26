@@ -6,10 +6,9 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: "Portfolio", href: "#portfolio" },
-    { label: "About", href: "#about" },
-    { label: "Process", href: "#process" },
-    { label: "Contact", href: "#contact" },
+    { label: "Visions", href: "#portfolio" },
+    { label: "Philosophy", href: "#about" },
+    { label: "Connect", href: "#contact" },
   ];
 
   return (
@@ -17,8 +16,9 @@ export const Navigation = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="text-xl font-semibold tracking-wide">
-            STRUCTURE
+          <div className="text-xl font-light tracking-wider flex items-center space-x-3">
+            <div className="w-8 h-8 bg-accent rounded-sm"></div>
+            <span>NORDIC VISION</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -28,7 +28,7 @@ export const Navigation = () => {
                 key={item.label}
                 href={item.href}
                 className="text-muted-foreground hover:text-foreground transition-[var(--transition-smooth)] relative
-                          after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 
+                          font-light tracking-wide after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 
                           after:bottom-0 after:left-0 after:bg-accent after:origin-bottom-right 
                           after:transition-transform after:duration-300 hover:after:scale-x-100 
                           hover:after:origin-bottom-left"
@@ -57,7 +57,7 @@ export const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-muted-foreground hover:text-foreground transition-[var(--transition-smooth)] py-2"
+                  className="text-muted-foreground hover:text-foreground transition-[var(--transition-smooth)] py-2 font-light tracking-wide"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
