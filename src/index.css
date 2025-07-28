@@ -8,57 +8,63 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Scandinavian Minimalist Palette */
+    /* Modern Scandinavian Minimalist - 2025 */
     --background: 0 0% 99%;
-    --foreground: 210 11% 15%;
+    --foreground: 225 15% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 11% 15%;
+    --card-foreground: 225 15% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 11% 15%;
+    --popover-foreground: 225 15% 8%;
 
-    /* Natural Charcoal Primary */
-    --primary: 210 11% 15%;
+    /* Deep Nordic Primary */
+    --primary: 225 15% 8%;
     --primary-foreground: 0 0% 99%;
 
-    /* Soft Nordic Secondary */
-    --secondary: 210 16% 93%;
-    --secondary-foreground: 210 11% 15%;
+    /* Contemporary Secondary */
+    --secondary: 220 20% 96%;
+    --secondary-foreground: 225 15% 8%;
 
-    /* Warm Nordic Muted */
-    --muted: 210 20% 95%;
-    --muted-foreground: 210 9% 45%;
+    /* Ultra-light Muted */
+    --muted: 220 25% 97%;
+    --muted-foreground: 225 8% 48%;
 
-    /* Natural Wood Accent */
-    --accent: 25 30% 60%;
-    --accent-foreground: 0 0% 99%;
+    /* Sophisticated Accent - Modern amber */
+    --accent: 35 85% 55%;
+    --accent-foreground: 225 15% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 16% 89%;
-    --input: 210 16% 89%;
-    --ring: 210 11% 15%;
+    --border: 220 20% 92%;
+    --input: 220 20% 94%;
+    --ring: 35 85% 55%;
 
-    /* Scandinavian Design Tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(210, 11%, 15%), hsl(210, 11%, 25%));
-    --gradient-hero: linear-gradient(180deg, hsl(210, 20%, 8%), hsl(210, 15%, 18%));
-    --gradient-accent: linear-gradient(135deg, hsl(25, 30%, 60%), hsl(25, 35%, 70%));
+    /* Modern Design Tokens - 2025 */
+    --gradient-primary: linear-gradient(135deg, hsl(225, 15%, 8%) 0%, hsl(225, 12%, 15%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(225, 20%, 4%) 0%, hsl(225, 15%, 12%) 50%, hsl(225, 12%, 18%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(35, 85%, 55%) 0%, hsl(45, 90%, 60%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0, 0%, 100% / 0.1) 0%, hsl(0, 0%, 100% / 0.05) 100%);
+    --gradient-mesh: radial-gradient(circle at 20% 80%, hsl(35, 85%, 55% / 0.1) 0%, transparent 50%), 
+                     radial-gradient(circle at 80% 20%, hsl(225, 15%, 8% / 0.05) 0%, transparent 50%);
     
-    /* Shadows - Nordic lighting */
-    --shadow-structure: 0 15px 40px -10px hsl(210, 11%, 15% / 0.15);
-    --shadow-elevation: 0 4px 20px -4px hsl(210, 11%, 15% / 0.1);
-    --shadow-subtle: 0 1px 6px -1px hsl(210, 11%, 15% / 0.08);
+    /* Advanced Shadows - Modern depth */
+    --shadow-glass: 0 8px 32px hsl(225, 15%, 8% / 0.08), 0 1px 2px hsl(225, 15%, 8% / 0.06);
+    --shadow-float: 0 20px 40px -12px hsl(225, 15%, 8% / 0.12), 0 8px 16px -8px hsl(225, 15%, 8% / 0.08);
+    --shadow-glow: 0 0 20px hsl(35, 85%, 55% / 0.2), 0 0 40px hsl(35, 85%, 55% / 0.1);
+    --shadow-depth: 0 4px 12px hsl(225, 15%, 8% / 0.08), 0 2px 4px hsl(225, 15%, 8% / 0.06);
     
-    /* Typography scale - Scandinavian minimalism */
-    --font-size-monument: 4rem;
-    --font-size-display: 2.5rem;
-    --font-size-title: 1.75rem;
+    /* Advanced Typography - Modern scale */
+    --font-size-hero: 5.5rem;
+    --font-size-display: 3.5rem;
+    --font-size-title: 2rem;
+    --font-size-subtitle: 1.125rem;
     
-    /* Transitions - Gentle Nordic motion */
-    --transition-structure: all 0.6s cubic-bezier(0.25, 0, 0.25, 1);
-    --transition-smooth: all 0.4s cubic-bezier(0.25, 0, 0.25, 1);
+    /* Refined Transitions - Contemporary motion */
+    --transition-micro: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.25rem;
 
@@ -137,84 +143,173 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Scandinavian Typography */
-  .text-monument {
-    font-size: var(--font-size-monument);
-    line-height: 0.95;
-    font-weight: 200;
-    letter-spacing: -0.01em;
+  /* Modern Typography System - 2025 */
+  .text-hero {
+    font-size: var(--font-size-hero);
+    line-height: 0.9;
+    font-weight: 100;
+    letter-spacing: -0.03em;
+    background: var(--gradient-accent);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   
   .text-display {
     font-size: var(--font-size-display);
-    line-height: 1.15;
+    line-height: 1.1;
     font-weight: 200;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
   }
   
   .text-title {
     font-size: var(--font-size-title);
-    line-height: 1.25;
+    line-height: 1.2;
     font-weight: 300;
+    letter-spacing: -0.01em;
   }
 
-  /* Scandinavian Components */
-  .nordic-card {
-    @apply bg-card border border-border rounded-sm shadow-[var(--shadow-elevation)] 
-           transition-[var(--transition-structure)] hover:shadow-[var(--shadow-structure)]
-           hover:translate-y-[-2px];
+  .text-subtitle {
+    font-size: var(--font-size-subtitle);
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  /* Modern Glass Components */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-white/10 rounded-2xl 
+           shadow-[var(--shadow-glass)] transition-[var(--transition-smooth)]
+           hover:shadow-[var(--shadow-float)] hover:bg-card/90
+           hover:scale-[1.02] hover:-translate-y-1;
   }
   
-  .grid-nordic {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  .glass-button {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl
+           transition-[var(--transition-smooth)] hover:bg-white/10
+           hover:border-white/20 hover:shadow-[var(--shadow-glow)]
+           active:scale-95;
   }
   
-  .section-nordic {
-    @apply py-20 px-6;
+  .modern-card {
+    @apply bg-card border-0 rounded-3xl shadow-[var(--shadow-depth)]
+           transition-[var(--transition-smooth)] hover:shadow-[var(--shadow-float)]
+           hover:-translate-y-2 relative overflow-hidden;
+    background: var(--gradient-mesh), hsl(var(--card));
   }
   
-  /* Natural Material Effects */
-  .material-linen {
-    background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--secondary)));
+  .grid-modern {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8;
   }
   
-  .material-charcoal {
+  .section-modern {
+    @apply py-32 px-6 relative;
+  }
+  
+  /* Premium Material Effects */
+  .material-glass {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(0, 0%, 100% / 0.1);
+  }
+  
+  .material-gradient {
     background: var(--gradient-primary);
+    position: relative;
   }
   
-  .material-wood {
+  .material-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-mesh);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  .material-accent {
     background: var(--gradient-accent);
+    box-shadow: var(--shadow-glow);
   }
 
-  /* Floating animations */
-  .float-gentle {
-    animation: float-gentle 6s ease-in-out infinite;
+  /* Advanced Animations */
+  .float-modern {
+    animation: float-modern 8s ease-in-out infinite;
   }
   
-  .fade-in-sequence {
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  
+  .slide-reveal {
     opacity: 0;
-    animation: fade-in-sequence 0.8s ease-out forwards;
+    transform: translateY(40px);
+    animation: slide-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  .fade-in-sequence:nth-child(1) { animation-delay: 0.1s; }
-  .fade-in-sequence:nth-child(2) { animation-delay: 0.2s; }
-  .fade-in-sequence:nth-child(3) { animation-delay: 0.3s; }
-  .fade-in-sequence:nth-child(4) { animation-delay: 0.4s; }
+  .slide-reveal:nth-child(1) { animation-delay: 0.1s; }
+  .slide-reveal:nth-child(2) { animation-delay: 0.2s; }
+  .slide-reveal:nth-child(3) { animation-delay: 0.3s; }
+  .slide-reveal:nth-child(4) { animation-delay: 0.4s; }
+  .slide-reveal:nth-child(5) { animation-delay: 0.5s; }
+
+  /* Interactive Elements */
+  .interactive-hover {
+    @apply transition-[var(--transition-smooth)] cursor-pointer;
+  }
+  
+  .interactive-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-float);
+  }
+  
+  /* Micro-interactions */
+  .micro-bounce {
+    transition: var(--transition-bounce);
+  }
+  
+  .micro-bounce:hover {
+    transform: scale(1.05);
+  }
+  
+  .micro-bounce:active {
+    transform: scale(0.98);
+  }
 }
 
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(-5px) rotate(-1deg); }
+@keyframes float-modern {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+  }
+  25% { 
+    transform: translateY(-12px) rotate(0.5deg) scale(1.01); 
+  }
+  50% { 
+    transform: translateY(-8px) rotate(-0.5deg) scale(1.02); 
+  }
+  75% { 
+    transform: translateY(-15px) rotate(0.3deg) scale(1.01); 
+  }
 }
 
-@keyframes fade-in-sequence {
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: var(--shadow-glow);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px hsl(35, 85%, 55% / 0.3), 0 0 60px hsl(35, 85%, 55% / 0.15);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes slide-reveal {
   from { 
     opacity: 0; 
-    transform: translateY(30px);
+    transform: translateY(40px) scale(0.98);
   }
   to { 
     opacity: 1; 
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }

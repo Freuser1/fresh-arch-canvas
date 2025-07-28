@@ -6,66 +6,66 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 export const Contact = () => {
   return (
-    <section id="contact" className="section-nordic bg-muted/40">
+    <section id="contact" className="section-modern bg-muted/50">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-display mb-6 animate-fade-in-up tracking-wide">
+        <div className="text-center mb-24">
+          <h2 className="text-display mb-8 animate-fade-in-up tracking-tight">
             LET'S CONNECT
             <br />
-            <span className="text-accent">& CREATE</span>
+            <span className="text-hero">& CREATE</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right font-light leading-relaxed">
-            Ready to explore a vision that transforms spaces into sanctuaries? 
-            I'd love to hear about your dreams and bring them to life through thoughtful design.
+          <p className="text-subtitle text-muted-foreground max-w-4xl mx-auto animate-slide-in-right leading-relaxed">
+            Ready to transform your vision into the future of minimalist design? 
+            Let's create spaces that not only inspire but command attention and define tomorrow.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
           {/* Contact Form */}
-          <Card className="nordic-card animate-fade-in-up">
-            <CardContent className="p-10">
-              <h3 className="text-title mb-8 font-light tracking-wide">Begin the Journey</h3>
+          <Card className="modern-card animate-fade-in-up">
+            <CardContent className="p-12 relative z-10">
+              <h3 className="text-title mb-10 font-medium tracking-tight">Begin the Journey</h3>
               
-              <form className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-6">
+              <form className="space-y-10">
+                <div className="grid md:grid-cols-2 gap-8">
                   <Input 
                     placeholder="First Name" 
-                    className="border-border focus:ring-accent transition-[var(--transition-smooth)]
-                               bg-background/50 backdrop-blur-sm rounded-sm"
+                    className="glass-button h-14 text-subtitle
+                               focus:ring-accent focus:border-accent/50"
                   />
                   <Input 
                     placeholder="Last Name" 
-                    className="border-border focus:ring-accent transition-[var(--transition-smooth)]
-                               bg-background/50 backdrop-blur-sm rounded-sm"
+                    className="glass-button h-14 text-subtitle
+                               focus:ring-accent focus:border-accent/50"
                   />
                 </div>
                 
                 <Input 
                   type="email" 
                   placeholder="Email Address" 
-                  className="border-border focus:ring-accent transition-[var(--transition-smooth)]
-                             bg-background/50 backdrop-blur-sm rounded-sm"
+                  className="glass-button h-14 text-subtitle
+                             focus:ring-accent focus:border-accent/50"
                 />
                 
                 <Input 
                   placeholder="Project Vision" 
-                  className="border-border focus:ring-accent transition-[var(--transition-smooth)]
-                             bg-background/50 backdrop-blur-sm rounded-sm"
+                  className="glass-button h-14 text-subtitle
+                             focus:ring-accent focus:border-accent/50"
                 />
                 
                 <Textarea 
-                  placeholder="Share your inspiration and dreams..." 
+                  placeholder="Share your vision..." 
                   rows={6}
-                  className="border-border focus:ring-accent transition-[var(--transition-smooth)] 
-                             resize-none bg-background/50 backdrop-blur-sm rounded-sm"
+                  className="glass-button text-subtitle resize-none 
+                             focus:ring-accent focus:border-accent/50"
                 />
                 
                 <Button 
                   type="submit" 
                   size="lg" 
-                  className="w-full material-wood text-primary-foreground font-light tracking-wide
-                             hover:shadow-[var(--shadow-elevation)] transition-[var(--transition-structure)]
-                             rounded-sm py-4 text-lg"
+                  className="w-full material-accent text-primary-foreground font-medium tracking-wide
+                             micro-bounce rounded-2xl py-6 text-lg shadow-[var(--shadow-glow)]
+                             hover:animate-magnetic-hover"
                 >
                   Send Message
                 </Button>
@@ -74,21 +74,21 @@ export const Contact = () => {
           </Card>
 
           {/* Contact Information */}
-          <div className="space-y-12 animate-slide-in-right">
+          <div className="space-y-16 animate-slide-in-right">
             <div className="text-center">
-              <div className="material-wood p-6 rounded-sm inline-block mb-6 animate-breathe">
-                <Mail className="h-8 w-8 text-primary-foreground" />
+              <div className="material-accent p-8 rounded-3xl inline-block mb-8 animate-glow-pulse micro-bounce">
+                <Mail className="h-10 w-10 text-primary-foreground" />
               </div>
-              <h4 className="text-title font-light mb-2 tracking-wide">Let's Connect</h4>
-              <p className="text-lg text-muted-foreground font-light">hello@nordicvision.se</p>
+              <h4 className="text-title font-medium mb-4 tracking-tight">Let's Connect</h4>
+              <p className="text-subtitle text-muted-foreground">hello@nordicvision.se</p>
             </div>
 
-            <Card className="nordic-card material-linen">
-              <CardContent className="p-8 text-center">
-                <h4 className="text-title font-light mb-4 tracking-wide">Studio Location</h4>
-                <p className="text-muted-foreground font-light leading-relaxed">
+            <Card className="modern-card">
+              <CardContent className="p-10 text-center relative z-10">
+                <h4 className="text-title font-medium mb-6 tracking-tight">Innovation Hub</h4>
+                <p className="text-muted-foreground text-subtitle leading-relaxed">
                   Stockholm, Sweden<br />
-                  Where Nordic light meets visionary design
+                  Where Scandinavian heritage meets tomorrow's design
                 </p>
               </CardContent>
             </Card>

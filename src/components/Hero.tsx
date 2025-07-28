@@ -14,38 +14,37 @@ export const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center text-white px-6 max-w-6xl mx-auto">
         <div className="animate-fade-in-up">
-          <h1 className="text-monument mb-8 tracking-wide">
+          <h1 className="text-display mb-4 tracking-tight font-light">
             VISIONARY
-            <br />
-            <span className="text-accent animate-text-shimmer bg-gradient-to-r from-accent via-white to-accent bg-[length:200%_auto] bg-clip-text text-transparent">
-              DESIGN
-            </span>
+          </h1>
+          <h1 className="text-hero mb-12 tracking-tight animate-glow-pulse">
+            DESIGN
           </h1>
         </div>
         
-        <p className="text-xl md:text-2xl text-white/85 mb-12 font-light leading-relaxed animate-slide-in-left max-w-3xl mx-auto">
-          Creating ethereal spaces that breathe life into Nordic minimalism. 
-          Where every element speaks of intentional simplicity and timeless elegance.
+        <p className="text-xl md:text-2xl text-white/90 mb-16 font-light leading-relaxed animate-slide-in-left max-w-4xl mx-auto">
+          Crafting spaces that define tomorrow's minimalism. Where Scandinavian soul meets 
+          visionary innovation, creating environments that captivate and inspire.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center animate-scale-in">
+        <div className="flex flex-col sm:flex-row gap-8 justify-center animate-scale-in">
           <Button 
             size="lg" 
-            className="material-wood text-primary-foreground px-10 py-4 text-lg font-light
-                       hover:shadow-[var(--shadow-elevation)] transition-[var(--transition-structure)]
-                       rounded-sm tracking-wide"
+            className="material-accent text-primary-foreground px-12 py-6 text-lg font-medium
+                       hover:animate-magnetic-hover transition-[var(--transition-smooth)]
+                       rounded-2xl tracking-wide micro-bounce shadow-[var(--shadow-glow)]"
           >
-            Explore Vision
+            Explore Portfolio
           </Button>
           <Button 
             variant="outline" 
             size="lg" 
-            className="border-white/25 text-white hover:bg-white/5 px-10 py-4 text-lg font-light
-                       backdrop-blur-sm transition-[var(--transition-structure)] rounded-sm tracking-wide"
+            className="glass-button text-white px-12 py-6 text-lg font-medium
+                       rounded-2xl tracking-wide micro-bounce"
           >
-            Connect
+            Start Conversation
           </Button>
         </div>
       </div>
