@@ -7,23 +7,23 @@ export const Portfolio = () => {
   const projects = [
     {
       id: 1,
-      title: "Light Sanctuary",
+      title: "Södermalm Loft",
       category: "Residential",
-      description: "A Stockholm apartment where Nordic light dances through minimalist spaces, creating moments of tranquil contemplation.",
+      description: "A personal project transforming a 1920s Stockholm apartment into a light-filled modern home while preserving its historic character.",
       image: project1,
     },
     {
       id: 2,
-      title: "Forest Retreat", 
-      category: "Wellness",
-      description: "A meditation pavilion nestled in Swedish woodlands, where nature and architecture become one harmonious experience.",
+      title: "Forest Chapel", 
+      category: "Public",
+      description: "A meditation space commissioned for a wellness retreat, designed to blur the boundaries between interior and the surrounding Swedish forest.",
       image: project2,
     },
     {
       id: 3,
       title: "Archipelago Studio",
-      category: "Creative",
-      description: "An artist's workspace on the Stockholm archipelago, designed to capture the ever-changing moods of Nordic seasons.",
+      category: "Workspace",
+      description: "My own architectural studio on a Stockholm island, where I experiment with sustainable materials and natural lighting techniques.",
       image: project3,
     },
   ];
@@ -34,12 +34,12 @@ export const Portfolio = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-display mb-6 animate-fade-in-up tracking-tight">
-            CRAFTED
+            SELECTED
             <br />
-            <span className="text-hero">VISIONS</span>
+            <span className="text-hero">PROJECTS</span>
           </h2>
           <p className="text-subtitle text-muted-foreground max-w-2xl mx-auto animate-slide-in-right leading-relaxed">
-            Minimalist spaces where Scandinavian serenity meets modern innovation.
+            A curated selection of my architectural work, from intimate residential spaces to public commissions.
           </p>
         </div>
 

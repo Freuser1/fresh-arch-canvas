@@ -17,16 +17,16 @@ export const Hero = () => {
       <div className="relative z-10 text-center text-white px-6 max-w-6xl mx-auto">
         <div className="animate-fade-in-up">
           <h1 className="text-display mb-4 tracking-tight font-light">
-            VISIONARY
+            ARCHITECTURAL
           </h1>
           <h1 className="text-hero mb-12 tracking-tight animate-glow-pulse">
-            DESIGN
+            PORTFOLIO
           </h1>
         </div>
         
         <p className="text-xl md:text-2xl text-white/90 mb-16 font-light leading-relaxed animate-slide-in-left max-w-4xl mx-auto">
-          Crafting spaces that define tomorrow's minimalism. Where Scandinavian soul meets 
-          visionary innovation, creating environments that captivate and inspire.
+          I'm a Stockholm-based architect creating spaces that blend Nordic minimalism with contemporary innovation. 
+          Each project reflects my passion for thoughtful design and human-centered environments.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-8 justify-center animate-scale-in">
@@ -36,7 +36,7 @@ export const Hero = () => {
                        hover:animate-magnetic-hover transition-[var(--transition-smooth)]
                        rounded-2xl tracking-wide micro-bounce shadow-[var(--shadow-glow)]"
           >
-            Explore Portfolio
+            View Projects
           </Button>
           <Button 
             variant="outline" 
@@ -44,7 +44,7 @@ export const Hero = () => {
             className="glass-button text-white px-12 py-6 text-lg font-medium
                        rounded-2xl tracking-wide micro-bounce"
           >
-            Start Conversation
+            Get in Touch
           </Button>
         </div>
       </div>

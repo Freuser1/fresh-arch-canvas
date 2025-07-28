@@ -10,13 +10,13 @@ export const Contact = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
           <h2 className="text-display mb-8 animate-fade-in-up tracking-tight">
-            LET'S CONNECT
+            LET'S
             <br />
-            <span className="text-hero">& CREATE</span>
+            <span className="text-hero">COLLABORATE</span>
           </h2>
           <p className="text-subtitle text-muted-foreground max-w-4xl mx-auto animate-slide-in-right leading-relaxed">
-            Ready to transform your vision into the future of minimalist design? 
-            Let's create spaces that not only inspire but command attention and define tomorrow.
+            I'm always excited to discuss new projects and creative challenges. Whether you're planning 
+            a residential renovation, commercial space, or have an innovative concept in mind, let's explore how we can bring your vision to life.
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export const Contact = () => {
           {/* Contact Form */}
           <Card className="modern-card animate-fade-in-up">
             <CardContent className="p-12 relative z-10">
-              <h3 className="text-title mb-10 font-medium tracking-tight">Begin the Journey</h3>
+              <h3 className="text-title mb-10 font-medium tracking-tight">Start a Project</h3>
               
               <form className="space-y-10">
                 <div className="grid md:grid-cols-2 gap-8">
@@ -48,13 +48,13 @@ export const Contact = () => {
                 />
                 
                 <Input 
-                  placeholder="Project Vision" 
+                  placeholder="Project Type (e.g., Residential, Commercial)" 
                   className="glass-button h-14 text-subtitle
                              focus:ring-accent focus:border-accent/50"
                 />
                 
                 <Textarea 
-                  placeholder="Share your vision..." 
+                  placeholder="Tell me about your project ideas and requirements..." 
                   rows={6}
                   className="glass-button text-subtitle resize-none 
                              focus:ring-accent focus:border-accent/50"
@@ -85,10 +85,10 @@ export const Contact = () => {
 
             <Card className="modern-card">
               <CardContent className="p-10 text-center relative z-10">
-                <h4 className="text-title font-medium mb-6 tracking-tight">Innovation Hub</h4>
+                <h4 className="text-title font-medium mb-6 tracking-tight">Studio Location</h4>
                 <p className="text-muted-foreground text-subtitle leading-relaxed">
                   Stockholm, Sweden<br />
-                  Where Scandinavian heritage meets tomorrow's design
+                  Available for projects locally and internationally
                 </p>
               </CardContent>
             </Card>
