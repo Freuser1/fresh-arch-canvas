@@ -69,29 +69,26 @@ export const Gallery = () => {
               {photos.map((photo, index) => (
                 <CarouselItem key={photo.id} className="pl-2 md:pl-4 basis-auto">
                   <div 
-                    className="industrial-photo animate-scale-in"
+                    className="gallery-photo animate-scale-in"
                     style={{ 
-                      animationDelay: `${index * 0.1}s`,
-                      transform: `rotate(${(index % 2 === 0 ? 1 : -1) * (Math.random() * 2 + 0.5)}deg)`
+                      animationDelay: `${index * 0.1}s`
                     }}
                   >
-                    <div className="industrial-inner">
-                      <img
-                        src={photo.src}
-                        alt={photo.caption}
-                        className="industrial-image"
-                        loading="lazy"
-                      />
-                      <div className="industrial-caption">
-                        {photo.caption}
-                      </div>
+                    <img
+                      src={photo.src}
+                      alt={photo.caption}
+                      className="gallery-image"
+                      loading="lazy"
+                    />
+                    <div className="gallery-caption">
+                      {photo.caption}
                     </div>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="industrial-nav-button -left-12" />
-            <CarouselNext className="industrial-nav-button -right-12" />
+            <CarouselPrevious className="gallery-nav-button -left-12" />
+            <CarouselNext className="gallery-nav-button -right-12" />
           </Carousel>
         </div>
       </div>
