@@ -298,6 +298,16 @@ All colors MUST be HSL.
   .polaroid-nav-button {
     @apply bg-white/80 border border-gray-200 hover:bg-white shadow-md;
   }
+
+  /* Personal Photo Styles */
+  .personal-photo-frame {
+    @apply relative w-full max-w-md mx-auto;
+  }
+
+  .personal-photo {
+    @apply w-full h-auto rounded-2xl shadow-xl object-cover aspect-[4/5] transition-all duration-300 hover:shadow-2xl hover:scale-105;
+    filter: brightness(1.05) contrast(1.1);
+  }
 }
 
 @keyframes float-modern {
