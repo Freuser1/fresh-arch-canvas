@@ -7,7 +7,7 @@ export const About = () => {
           <h2 className="text-display mb-6 animate-fade-in-up tracking-tight">
             MEET THE
             <br />
-            <span className="text-hero">ARCHITECT</span>
+            <span className="text-hero">ENGINEER</span>
           </h2>
         </div>
 
@@ -28,7 +28,7 @@ export const About = () => {
           <div className="animate-fade-in-up space-y-8">
             <div className="space-y-6">
               <h3 className="text-title font-medium tracking-tight">
-                Stockholm-based architect with a passion for sustainable design
+                Stockholm-based engineer with a passion for sustainable design
               </h3>
               
               <p className="text-subtitle text-muted-foreground leading-relaxed">
@@ -41,7 +41,7 @@ export const About = () => {
             <div className="space-y-4 pt-6">
               <div className="flex items-center space-x-4">
                 <div className="w-2 h-2 bg-accent rounded-full"></div>
-                <span className="text-subtitle text-muted-foreground">Licensed Architect</span>
+                <span className="text-subtitle text-muted-foreground">Licensed Engineer</span>
               </div>
               <div className="flex items-center space-x-4">
                 <div className="w-2 h-2 bg-accent rounded-full"></div>

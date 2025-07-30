@@ -276,27 +276,34 @@ All colors MUST be HSL.
     transform: scale(0.98);
   }
 
-  /* Polaroid Photo Styles */
-  .polaroid-photo {
-    @apply w-64 h-80 bg-white p-4 shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  /* Industrial Photo Frame Styles */
+  .industrial-photo {
+    @apply w-72 h-80 bg-zinc-900 p-1 relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+    box-shadow: 
+      inset 0 0 0 2px #404040,
+      inset 0 0 0 4px #1a1a1a,
+      0 8px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
   }
 
-  .polaroid-inner {
-    @apply w-full h-full flex flex-col;
+  .industrial-inner {
+    @apply w-full h-full flex flex-col bg-black p-2;
   }
 
-  .polaroid-image {
-    @apply w-full h-48 object-cover bg-gray-100;
+  .industrial-image {
+    @apply w-full h-56 object-cover bg-gray-800;
+    filter: contrast(1.1) brightness(0.9);
   }
 
-  .polaroid-caption {
-    @apply flex-1 flex items-center justify-center text-sm text-gray-700 pt-2;
-    font-family: 'Courier New', monospace;
+  .industrial-caption {
+    @apply flex-1 flex items-center justify-center text-sm text-zinc-300 pt-3;
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
-  .polaroid-nav-button {
-    @apply bg-white/80 border border-gray-200 hover:bg-white shadow-md;
+  .industrial-nav-button {
+    @apply bg-zinc-800/90 border border-zinc-600 hover:bg-zinc-700 text-zinc-300 shadow-lg;
   }
 
   /* Personal Photo Styles */
