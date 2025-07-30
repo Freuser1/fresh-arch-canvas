@@ -140,8 +140,5 @@ export default {
 			}
 		}
 	},
-	plugins: [
-		// @ts-ignore
-		import("tailwindcss-animate").then(mod => mod.default || mod)
-	],
+	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
