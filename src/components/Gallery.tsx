@@ -11,33 +11,33 @@ export const Gallery = () => {
   const photos = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
-      caption: "Morning light study",
+      src: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop",
+      caption: "Industrial framework",
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=400&h=300&fit=crop",
-      caption: "Material textures",
+      src: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=400&h=300&fit=crop",
+      caption: "Raw concrete",
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop",
-      caption: "Urban geometry",
+      src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+      caption: "Steel structures",
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop",
-      caption: "Shadow play",
+      src: "https://images.unsplash.com/photo-1541976590-713941681591?w=400&h=300&fit=crop",
+      caption: "Urban brutalism",
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop",
-      caption: "Concrete studies",
+      src: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop",
+      caption: "Material contrast",
     },
     {
       id: 6,
-      src: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&h=300&fit=crop",
-      caption: "Light patterns",
+      src: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=400&h=300&fit=crop",
+      caption: "Geometric strength",
     },
   ];
 
