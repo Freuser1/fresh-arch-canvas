@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfölj – Nyrenässans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script defer src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <h1>Faraz Faramarzi</h1>
+        <p>Arkitekt & ingenjör • Minimalism med substans</p>
+      </div>
+      <nav class="nav">
+        <a href="#byggnad">Interaktiv byggnad</a>
+        <a href="#berattelse">Berättelse</a>
+        <a href="#verk">Verk (PDF-galleri)</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="byggnad" class="hero">
+        <div class="canvas-wrap">
+          <canvas id="scene"></canvas>
+          <div class="overlay">
+            <h2>Ny renässans – digital loggia</h2>
+            <p>Utforska fasaden: rotera, zooma och hovra för detaljer.</p>
+          </div>
+        </div>
+        <div class="legend">
+          <div><span class="dot"></span> Kolonner (bärande)</div>
+          <div><span class="dot dot-arch"></span> Bågar (avlastning)</div>
+          <div><span class="dot dot-cornice"></span> Gesims (avslut)</div>
+        </div>
+      </section>
+
+      <section id="berattelse" class="story container">
+        <h3>Vems portfölj är detta?</h3>
+        <p>
+          Jag är en arkitekt/ingenjör som arbetar i skärningspunkten mellan struktur
+          och estetik. Denna sida är utformad som en stilla piazza: få element,
+          tydlig ordning, fokus på material och ljus. Jag tror på system som bär –
+          både i dimensionering och i uttryck.
+        </p>
+      </section>
+
+      <section id="verk" class="works container">
+        <div class="sec-head">
+          <h3>Verk (PDF-galleri)</h3>
+          <p class="hint">För att se varje projekt i detalj, ladda ner PDF:en.</p>
+        </div>
+
+        <ul class="pdf-grid">
+          <li class="pdf-card" data-title="Portalstudie" data-year="2024">
+            <div class="thumb">
+              <div class="blurred"></div>
+              <span class="badge">PDF</span>
+            </div>
+            <div class="meta">
+              <h4>Verk 01 – Portalstudie</h4>
+              <p>Skala 1:200 • Strukturell rytm</p>
+              <a class="download" href="assets/pdfs/verk_01_portal.pdf" download>Ladda ner PDF</a>
+            </div>
+          </li>
+          <li class="pdf-card" data-title="Loggia i betong" data-year="2024">
+            <div class="thumb">
+              <div class="blurred"></div>
+              <span class="badge">PDF</span>
+            </div>
+            <div class="meta">
+              <h4>Verk 02 – Loggia i betong</h4>
+              <p>Prefab • Semikassett • Detalj 1:10</p>
+              <a class="download" href="assets/pdfs/verk_02_loggia.pdf" download>Ladda ner PDF</a>
+            </div>
+          </li>
+          <li class="pdf-card" data-title="Piazza-struktur" data-year="2025">
+            <div class="thumb">
+              <div class="blurred"></div>
+              <span class="badge">PDF</span>
+            </div>
+            <div class="meta">
+              <h4>Verk 03 – Piazza-struktur</h4>
+              <p>Stadsrum • Modul 7.2 m • CC 3.6 m</p>
+              <a class="download" href="assets/pdfs/verk_03_piazza.pdf" download>Ladda ner PDF</a>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="kontakt" class="contact container">
+        <h3>Kontakt</h3>
+        <form class="contact-form" action="#" method="post" onsubmit="return false;">
+          <div class="row">
+            <label for="name">Namn</label>
+            <input id="name" name="name" type="text" placeholder="Ditt namn" required />
+          </div>
+          <div class="row">
+            <label for="email">E-post</label>
+            <input id="email" name="email" type="email" placeholder="din@mail.se" required />
+          </div>
+          <div class="row">
+            <label for="message">Meddelande</label>
+            <textarea id="message" name="message" rows="5" placeholder="Hej Faraz, jag vill diskutera..." required></textarea>
+          </div>
+          <button class="btn" type="submit" id="fakeSubmit">Skicka</button>
+          <p id="formStatus" class="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© <span id="year"></span> Faraz Faramarzi. All rights förbehållna.</p>
+    </footer>
+
+    <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
+  </body>
+</html>
