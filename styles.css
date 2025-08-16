@@ -152,55 +152,20 @@ h4 { font-weight: 600; font-size: 1.05rem; }
 }
 .download:hover { border-color: var(--accent); }
 
-.contact { padding: 40px 0 70px; }
-.contact-form {
-  display: grid;
-  gap: 14px;
-  max-width: 720px;
-}
-.row { display: grid; gap: 6px; }
-input, textarea {
-  background: #0c0f10;
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 12px;
-  font: inherit;
-}
-input:focus, textarea:focus { outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); }
-
-.btn {
-  background: var(--ink);
-  color: #0a0b0c;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.btn:hover { filter: brightness(0.92); }
-.status { color: var(--muted); margin-left: 10px; display: inline-block; }
-
-.site-footer {
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  text-align: center;
-  padding: 16px;
+.mailto-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #222;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  font-weight: 500;
 }
 
-.tooltip {
-  position: fixed;
-  pointer-events: none;
-  transform: translate(-50%, -140%);
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  font-size: 12px;
-  opacity: 0;
-  transition: opacity .12s ease;
-  z-index: 50;
+.mailto-btn:hover {
+  background-color: #444;
+
 }
 
 @media (max-width: 640px) {
