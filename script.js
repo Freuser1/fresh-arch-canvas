@@ -76,7 +76,7 @@ const matAccent = new THREE.MeshStandardMaterial({ color: 0xd4b26b, roughness: 0
 // Optionally load user reference image as decal/texturization if exists
 const loader = new THREE.TextureLoader();
 let refTexture = null;
-loader.load('model/aptartment.glb', (tex) => {
+loader.load('model/aptartament.glb', (tex) => {
   tex.encoding = THREE.sRGBEncoding;
   refTexture = tex;
 }, undefined, () => { /* ignore load error - optional */ });
