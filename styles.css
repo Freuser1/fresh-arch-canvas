@@ -309,3 +309,41 @@ a{
     scroll-behavior: auto !important;
   }
 }
+.pdf-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.pdf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  background: linear-gradient(135deg, #17191b, #202326);
+  color: var(--ink);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.pdf-card span {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.pdf-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pdf-card:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(61,124,255,.4);
+  background: linear-gradient(135deg, #426dff, #004dff);
+}
