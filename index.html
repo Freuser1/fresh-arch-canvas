@@ -4,17 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Portfölj — Portfolio</title>
-
   <link href="styles.css" rel="stylesheet" />
-
-  <!-- Three.js ES modules (CDN) -->
-  <script type="module" src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="brand">
       <h1>Faraz Faramarzi</h1>
-      <p>• Minimalism med substans•</p>
+      <p>• Minimalism med substans •</p>
     </div>
     <nav class="nav">
       <a href="#byggnad">Byggnad</a>
@@ -24,51 +20,53 @@
   </header>
 
   <main>
-    <section id="byggnad" class="hero">
-      <div class="canvas-wrap" id="canvas-wrap">
-        <canvas id="three-canvas"></canvas>
-        <div class="overlay">
-          <h2></h2>
-          <p>Dra för att rotera, scrolla för att zooma. Hovra för detaljer.</p>
-        </div>
+    <!-- FULL-BLEED 3D HERO (replaces the old small window) -->
+    <section id="byggnad" class="hero-3d">
+      <div class="hero-3d__content">
+        <h2 class="hero-3d__title">Arkitektonisk båge</h2>
+        <p class="hero-3d__hint">Dra för att rotera · Scrolla för att zooma · Tryck “W” för wireframe</p>
       </div>
-      <div class="legend">
-        <div><span class="dot" style="background:#c8b89b"></span> Kolonner</div>
-        <div><span class="dot" style="background:#8aa1b1"></span> Bågar</div>
-        <div><span class="dot" style="background:#6c7b6d"></span> Gesims</div>
-      </div>
+      <div id="three-root" class="three-root" aria-label="Interaktiv 3D-modell"></div>
     </section>
 
-    <!-- Minimal remainder of page so layout remains -->
+    <!-- PDF-galleri -->
     <section id="verk" class="container">
       <h3>Verk (PDF-galleri)</h3>
-      <p class="hint">PDF-galleri nedanför — ladda ner för fullständig visning.</p>
-      <!-- ... ditt galleri här ... -->
-       <div class="pdf-gallery">
-    <a href="./pdfs/verk_01_portal.pdf" target="_blank" class="pdf-card">
-      <span>📄</span>
-      <h4>Projekt 1</h4>
-    </a>
-    <a href="./pdfs/verk_02_loggia.pdf" target="_blank" class="pdf-card">
-      <span>📄</span>
-      <h4>Projekt 2</h4>
-    </a>
-    <a href="./pdfs/verk_03_piazza.pdf" target="_blank" class="pdf-card">
-      <span>📄</span>
-      <h4>Projekt 3</h4>
-    </a>
-  </div>
+      <p class="hint">Klicka på ett dokument för att öppna det i ny flik.</p>
+      <div class="pdf-gallery">
+        <a href="./pdfs/project1.pdf" target="_blank" class="pdf-card">
+          <span>📄</span><h4>Projekt 1</h4>
+        </a>
+        <a href="./pdfs/project2.pdf" target="_blank" class="pdf-card">
+          <span>📄</span><h4>Projekt 2</h4>
+        </a>
+        <a href="./pdfs/project3.pdf" target="_blank" class="pdf-card">
+          <span>📄</span><h4>Projekt 3</h4>
+        </a>
+      </div>
     </section>
 
+    <!-- Kontakt -->
     <section id="kontakt" class="container">
       <h3>Kontakt</h3>
-      <a class="mailto-btn" href="mailto:farazfaramarzi@gmail.com" target="_blank" rel="noopener">📧 Skicka e-post</a>
+      <a class="mailto-btn" href="mailto:farazfaramarzi@gmail.com" target="_blank" rel="noopener">
+        📧 Skicka e-post
+      </a>
     </section>
   </main>
+
   <footer class="site-footer">
     <p>© <span id="year"></span> Faraz Faramarzi</p>
   </footer>
 
-  <div id="tooltip" class="tooltip" aria-hidden="true"></div>
+  <!-- ✅ Three.js via CDNJS (no modules/imports) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/controls/OrbitControls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/EffectComposer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/RenderPass.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/UnrealBloomPass.min.js"></script>
+
+  <!-- Your logic -->
+  <script src="script.js"></script>
 </body>
 </html>
