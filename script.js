@@ -1,5 +1,4 @@
-// script.js (type=module)
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 import { EffectComposer } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
@@ -8,9 +7,8 @@ import { UnrealBloomPass } from 'https://unpkg.com/three@0.160.0/examples/jsm/po
 
 const canvas = document.getElementById('three-canvas');
 
-
 // Renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.getElementById('three-canvas') });
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
@@ -69,7 +67,7 @@ composer.addPass(bloom);
 // Load Blender 3D model (.glb)
 const loader = new GLTFLoader();
 loader.load(
-  './models/apartament.glb', 
+  './models/apartament.glb',
   (gltf) => {
     const model = gltf.scene;
     model.traverse((child) => {
@@ -78,9 +76,13 @@ loader.load(
         child.receiveShadow = true;
       }
     });
+    model.scale.set(1, 1, 1);
+    model.position.set(0, 0, 0);
     scene.add(model);
   },
-  undefined,
+  (xhr) => {
+    console.log(`Loading model: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+  },
   (error) => console.error('Error loading GLTF model:', error)
 );
 
@@ -93,7 +95,6 @@ window.addEventListener('resize', () => {
 });
 
 // Animation loop
-const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
