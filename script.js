@@ -1,5 +1,5 @@
 // script.js (type=module)
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 import { EffectComposer } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
@@ -69,7 +69,7 @@ composer.addPass(bloom);
 // Load Blender 3D model (.glb)
 const loader = new GLTFLoader();
 loader.load(
-  'C:\Users\faraz\Documents\GitHub\fresh-arch-canvas\apartament.glb', 
+  './models/apartament.glb', 
   (gltf) => {
     const model = gltf.scene;
     model.traverse((child) => {
