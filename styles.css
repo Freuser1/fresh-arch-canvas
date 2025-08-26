@@ -16,7 +16,7 @@
   --shadow-md:0 6px 20px rgba(0,0,0,.35);
 
   --font-sans:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  --font-serif:"Playfair Display",serif;
+  --font-serif:"Courier New", monospace;
 
   --container-w:1100px;
 }
@@ -124,56 +124,52 @@ a{ color:inherit; text-decoration:none; }
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #0d0d0d;
+  background-color: linear-gradient(135deg,#1c1f22,#2c3136);;
 }
 
-/* Perspective container */
-.tunnel-wrap {
-  width: 500px;
-  height: 500px;
-  perspective: 1000px;
+/* Container for all circles */
+.circle-wrap {
+  position: relative;
+  width: 600px;
+  height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Tunnel container */
-.tunnel {
-  position: relative;
+/* Base circle styling */
+.circle {
+  position: absolute;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  animation: spin 12s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: spin 20s linear infinite;
 }
 
-/* Individual rings of text */
-.tunnel span {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform-style: preserve-3d;
-  transform-origin: center;
-  font-family: Arial, sans-serif;
-  font-weight: 800;
-  color: white;
-  font-size: 3rem;
+/* Circle text styling */
+.circle p {
+  font-family: "Courier New", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: coral;
+  text-transform: uppercase;
   white-space: nowrap;
+  transform: rotate(0deg);
+  animation: rotate-text 20s linear infinite;
 }
 
-/* Position each ring deeper in Z-space */
-.tunnel span:nth-child(1) { transform: translate(-50%, -50%) rotateX(0deg) translateZ(0px) scale(1); }
-.tunnel span:nth-child(2) { transform: translate(-50%, -50%) rotateX(15deg) translateZ(-50px) scale(1.1); }
-.tunnel span:nth-child(3) { transform: translate(-50%, -50%) rotateX(30deg) translateZ(-100px) scale(1.2); }
-.tunnel span:nth-child(4) { transform: translate(-50%, -50%) rotateX(45deg) translateZ(-150px) scale(1.3); }
-.tunnel span:nth-child(5) { transform: translate(-50%, -50%) rotateX(60deg) translateZ(-200px) scale(1.4); }
-.tunnel span:nth-child(6) { transform: translate(-50%, -50%) rotateX(75deg) translateZ(-250px) scale(1.5); }
+/* Make each circle slightly smaller */
+.circle1 { width: 600px; height: 600px; animation-duration: 25s; }
+.circle2 { width: 450px; height: 450px; animation-duration: 20s; }
+.circle3 { width: 300px; height: 300px; animation-duration: 15s; }
+.circle4 { width: 150px; height: 150px; animation-duration: 12s; }
 
+/* Spin animation */
 @keyframes spin {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
+
 
