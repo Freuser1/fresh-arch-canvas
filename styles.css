@@ -130,11 +130,10 @@ a{ color:inherit; text-decoration:none; }
 /* Container for all circles */
 .circle-wrap {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 100vw;
+  height: 1000px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: visible;
 }
 
 /* Base circle styling */
