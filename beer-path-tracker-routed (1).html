@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Beer Path Tracker</title>
-  <meta name="description" content="A Strava-for-beers concept app that tracks your route, bars visited, beer count, drink limit alerts, sobriety estimate, and exports a transparent social overlay PNG." />
+  <meta name="description" content="Strava-for-beers demo: log bars by address, track beers, get a social overlay, and keep your night cached until you clear it." />
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -42,7 +42,7 @@
     img, svg { display: block; max-width: 100%; }
     button, input, select, textarea { font: inherit; color: inherit; }
     button { cursor: pointer; border: 0; background: none; }
-    a { color: inherit; }
+    a { color: inherit; text-decoration: none; }
     textarea { resize: vertical; }
     :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
@@ -158,7 +158,6 @@
     .empty-state { padding: var(--space-6); text-align: center; color: var(--color-text-muted); border: 1px dashed color-mix(in oklab, var(--color-text) 16%, transparent); border-radius: var(--radius-xl); }
     .footer-note { color: var(--color-text-faint); font-size: var(--text-xs); margin-top: var(--space-5); max-width: 48ch; }
 
-    .overlay-editor { display: grid; gap: var(--space-4); }
     .overlay-preview-shell {
       margin-top: var(--space-4);
       padding: var(--space-3);
@@ -166,7 +165,6 @@
       background: linear-gradient(180deg, rgba(15,13,11,0.85), rgba(15,13,11,0.65));
       border: 1px solid rgba(255,255,255,0.06);
     }
-    .overlay-preview-info { color: var(--color-text-muted); font-size: var(--text-sm); }
     .overlay-card {
       width: min(100%, 420px);
       aspect-ratio: 9 / 16;
@@ -267,6 +265,7 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
 <body>
   <a href="#main" class="sr-only">Skip to content</a>
@@ -286,28 +285,29 @@
             <strong>Strava, but lager</strong>
           </div>
         </div>
-        <button class="mode-toggle" data-theme-toggle aria-label="Switch theme">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <a href="/" class="btn btn-secondary" style="min-height:36px;padding-inline:0.9rem;font-size:0.8rem;">Home</a>
+          <button class="mode-toggle" data-theme-toggle aria-label="Switch theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
       </div>
 
       <div>
         <div class="eyebrow">Night-out tracker</div>
-        <h1>Track the bars, beers, route, and export a transparent overlay for a selfie or TikTok.</h1>
-        <p class="lede">The export is now a clean social overlay: only the line of the night, a drinks cutout, and your note of the night, so you can place it in front of video or a selfie.</p>
+        <h1>Log your bars by address, tally beers, and export a transparent overlay.</h1>
+        <p class="lede">No live GPS needed. Type where you are, pin it, and keep the whole crawl cached until you choose to clear it.</p>
         <div class="metric-strip" aria-label="Feature chips">
-          <div class="chip">Walking route <strong>not aerial</strong></div>
-          <div class="chip">Transparent PNG <strong>overlay</strong></div>
-          <div class="chip">Note of night <strong>story-ready</strong></div>
+          <div class="chip">Address search <strong>to pins</strong></div>
+          <div class="chip">Drink cap <strong>alerts</strong></div>
+          <div class="chip">Overlay <strong>PNG export</strong></div>
         </div>
         <div class="route-card">
           <div class="eyebrow">How it works</div>
-          <p>Log the bars, write the note of the night, then export a transparent PNG overlay with the path ribbon and drink total. It is made to sit above a selfie, story background, or TikTok clip.</p>
+          <p>Type the bar name or area, log beers, and watch each stop land on the map. The app caches tonight's crawl in your browser until you hit clear, and can export a transparent story overlay.</p>
         </div>
         <div class="actions-row">
-          <button class="btn btn-primary" id="startTrackingBtn">Start tracking</button>
-          <button class="btn btn-secondary" id="addCurrentStopBtn">Add current stop</button>
-          <button class="btn btn-secondary" id="downloadOverlayBtn">Download overlay PNG</button>
+          <button class="btn btn-secondary" id="clearSessionBtn">Clear this night</button>
         </div>
         <p class="footer-note">Safety note: the BAC and sobriety values are approximate wellness estimates only and must not be used for legal, driving, or medical decisions.</p>
       </div>
@@ -318,11 +318,9 @@
         <div>
           <div class="eyebrow">Tonight's crawl</div>
           <h2>Session board</h2>
-          <p>Live route, beer logs, alerts, recovery estimate, and a transparent overlay export.</p>
+          <p>Log stops, see them on the map, and keep the crawl between refreshes.</p>
         </div>
         <div class="stat-grid">
-          <div class="mini-pill"><strong id="statusPill">Idle</strong></div>
-          <div class="mini-pill">GPS <strong id="gpsPill">Off</strong></div>
           <div class="mini-pill">Stops <strong id="stopsPillTop">0</strong></div>
         </div>
       </div>
@@ -339,20 +337,24 @@
           <div id="map" role="application" aria-label="Map showing your route and bar stops"></div>
         </div>
         <div class="map-caption">
-          <span>Walking route follows streets and paths when possible.</span>
-          <span id="coordHint">Waiting for GPS signal.</span>
+          <span>Walking route approximated between pins.</span>
+          <span id="coordHint">Waiting for the first stop.</span>
         </div>
       </section>
 
       <section class="entry-panel panel" aria-labelledby="logHeading">
         <div>
           <div class="eyebrow">Log a stop</div>
-          <h2 id="logHeading">Add a bar manually</h2>
+          <h2 id="logHeading">Add a bar by name and place</h2>
         </div>
         <div class="input-grid">
           <div class="field">
             <label for="barName">Bar name</label>
             <input id="barName" type="text" placeholder="Akkurat, Trädgården, etc." />
+          </div>
+          <div class="field">
+            <label for="barAddress">City / address</label>
+            <input id="barAddress" type="text" placeholder="Södermalm, Stockholm or exact address" />
           </div>
           <div class="field">
             <label for="beerCount">Beers here</label>
@@ -378,7 +380,7 @@
             </select>
           </div>
         </div>
-        <p id="bodyFactorHint" class="footer-note" style="margin-top: var(--space-3);">Widmark-style estimate only. It simplifies alcohol absorption and metabolism, so it should be treated as a rough signal rather than a precise result.</p>
+        <p id="bodyFactorHint" class="footer-note" style="margin-top: var(--space-3);">Widmark-style BAC estimate only. It simplifies alcohol absorption and metabolism, so it is a rough signal, not a precise result.</p>
 
         <div class="stats-grid" aria-label="Night out stats">
           <article class="stat-card">
@@ -426,7 +428,7 @@
           <p id="timelineMeta">No stops yet.</p>
         </div>
         <ul class="timeline-list" id="timelineList"></ul>
-        <div class="empty-state" id="emptyState">Your night has not started yet. Start tracking or add the first bar manually.</div>
+        <div class="empty-state" id="emptyState">Your night has not started yet. Add the first bar with its place.</div>
       </section>
 
       <section class="overlay-panel panel" aria-labelledby="overlayHeading">
@@ -438,13 +440,11 @@
           <p>Made to sit above a selfie, story, or TikTok.</p>
         </div>
 
-        <div class="overlay-editor">
-          <div class="field">
-            <label for="nightNote">Note of the night</label>
-            <textarea id="nightNote" placeholder="Best stop, chaotic quote, who disappeared first, or the line of the night.">Golden hour pint turned into a three-bar adventure.</textarea>
-          </div>
-          <p class="overlay-preview-info">The export has a transparent background, so only the route line, drink badge, and note card show up on top of your content.</p>
+        <div class="field">
+          <label for="nightNote">Note of the night</label>
+          <textarea id="nightNote" placeholder="Best stop, chaotic quote, or the line of the night.">Golden hour pint turned into a three-bar adventure.</textarea>
         </div>
+        <p class="footer-note">The overlay has a transparent background, so only the route line, drinks badge, and note appear over your content.</p>
 
         <div class="overlay-preview-shell">
           <div class="overlay-card" id="overlayCard">
@@ -484,6 +484,10 @@
             </div>
           </div>
         </div>
+
+        <div class="actions-row" style="margin-top:var(--space-4);">
+          <button class="btn btn-secondary" id="downloadOverlayBtn">Download overlay PNG</button>
+        </div>
       </section>
     </section>
   </main>
@@ -491,13 +495,11 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
   <script>
+    const STORAGE_KEY = 'beerPathSession.v1';
+
     const state = {
-      tracking: false,
-      gpsEnabled: false,
-      watchId: null,
-      currentPosition: null,
-      path: [],
       stops: [],
+      path: [],
       totalBeers: 0,
       sessionStartedAt: new Date(),
       limitAlertShown: false
@@ -511,22 +513,31 @@
       maxZoom: 20
     }).addTo(map);
 
-    const pathLine = L.polyline([], {
-      color: '#39a0ff',
-      weight: 6,
-      opacity: 0.95,
-      lineJoin: 'round'
-    }).addTo(map);
-
     let currentMarker = null;
-    const stopMarkers = L.layerGroup().addTo(map);
+    // stopMarkers already defined with routing block
+
+    const routingControl = L.Routing.control({
+      waypoints: [],
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      show: false,
+      routeWhileDragging: false,
+      lineOptions: {
+        styles: [
+          { color: 'rgba(0,0,0,0.45)', weight: 10, opacity: 0.9 },
+          { color: '#39a0ff', weight: 6, opacity: 1 }
+        ]
+      }
+    }).addTo(map);
+    // stopMarkers already defined with routing block
 
     const els = {
-      startTrackingBtn: document.getElementById('startTrackingBtn'),
-      addCurrentStopBtn: document.getElementById('addCurrentStopBtn'),
-      downloadOverlayBtn: document.getElementById('downloadOverlayBtn'),
+      clearSessionBtn: document.getElementById('clearSessionBtn'),
       logStopBtn: document.getElementById('logStopBtn'),
+      downloadOverlayBtn: document.getElementById('downloadOverlayBtn'),
       barName: document.getElementById('barName'),
+      barAddress: document.getElementById('barAddress'),
       beerCount: document.getElementById('beerCount'),
       beersTotal: document.getElementById('beersTotal'),
       barsTotal: document.getElementById('barsTotal'),
@@ -535,8 +546,6 @@
       emptyState: document.getElementById('emptyState'),
       timelineMeta: document.getElementById('timelineMeta'),
       distancePill: document.getElementById('distancePill'),
-      statusPill: document.getElementById('statusPill'),
-      gpsPill: document.getElementById('gpsPill'),
       stopsPillTop: document.getElementById('stopsPillTop'),
       coordHint: document.getElementById('coordHint'),
       drinkLimit: document.getElementById('drinkLimit'),
@@ -608,62 +617,51 @@
       return new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' }).format(eta);
     }
 
-    function updateCurrentMarker(latlng) {
-      if (!currentMarker) {
-        currentMarker = L.circleMarker(latlng, {
-          radius: 8,
-          color: '#12100e',
-          weight: 2,
-          fillColor: '#7dc45a',
-          fillOpacity: 1
-        }).addTo(map);
-      } else {
-        currentMarker.setLatLng(latlng);
-      }
-    }
-
     function fitMapToData() {
-      const layers = [];
-      if (state.path.length) layers.push(pathLine);
-      if (state.stops.length) stopMarkers.eachLayer(layer => layers.push(layer));
-      if (!layers.length) return;
-      const group = L.featureGroup(layers);
+      if (!state.stops.length) return;
+      const group = L.featureGroup([stopMarkers]);
       map.fitBounds(group.getBounds().pad(0.2), { maxZoom: 16 });
     }
 
-    async function fetchWalkingRoute(points) {
-      if (points.length < 2) return points;
+    async function geocodeAddress(query) {
+      const q = (query || '').trim();
+      if (!q) return null;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`;
       try {
-        const coords = points.map(point => `${point.lng},${point.lat}`).join(';');
-        const url = `https://router.project-osrm.org/route/v1/foot/${coords}?overview=full&geometries=geojson`;
-        const response = await fetch(url);
-        const data = await response.json();
-        const route = data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates;
-        if (!route || !route.length) return points;
-        return route.map(([lng, lat]) => ({ lat, lng }));
-      } catch (error) {
-        console.error('Walking route fetch failed', error);
-        return points;
+        const res = await fetch(url, {
+          headers: { 'Accept-Language': 'en', 'User-Agent': 'BeerPathDemo/1.0' }
+        });
+        const data = await res.json();
+        if (!data.length) return null;
+        return {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon),
+          displayName: data[0].display_name
+        };
+      } catch (err) {
+        console.error('Geocoding failed', err);
+        return null;
       }
     }
 
-    async function rebuildWalkingRoute() {
-      if (state.stops.length < 2) {
-        const fallback = state.path.length ? state.path : state.stops.map(stop => ({ lat: stop.lat, lng: stop.lng }));
-        pathLine.setLatLngs(fallback.map(point => [point.lat, point.lng]));
-        updateOverlay();
+    
+    function updateRouteFromStops() {
+      if (!state.stops.length) {
+        routingControl.setWaypoints([]);
         return;
       }
-      const routePoints = state.stops.map(stop => ({ lat: stop.lat, lng: stop.lng }));
-      const walked = await fetchWalkingRoute(routePoints);
-      state.path = walked;
-      pathLine.setLatLngs(walked.map(point => [point.lat, point.lng]));
-      fitMapToData();
-      updateOverlay();
+      const wps = state.stops.map(s => L.latLng(s.lat, s.lng));
+      routingControl.setWaypoints(wps);
     }
 
-    function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
-      if (!points.length) return { d: `M ${width / 2} ${padding} L ${width / 2} ${height - padding}`, dots: [{ x: width / 2, y: padding }, { x: width / 2, y: height - padding }] };
+function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
+      if (!points.length) {
+        const x = width / 2;
+        return {
+          d: `M ${x} ${padding} L ${x} ${height - padding}`,
+          dots: [{ x, y: padding }, { x, y: height - padding }]
+        };
+      }
       const lats = points.map(p => p.lat);
       const lngs = points.map(p => p.lng);
       const minLat = Math.min(...lats), maxLat = Math.max(...lats);
@@ -696,7 +694,9 @@
       els.overlayRouteGlow.setAttribute('d', overlay.d);
       els.overlayRouteMain.setAttribute('d', overlay.d);
       els.overlayRouteDash.setAttribute('d', overlay.d);
-      els.overlayDots.innerHTML = overlay.dots.map((point, index) => `<circle class="${index === overlay.dots.length - 1 ? 'overlay-dot-end' : 'overlay-dot'}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${index === overlay.dots.length - 1 ? 13 : 11}"></circle>`).join('');
+      els.overlayDots.innerHTML = overlay.dots.map((point, index) => `
+        <circle class="${index === overlay.dots.length - 1 ? 'overlay-dot-end' : 'overlay-dot'}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${index === overlay.dots.length - 1 ? 13 : 11}"></circle>
+      `).join('');
       els.overlayDrinkCount.textContent = state.totalBeers;
       els.overlayNightNote.textContent = els.nightNote.value.trim() || 'One route, one night, one excellent bad decision.';
     }
@@ -713,7 +713,10 @@
             <strong>${stop.name}</strong>
             <span>Stop ${index + 1} · ${stop.time} · ${stop.lat.toFixed(4)}, ${stop.lng.toFixed(4)}</span>
           </div>
-          <div class="beer-badge">${stop.beers}</div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <div class="beer-badge">${stop.beers}</div>
+            <button type="button" class="btn btn-secondary" style="min-height:36px;font-size:0.75rem;padding-inline:0.7rem;" data-remove-stop="${index}">Remove</button>
+          </div>
         `;
         els.timelineList.appendChild(li);
 
@@ -750,8 +753,6 @@
       els.barsTotal.textContent = state.stops.length;
       els.streakTotal.textContent = state.stops.length;
       els.distancePill.textContent = `${totalDistanceKm().toFixed(1)} km`;
-      els.statusPill.textContent = state.tracking ? 'Tracking' : 'Idle';
-      els.gpsPill.textContent = state.gpsEnabled ? 'On' : 'Off';
       els.stopsPillTop.textContent = state.stops.length;
 
       const bac = estimatedBac();
@@ -764,56 +765,90 @@
       updateOverlay();
     }
 
-    function updatePath(latlng, shouldCenter = false) {
-      state.currentPosition = { lat: latlng.lat, lng: latlng.lng };
-      const last = state.path[state.path.length - 1];
-      if (!last || haversineKm(last, state.currentPosition) > 0.01) {
-        state.path.push(state.currentPosition);
-        pathLine.setLatLngs(state.path.map(point => [point.lat, point.lng]));
+    function saveSessionToStorage() {
+      const payload = {
+        stops: state.stops,
+        totalBeers: state.totalBeers,
+        sessionStartedAt: state.sessionStartedAt.toISOString()
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.error('Failed to store session', err);
       }
-      updateCurrentMarker(latlng);
-      els.coordHint.textContent = `Current fix: ${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
-      renderStats();
-      if (shouldCenter) map.setView(latlng, Math.max(map.getZoom(), 15));
     }
 
-    function addStop(name, beers, latlng) {
-      if (state.stops.length === 0) state.sessionStartedAt = new Date();
-      const safeName = name && name.trim() ? name.trim() : `Bar stop ${state.stops.length + 1}`;
-      const beerNumber = Math.max(0, Number.isFinite(+beers) ? Math.round(+beers) : 0);
-      const coords = latlng || state.currentPosition || { lat: 59.3293, lng: 18.0686 };
-      state.stops.push({ name: safeName, beers: beerNumber, lat: coords.lat, lng: coords.lng, time: timeString() });
-      state.totalBeers += beerNumber;
+    function loadSessionFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        state.stops = Array.isArray(data.stops) ? data.stops : [];
+        state.totalBeers = typeof data.totalBeers === 'number' ? data.totalBeers : 0;
+        state.sessionStartedAt = data.sessionStartedAt ? new Date(data.sessionStartedAt) : new Date();
+        state.path = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+        renderTimeline();
+        renderStats();
+        fitMapToData();
+      } catch (err) {
+        console.error('Failed to load session', err);
+      }
+    }
+
+    function clearSession() {
+      localStorage.removeItem(STORAGE_KEY);
+      state.stops = [];
+      state.totalBeers = 0;
+      state.path = [];
+      state.sessionStartedAt = new Date();
+      stopMarkers.clearLayers();
+      routingControl.setWaypoints([]);
       renderTimeline();
-      rebuildWalkingRoute();
+      renderStats();
+      els.coordHint.textContent = 'Waiting for the first stop.';
+    }
+
+    function addStopRaw(stop) {
+      state.stops.push(stop);
+      state.totalBeers += stop.beers;
+      state.path = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+      updateRouteFromStops();
+      renderTimeline();
       renderStats();
       fitMapToData();
-      els.barName.value = '';
-      els.beerCount.value = '1';
+      saveSessionToStorage();
     }
 
-    function startTracking() {
-      if (!('geolocation' in navigator)) {
-        alert('Geolocation is not available in this browser.');
+    async function addStopFromInputs() {
+      const name = els.barName.value;
+      const beers = Number(els.beerCount.value || 1);
+      const addressQuery = els.barAddress.value || name;
+
+      const geo = await geocodeAddress(addressQuery);
+      if (!geo) {
+        alert('Could not find that place. Try a more specific address or city.');
         return;
       }
-      if (state.watchId !== null) return;
-      state.tracking = true;
-      els.startTrackingBtn.textContent = 'Tracking live';
-      state.watchId = navigator.geolocation.watchPosition(
-        position => {
-          state.gpsEnabled = true;
-          const latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
-          updatePath(latlng, state.path.length === 0);
-        },
-        error => {
-          state.gpsEnabled = false;
-          els.coordHint.textContent = error.message || 'Location permission denied.';
-          renderStats();
-        },
-        { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
-      );
-      renderStats();
+
+      if (state.stops.length === 0) state.sessionStartedAt = new Date();
+
+      const safeName = name && name.trim() ? name.trim() : geo.displayName || `Bar stop ${state.stops.length + 1}`;
+      const beerNumber = Math.max(0, Number.isFinite(+beers) ? Math.round(+beers) : 0);
+
+      const stop = {
+        name: safeName,
+        beers: beerNumber,
+        lat: geo.lat,
+        lng: geo.lng,
+        time: timeString()
+      };
+
+      addStopRaw(stop);
+
+      els.barName.value = '';
+      els.barAddress.value = '';
+      els.beerCount.value = '1';
+      els.coordHint.textContent = `Last pinned: ${geo.displayName}`;
     }
 
     async function downloadOverlayPng() {
@@ -834,12 +869,31 @@
       }
     }
 
-    els.startTrackingBtn.addEventListener('click', startTracking);
-    els.addCurrentStopBtn.addEventListener('click', () => addStop(els.barName.value || 'Current bar', Number(els.beerCount.value || 1), state.currentPosition));
-    els.logStopBtn.addEventListener('click', () => addStop(els.barName.value, Number(els.beerCount.value || 1), state.currentPosition));
+    els.logStopBtn.addEventListener('click', addStopFromInputs);
     els.downloadOverlayBtn.addEventListener('click', downloadOverlayPng);
+    els.clearSessionBtn.addEventListener('click', () => {
+      if (confirm('Clear this night? This removes all stops and stats from this device.')) clearSession();
+    });
     [els.drinkLimit, els.bodyWeight, els.bodySex].forEach(el => el.addEventListener('input', renderStats));
     els.nightNote.addEventListener('input', updateOverlay);
+
+    els.timelineList.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-remove-stop]');
+      if (!btn) return;
+      const index = Number(btn.getAttribute('data-remove-stop'));
+      if (!Number.isInteger(index) || index < 0 || index >= state.stops.length) return;
+      const stop = state.stops[index];
+      const ok = confirm(`Remove stop "${stop.name}" and its ${stop.beers} beer(s)?`);
+      if (!ok) return;
+      state.totalBeers -= stop.beers;
+      state.stops.splice(index, 1);
+      state.path = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+      updateRouteFromStops();
+      renderTimeline();
+      renderStats();
+      fitMapToData();
+      saveSessionToStorage();
+    });
 
     document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
       const root = document.documentElement;
@@ -847,10 +901,9 @@
       root.setAttribute('data-theme', next);
     });
 
-    renderTimeline();
-    renderStats();
+    loadSessionFromStorage();
     updateOverlay();
-    updatePath({ lat: 59.3293, lng: 18.0686 }, true);
   </script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
 </body>
 </html>
