@@ -265,7 +265,6 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
 <body>
   <a href="#main" class="sr-only">Skip to content</a>
@@ -513,24 +512,15 @@
       maxZoom: 20
     }).addTo(map);
 
-    let currentMarker = null;
-    // stopMarkers already defined with routing block
-
-    const routingControl = L.Routing.control({
-      waypoints: [],
-      addWaypoints: false,
-      draggableWaypoints: false,
-      fitSelectedRoutes: false,
-      show: false,
-      routeWhileDragging: false,
-      lineOptions: {
-        styles: [
-          { color: 'rgba(0,0,0,0.45)', weight: 10, opacity: 0.9 },
-          { color: '#39a0ff', weight: 6, opacity: 1 }
-        ]
-      }
+    const pathLine = L.polyline([], {
+      color: '#39a0ff',
+      weight: 6,
+      opacity: 0.95,
+      lineJoin: 'round'
     }).addTo(map);
-    // stopMarkers already defined with routing block
+
+    let currentMarker = null;
+    const stopMarkers = L.layerGroup().addTo(map);
 
     const els = {
       clearSessionBtn: document.getElementById('clearSessionBtn'),
@@ -618,8 +608,11 @@
     }
 
     function fitMapToData() {
-      if (!state.stops.length) return;
-      const group = L.featureGroup([stopMarkers]);
+      const layers = [];
+      if (state.path.length) layers.push(pathLine);
+      if (state.stops.length) stopMarkers.eachLayer(layer => layers.push(layer));
+      if (!layers.length) return;
+      const group = L.featureGroup(layers);
       map.fitBounds(group.getBounds().pad(0.2), { maxZoom: 16 });
     }
 
@@ -644,17 +637,7 @@
       }
     }
 
-    
-    function updateRouteFromStops() {
-      if (!state.stops.length) {
-        routingControl.setWaypoints([]);
-        return;
-      }
-      const wps = state.stops.map(s => L.latLng(s.lat, s.lng));
-      routingControl.setWaypoints(wps);
-    }
-
-function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
+    function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
       if (!points.length) {
         const x = width / 2;
         return {
@@ -801,8 +784,8 @@ function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
       state.totalBeers = 0;
       state.path = [];
       state.sessionStartedAt = new Date();
+      pathLine.setLatLngs([]);
       stopMarkers.clearLayers();
-      routingControl.setWaypoints([]);
       renderTimeline();
       renderStats();
       els.coordHint.textContent = 'Waiting for the first stop.';
@@ -812,7 +795,6 @@ function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
       state.stops.push(stop);
       state.totalBeers += stop.beers;
       state.path = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
-      updateRouteFromStops();
       renderTimeline();
       renderStats();
       fitMapToData();
@@ -888,7 +870,6 @@ function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
       state.totalBeers -= stop.beers;
       state.stops.splice(index, 1);
       state.path = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
-      updateRouteFromStops();
       renderTimeline();
       renderStats();
       fitMapToData();
@@ -904,6 +885,5 @@ function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
     loadSessionFromStorage();
     updateOverlay();
   </script>
-  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
 </body>
 </html>
