@@ -4,7 +4,7 @@
 2. OVERLAY DISTANCE DISPLAY
 -->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -179,13 +179,13 @@
       background: transparent;
     }
     .overlay-inner {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      padding: var(--space-4);
-      background: transparent;
-    }
+     position: absolute;
+     inset: 0;
+     display: grid;
+     grid-template-rows: auto minmax(0, 1fr) auto;
+     padding: var(--space-4);
+    background: transparent;
+}
     .overlay-head {
       display: flex;
       justify-content: space-between;
@@ -204,19 +204,20 @@
       backdrop-filter: blur(14px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
-    .overlay-route-wrap {
-      position: relative;
-      display: grid;
-      place-items: center;
-      padding: var(--space-2) 0;
-    }
-    .overlay-svg {
-      width: 100%;
-      height: 100%;
-      min-height: 620px;
-      overflow: visible;
-      filter: drop-shadow(0 14px 34px rgba(0,0,0,0.24));
-    }
+.overlay-route-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) 0;
+  max-height: 70%;
+  overflow: hidden;
+}
+.overlay-svg {
+  width: 100%;
+  height: 100%;
+  min-height: 0; /* Allow it to shrink with the card */
+}
     .overlay-line-main { fill: none; stroke: rgba(243,179,67,0.96); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
     .overlay-line-glow { fill: none; stroke: rgba(255,226,174,0.34); stroke-width: 28; stroke-linecap: round; stroke-linejoin: round; }
     .overlay-line-dash { fill: none; stroke: rgba(255,249,236,0.82); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2 14; }
@@ -531,26 +532,33 @@
               </div>
 
               <div class="overlay-bottom">
-                <div class="overlay-drinks">
-                  <span>Total drinks</span>
-                  <strong id="overlayDrinkCount">0</strong>
+                <div class="overlay-stats-box">
+                  <div class="overlay-stats-row">
+                    <div>
+                      <span>Total drinks</span>
+                      <strong id="overlayDrinkCount">0</strong>
+                    </div>
+                    <div>
+                      <span>Distance</span>
+                      <strong id="overlayDistance">0.0 km</strong>
+                    </div>
+                  </div>
+                  <div class="overlay-stats-row">
+                    <div>
+                      <span>Time</span>
+                      <strong id="overlayTime">0:00</strong>
+                    </div>
+                    <div>
+                      <span>Pace</span>
+                      <strong id="overlayPace">0:00 /km</strong>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="overlay-distance">
-                  <span>Distance</span>
-                  <strong id="overlayDistance">0.0 km</strong>
-                </div>
 
-                <div class="overlay-stats">
-                  <div>
-                    <span>Time</span>
-                    <strong id="overlayTime">0:00</strong>
-                  </div>
-                  <div>
-                    <span>Pace</span>
-                    <strong id="overlayPace">0:00 /km</strong>
-                  </div>
-                </div>
+              
+
+
 
                 <div class="overlay-note">
                   <span>Note of the night</span>
@@ -1062,3 +1070,38 @@ async function downloadOverlayPng() {
   </script>
 </body>
 </html>
+.overlay-stats-box {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.3rem;
+  background: rgba(18,16,14,0.92);
+  color: #f4ede1;
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  max-width: 100%;
+}
+
+.overlay-stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.overlay-stats-box span {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244,237,225,0.7);
+}
+
+.overlay-stats-box strong {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 0.15rem;
+}
+
