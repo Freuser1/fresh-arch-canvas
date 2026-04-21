@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<!-- MODIFIED VERSION WITH:
+1. REAL ROUTING (OSRM)
+2. OVERLAY DISTANCE DISPLAY
+-->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beer Path Tracker</title>
+  <meta name="description" content="Strava-for-beers demo: log bars by address, track beers, get a social overlay, and keep your night cached until you clear it." />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem;
+      --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+      --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-surface-offset: #f3f0ec;
+      --color-border: #d4d1ca; --color-divider: #dcd9d5; --color-text: #28251d; --color-text-muted: #6d6b66;
+      --color-text-faint: #a7a49e; --color-text-inverse: #f9f8f4; --color-primary: #8c5b16; --color-primary-hover: #6f470d;
+      --color-primary-highlight: #eadfc8; --color-success: #437a22; --color-error: #a12c7b; --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+      --shadow-md: 0 10px 30px oklch(0.2 0.01 80 / 0.12); --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --font-body: 'Satoshi', 'Inter', sans-serif; --font-display: 'Satoshi', 'Inter', sans-serif;
+    }
+    [data-theme="dark"] {
+      --color-bg: #12100e; --color-surface: #191613; --color-surface-2: #211d1a; --color-surface-offset: #26211d;
+      --color-border: #3a332d; --color-divider: #2b2520; --color-text: #f4ede1; --color-text-muted: #c4baa9;
+      --color-text-faint: #8b8074; --color-text-inverse: #17120f; --color-primary: #f3b343; --color-primary-hover: #ffca6d;
+      --color-primary-highlight: #3c2d15; --color-success: #7dc45a; --color-error: #ef76bb; --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.22);
+      --shadow-md: 0 14px 40px oklch(0 0 0 / 0.42);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.5; color: var(--color-text); background:
+      radial-gradient(circle at top right, color-mix(in oklab, var(--color-primary) 16%, transparent), transparent 26%),
+      radial-gradient(circle at bottom left, color-mix(in oklab, var(--color-success) 10%, transparent), transparent 22%),
+      var(--color-bg);
+    }
+    img, svg { display: block; max-width: 100%; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    a { color: inherit; text-decoration: none; }
+    textarea { resize: vertical; }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+
+    .app-shell {
+      width: min(1260px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: var(--space-4) 0 var(--space-12);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: var(--space-4);
+    }
+    .panel {
+      background: color-mix(in oklab, var(--color-surface) 92%, transparent);
+      border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+      border-radius: calc(var(--radius-xl) + 0.25rem);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(16px);
+    }
+    .hero {
+      padding: var(--space-5);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      min-height: calc(100dvh - 2rem);
+      position: sticky;
+      top: 1rem;
+    }
+    .brand-row, .actions-row, .metric-strip, .input-grid, .stat-grid, .timeline-item, .topbar { display: flex; align-items: center; }
+    .brand-row, .topbar { justify-content: space-between; }
+    .logo-wrap { display: flex; align-items: center; gap: var(--space-3); }
+    .logo-mark {
+      width: 2.7rem; height: 2.7rem; border-radius: 0.9rem; display: grid; place-items: center;
+      color: var(--color-text-inverse); background: linear-gradient(135deg, var(--color-primary), color-mix(in oklab, var(--color-primary) 65%, #ffffff 35%));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .eyebrow { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-text-faint); }
+    h1 { font-size: var(--text-xl); line-height: 1.02; letter-spacing: -0.04em; max-width: 11ch; margin-top: var(--space-4); }
+    .lede { color: var(--color-text-muted); max-width: 34ch; margin-top: var(--space-4); }
+    .metric-strip { gap: var(--space-3); margin-top: var(--space-5); flex-wrap: wrap; }
+    .chip, .mode-toggle, .mini-pill {
+      border-radius: var(--radius-full); border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+      background: color-mix(in oklab, var(--color-surface-2) 88%, transparent);
+    }
+    .chip { padding: 0.65rem 0.9rem; font-size: var(--text-sm); }
+    .chip strong { color: var(--color-primary); }
+    .route-card {
+      margin-top: var(--space-6); padding: var(--space-4); border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 11%, var(--color-surface-offset)), color-mix(in oklab, var(--color-surface) 94%, transparent));
+      border: 1px solid color-mix(in oklab, var(--color-primary) 18%, transparent);
+    }
+    .route-card p { color: var(--color-text-muted); margin-top: var(--space-2); max-width: 34ch; }
+    .actions-row { gap: var(--space-3); margin-top: var(--space-5); flex-wrap: wrap; }
+    .btn {
+      min-height: 46px; padding: 0.85rem 1rem; border-radius: 0.95rem; font-size: var(--text-sm); font-weight: 700;
+      transition: transform var(--transition-interactive), background var(--transition-interactive), border-color var(--transition-interactive), color var(--transition-interactive);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--color-primary); color: var(--color-text-inverse); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary { background: color-mix(in oklab, var(--color-surface-2) 90%, transparent); color: var(--color-text); border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent); }
+    .mode-toggle { min-width: 46px; min-height: 46px; display: grid; place-items: center; color: var(--color-text); }
+
+    .workspace { padding: var(--space-4); display: grid; gap: var(--space-4); }
+    .topbar { gap: var(--space-4); flex-wrap: wrap; }
+    .topbar h2 { font-size: var(--text-lg); }
+    .topbar p { color: var(--color-text-muted); font-size: var(--text-sm); }
+    .stat-grid { gap: var(--space-3); flex-wrap: wrap; }
+    .mini-pill { padding: 0.55rem 0.8rem; font-size: var(--text-xs); color: var(--color-text-muted); }
+    .mini-pill strong { color: var(--color-text); }
+
+    .map-card { overflow: hidden; }
+    #map { height: 360px; width: 100%; border-radius: calc(var(--radius-xl) - 0.15rem); }
+    .map-frame { padding: var(--space-3); }
+    .map-caption { display: flex; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-3) var(--space-3); color: var(--color-text-muted); font-size: var(--text-sm); flex-wrap: wrap; }
+
+    .entry-panel, .timeline-card, .overlay-panel { padding: var(--space-4); }
+    .input-grid { align-items: end; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-4); }
+    .field { display: grid; gap: var(--space-2); flex: 1 1 180px; }
+    .field label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-text-faint); }
+    .field input, .field select, .field textarea {
+      min-height: 48px; border-radius: 0.9rem; border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+      background: color-mix(in oklab, var(--color-surface-2) 92%, transparent); padding: 0.85rem 0.95rem;
+    }
+    .field textarea { min-height: 96px; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--color-text-faint); }
+    .field input[type="number"] { appearance: textfield; }
+
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-4);
+    }
+    .stat-card {
+      padding: var(--space-4); border-radius: var(--radius-xl); background: color-mix(in oklab, var(--color-surface-2) 88%, transparent);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    }
+    .stat-card span { display: block; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-text-faint); }
+    .stat-card strong { display: block; font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.3rem); margin-top: var(--space-2); letter-spacing: -0.05em; }
+    .stat-card small { color: var(--color-text-muted); display: block; margin-top: var(--space-1); }
+    .warn-card { border-color: color-mix(in oklab, var(--color-primary) 25%, transparent); background: color-mix(in oklab, var(--color-primary) 10%, var(--color-surface-2)); }
+
+    .timeline-header { display: flex; justify-content: space-between; gap: var(--space-3); align-items: baseline; margin-bottom: var(--space-4); }
+    .timeline-header p { color: var(--color-text-muted); font-size: var(--text-sm); }
+    .timeline-list { list-style: none; display: grid; gap: var(--space-3); }
+    .timeline-item {
+      justify-content: space-between; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-xl);
+      background: color-mix(in oklab, var(--color-surface-2) 82%, transparent); border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    }
+    .timeline-item strong { display: block; font-size: var(--text-base); }
+    .timeline-item span { display: block; color: var(--color-text-muted); font-size: var(--text-sm); margin-top: 0.2rem; }
+    .beer-badge {
+      min-width: 3.2rem; text-align: center; padding: 0.65rem 0.75rem; border-radius: var(--radius-full); font-weight: 800;
+      color: var(--color-text-inverse); background: color-mix(in oklab, var(--color-primary) 88%, #000000 12%);
+    }
+    .empty-state { padding: var(--space-6); text-align: center; color: var(--color-text-muted); border: 1px dashed color-mix(in oklab, var(--color-text) 16%, transparent); border-radius: var(--radius-xl); }
+    .footer-note { color: var(--color-text-faint); font-size: var(--text-xs); margin-top: var(--space-5); max-width: 48ch; }
+
+    .overlay-preview-shell {
+      margin-top: var(--space-4);
+      padding: var(--space-3);
+      border-radius: calc(var(--radius-xl) + 0.4rem);
+      background: linear-gradient(180deg, rgba(15,13,11,0.85), rgba(15,13,11,0.65));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .overlay-card {
+      width: min(100%, 420px);
+      aspect-ratio: 9 / 16;
+      margin-inline: auto;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .overlay-inner {
+     position: absolute;
+     inset: 0;
+     display: grid;
+     grid-template-rows: auto minmax(0, 1fr) auto;
+     padding: var(--space-4);
+    background: transparent;
+}
+    .overlay-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: var(--space-3);
+    }
+    .overlay-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(18,16,14,0.72);
+      color: #f4ede1;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+.overlay-route-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) 0;
+  max-height: 70%;
+  overflow: hidden;
+}
+.overlay-svg {
+  width: 100%;
+  height: 100%;
+  min-height: 0; /* Allow it to shrink with the card */
+}
+    .overlay-line-main { fill: none; stroke: rgba(243,179,67,0.96); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+    .overlay-line-glow { fill: none; stroke: rgba(255,226,174,0.34); stroke-width: 28; stroke-linecap: round; stroke-linejoin: round; }
+    .overlay-line-dash { fill: none; stroke: rgba(255,249,236,0.82); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2 14; }
+    .overlay-dot { fill: #17120f; stroke: rgba(255,223,153,0.98); stroke-width: 6; }
+    .overlay-dot-end { fill: rgba(125,196,90,0.95); stroke: rgba(23,18,15,0.96); stroke-width: 7; }
+    .overlay-bottom {
+      display: grid;
+      gap: var(--space-3);
+      align-self: end;
+    }
+    .overlay-drinks {
+      align-self: start;
+      width: fit-content;
+      padding: 1rem 1.2rem 0.95rem;
+      border-radius: 1.4rem;
+      background: rgba(18,16,14,0.78);
+      color: #f4ede1;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+    }
+    .overlay-drinks span { display: block; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244,237,225,0.66); }
+    .overlay-drinks strong { display: block; font-size: clamp(2.3rem, 1.8rem + 1.8vw, 4rem); line-height: 0.9; letter-spacing: -0.08em; margin-top: 0.35rem; }
+    
+.overlay-distance {
+  width: fit-content;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.3rem;
+  background: rgba(18,16,14,0.78);
+  color: #f4ede1;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+}
+.overlay-distance span {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244,237,225,0.66);
+}
+.overlay-distance strong {
+  display: block;
+  font-size: 1.6rem;
+  margin-top: 0.3rem;
+}
+
+
+.overlay-stats {
+  display: flex;
+  gap: 1.2rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.3rem;
+  background: rgba(18,16,14,0.78);
+  color: #f4ede1;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+}
+.overlay-stats div {
+  display: flex;
+  flex-direction: column;
+}
+.overlay-stats span {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244,237,225,0.66);
+}
+.overlay-stats strong {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 0.2rem;
+}
+
+.overlay-note {
+
+
+      max-width: 20rem;
+      padding: 1rem 1.05rem;
+      border-radius: 1.3rem;
+      background: rgba(18,16,14,0.78);
+      color: #f4ede1;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+    }
+    .overlay-note span { display: block; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244,237,225,0.66); }
+    .overlay-note p { margin-top: 0.45rem; font-size: 1rem; line-height: 1.35; color: rgba(255,248,240,0.96); }
+
+    @media (max-width: 1024px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .hero { min-height: auto; position: static; }
+    }
+    @media (max-width: 680px) {
+      .app-shell { width: min(100% - 1rem, 100%); padding-bottom: var(--space-8); }
+      .hero, .workspace { padding: var(--space-4); }
+      .stats-grid { grid-template-columns: 1fr; }
+      #map { height: 300px; }
+      h1 { max-width: 12ch; }
+      .overlay-card { width: 100%; }
+      .overlay-svg { min-height: 520px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <main class="app-shell" id="main">
+    <section class="hero panel" aria-label="Overview">
+      <div class="brand-row">
+        <div class="logo-wrap">
+          <div class="logo-mark" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Beer Path logo">
+              <path d="M8 7.5h13.5a2 2 0 0 1 2 2v12a6.5 6.5 0 0 1-6.5 6.5H15A7 7 0 0 1 8 21V7.5Z" fill="currentColor" opacity="0.96"/>
+              <path d="M21.5 11.5h2.2A3.3 3.3 0 0 1 27 14.8v1.4a3.3 3.3 0 0 1-3.3 3.3h-1.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M12.1 5.7v4.2M15.9 4.7v5.2M19.8 5.6v4.3" stroke="#12100E" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="eyebrow">Beer Path</div>
+            <strong>Strava, but lager</strong>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <a href="/" class="btn btn-secondary" style="min-height:36px;padding-inline:0.9rem;font-size:0.8rem;">Home</a>
+          <button class="mode-toggle" data-theme-toggle aria-label="Switch theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Night-out tracker</div>
+        <h1>Log your bars by address, tally beers, and export a transparent overlay.</h1>
+        <p class="lede">No live GPS needed. Type where you are, pin it, and keep the whole crawl cached until you choose to clear it.</p>
+        <div class="metric-strip" aria-label="Feature chips">
+          <div class="chip">Address search <strong>to pins</strong></div>
+          <div class="chip">Drink cap <strong>alerts</strong></div>
+          <div class="chip">Overlay <strong>PNG export</strong></div>
+        </div>
+        <div class="route-card">
+          <div class="eyebrow">How it works</div>
+          <p>Type the bar name or area, log beers, and watch each stop land on the map. The app caches tonight's crawl in your browser until you hit clear, and can export a transparent story overlay.</p>
+        </div>
+        <div class="actions-row">
+          <button class="btn btn-secondary" id="clearSessionBtn">Clear this night</button>
+        </div>
+        <p class="footer-note">Safety note: the BAC and sobriety values are approximate wellness estimates only and must not be used for legal, driving, or medical decisions.</p>
+      </div>
+    </section>
+
+    <section class="workspace panel" aria-label="Tracker workspace">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Tonight's crawl</div>
+          <h2>Session board</h2>
+          <p>Log stops, see them on the map, and keep the crawl between refreshes.</p>
+        </div>
+        <div class="stat-grid">
+          <div class="mini-pill">Stops <strong id="stopsPillTop">0</strong></div>
+        </div>
+      </div>
+
+      <section class="map-card panel" aria-labelledby="mapHeading">
+        <div class="map-frame">
+          <div class="topbar" style="margin-bottom: var(--space-3);">
+            <div>
+              <div class="eyebrow">Route</div>
+              <h2 id="mapHeading">Your bar trail</h2>
+            </div>
+            <div class="mini-pill">Distance <strong id="distancePill">0.0 km</strong></div>
+          </div>
+          <div id="map" role="application" aria-label="Map showing your route and bar stops"></div>
+        </div>
+        <div class="map-caption">
+          <span>Walking route approximated between pins.</span>
+          <span id="coordHint">Waiting for the first stop.</span>
+        </div>
+      </section>
+
+      <section class="entry-panel panel" aria-labelledby="logHeading">
+        <div>
+          <div class="eyebrow">Log a stop</div>
+          <h2 id="logHeading">Add a bar by name and place</h2>
+        </div>
+        <div class="input-grid">
+          <div class="field">
+            <label for="barName">Bar name</label>
+            <input id="barName" type="text" placeholder="Akkurat, Trädgården, etc." />
+          </div>
+          <div class="field">
+            <label for="barAddress">City / address</label>
+            <input id="barAddress" type="text" placeholder="Södermalm, Stockholm or exact address" />
+          </div>
+          <div class="field">
+            <label for="beerCount">Beers here</label>
+            <input id="beerCount" type="number" min="0" step="1" value="1" />
+          </div>
+          <button class="btn btn-primary" id="logStopBtn">Log stop</button>
+        </div>
+
+        <div class="input-grid" style="margin-top: var(--space-4);">
+          <div class="field">
+            <label for="drinkLimit">Drink alert limit</label>
+            <input id="drinkLimit" type="number" min="1" step="1" value="4" />
+          </div>
+          <div class="field">
+            <label for="bodyWeight">Body weight (kg)</label>
+            <input id="bodyWeight" type="number" min="35" step="1" value="80" />
+          </div>
+          <div class="field">
+            <label for="bodySex">Body factor</label>
+            <select id="bodySex" aria-describedby="bodyFactorHint">
+              <option value="male" selected>Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <p id="bodyFactorHint" class="footer-note" style="margin-top: var(--space-3);">Widmark-style BAC estimate only. It simplifies alcohol absorption and metabolism, so it is a rough signal, not a precise result.</p>
+
+        <div class="stats-grid" aria-label="Night out stats">
+          <article class="stat-card">
+            <span>Total beers</span>
+            <strong id="beersTotal">0</strong>
+            <small>Across every check-in</small>
+          </article>
+          <article class="stat-card">
+            <span>Bars visited</span>
+            <strong id="barsTotal">0</strong>
+            <small>Stops logged tonight</small>
+          </article>
+          <article class="stat-card">
+            <span>Current streak</span>
+            <strong id="streakTotal">0</strong>
+            <small>Consecutive logged stops</small>
+          </article>
+        </div>
+
+        <div class="stats-grid" style="margin-top: var(--space-3);">
+          <article class="stat-card warn-card">
+            <span>Estimated BAC</span>
+            <strong id="bacTotal">0.000%</strong>
+            <small id="bacState">Based on beers logged and time elapsed</small>
+          </article>
+          <article class="stat-card">
+            <span>Sobriety ETA</span>
+            <strong id="soberEta">Now</strong>
+            <small id="soberHint">Using 0.015 BAC elimination per hour</small>
+          </article>
+          <article class="stat-card">
+            <span>Alert status</span>
+            <strong id="alertState">Within limit</strong>
+            <small id="alertHint">No drink-limit alert triggered</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="timeline-card panel" aria-labelledby="timelineHeading">
+        <div class="timeline-header">
+          <div>
+            <div class="eyebrow">Timeline</div>
+            <h2 id="timelineHeading">Visited bars</h2>
+          </div>
+          <p id="timelineMeta">No stops yet.</p>
+        </div>
+        <ul class="timeline-list" id="timelineList"></ul>
+        <div class="empty-state" id="emptyState">Your night has not started yet. Add the first bar with its place.</div>
+      </section>
+
+      <section class="overlay-panel panel" aria-labelledby="overlayHeading">
+        <div class="timeline-header">
+          <div>
+            <div class="eyebrow">Social overlay</div>
+            <h2 id="overlayHeading">Transparent PNG preview</h2>
+          </div>
+          <p>Made to sit above a selfie, story, or TikTok.</p>
+        </div>
+
+        <div class="field">
+          <label for="nightNote">Note of the night</label>
+          <textarea id="nightNote" placeholder="Best stop, chaotic quote, or the line of the night.">Golden hour pint turned into a three-bar adventure.</textarea>
+        </div>
+        <p class="footer-note">The overlay has a transparent background, so only the route line, drinks badge, and note appear over your content.</p>
+
+        <div class="overlay-preview-shell">
+          <div class="overlay-card" id="overlayCard">
+            <div class="overlay-inner">
+              <div class="overlay-head">
+                <div class="overlay-tag">
+                  <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 7.5h13.5a2 2 0 0 1 2 2v12a6.5 6.5 0 0 1-6.5 6.5H15A7 7 0 0 1 8 21V7.5Z" fill="currentColor"/>
+                    <path d="M21.5 11.5h2.2A3.3 3.3 0 0 1 27 14.8v1.4a3.3 3.3 0 0 1-3.3 3.3h-1.2" stroke="#17120F" stroke-width="2.2" stroke-linecap="round"/>
+                  </svg>
+                  <span style="font-size:0.82rem;font-weight:800;letter-spacing:0.02em;">Beer Path</span>
+                </div>
+                <div class="overlay-tag" style="padding-inline:0.75rem;">
+                  <span style="font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,237,225,0.72);">Tonight</span>
+                </div>
+              </div>
+
+              <div class="overlay-route-wrap">
+                <svg class="overlay-svg" id="overlaySvg" viewBox="0 0 420 760" preserveAspectRatio="xMidYMid meet" aria-label="Night-out route overlay">
+                  <path id="overlayRouteGlow" class="overlay-line-glow" d="M210 80 L210 680"></path>
+                  <path id="overlayRouteMain" class="overlay-line-main" d="M210 80 L210 680"></path>
+                  <path id="overlayRouteDash" class="overlay-line-dash" d="M210 80 L210 680"></path>
+                  <g id="overlayDots"></g>
+                </svg>
+              </div>
+
+              <div class="overlay-bottom">
+                <div class="overlay-stats-box">
+                  <div class="overlay-stats-row">
+                    <div>
+                      <span>Total drinks</span>
+                      <strong id="overlayDrinkCount">0</strong>
+                    </div>
+                    <div>
+                      <span>Distance</span>
+                      <strong id="overlayDistance">0.0 km</strong>
+                    </div>
+                  </div>
+                  <div class="overlay-stats-row">
+                    <div>
+                      <span>Time</span>
+                      <strong id="overlayTime">0:00</strong>
+                    </div>
+                    <div>
+                      <span>Pace</span>
+                      <strong id="overlayPace">0:00 /km</strong>
+                    </div>
+                  </div>
+                </div>
+
+
+              
+
+
+
+                <div class="overlay-note">
+                  <span>Note of the night</span>
+                  <p id="overlayNightNote">Golden hour pint turned into a three-bar adventure.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-row" style="margin-top:var(--space-4);">
+          <button class="btn btn-secondary" id="downloadOverlayBtn">Download overlay PNG</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <script>
+    const STORAGE_KEY = 'beerPathSession.v1';
+
+    const state = {
+      stops: [],
+      path: [],
+      totalBeers: 0,
+      sessionStartedAt: new Date(),
+      limitAlertShown: false
+    };
+
+    const map = L.map('map', { zoomControl: false }).setView([59.3293, 18.0686], 13);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    const pathLine = L.polyline([], {
+      color: '#39a0ff',
+      weight: 6,
+      opacity: 0.95,
+      lineJoin: 'round'
+    }).addTo(map);
+
+    let currentMarker = null;
+    const stopMarkers = L.layerGroup().addTo(map);
+
+    const els = {
+      clearSessionBtn: document.getElementById('clearSessionBtn'),
+      logStopBtn: document.getElementById('logStopBtn'),
+      downloadOverlayBtn: document.getElementById('downloadOverlayBtn'),
+      barName: document.getElementById('barName'),
+      barAddress: document.getElementById('barAddress'),
+      beerCount: document.getElementById('beerCount'),
+      beersTotal: document.getElementById('beersTotal'),
+      barsTotal: document.getElementById('barsTotal'),
+      streakTotal: document.getElementById('streakTotal'),
+      timelineList: document.getElementById('timelineList'),
+      emptyState: document.getElementById('emptyState'),
+      timelineMeta: document.getElementById('timelineMeta'),
+      distancePill: document.getElementById('distancePill'),
+      stopsPillTop: document.getElementById('stopsPillTop'),
+      coordHint: document.getElementById('coordHint'),
+      drinkLimit: document.getElementById('drinkLimit'),
+      bodyWeight: document.getElementById('bodyWeight'),
+      bodySex: document.getElementById('bodySex'),
+      bacTotal: document.getElementById('bacTotal'),
+      bacState: document.getElementById('bacState'),
+      soberEta: document.getElementById('soberEta'),
+      soberHint: document.getElementById('soberHint'),
+      alertState: document.getElementById('alertState'),
+      alertHint: document.getElementById('alertHint'),
+      nightNote: document.getElementById('nightNote'),
+      overlayDrinkCount: document.getElementById('overlayDrinkCount'),
+      overlayNightNote: document.getElementById('overlayNightNote'),
+      overlayRouteGlow: document.getElementById('overlayRouteGlow'),
+      overlayRouteMain: document.getElementById('overlayRouteMain'),
+      overlayRouteDash: document.getElementById('overlayRouteDash'),
+      overlayDots: document.getElementById('overlayDots'),
+      overlayCard: document.getElementById('overlayCard'),
+      overlayDistance: document.getElementById('overlayDistance'),
+      overlayTime: document.getElementById('overlayTime'),
+      overlayPace: document.getElementById('overlayPace')
+    };
+
+    const beerIcon = L.divIcon({
+      className: '',
+      html: `<div style="width:18px;height:18px;border-radius:999px;background:#f3b343;border:2px solid #12100e;box-shadow:0 4px 12px rgba(0,0,0,.25)"></div>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+
+    function haversineKm(a, b) {
+      const R = 6371;
+      const dLat = (b.lat - a.lat) * Math.PI / 180;
+      const dLng = (b.lng - a.lng) * Math.PI / 180;
+      const lat1 = a.lat * Math.PI / 180;
+      const lat2 = b.lat * Math.PI / 180;
+      const x = Math.sin(dLat / 2) ** 2 + Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+      return 2 * R * Math.asin(Math.sqrt(x));
+    }
+
+    function totalDistanceKm() {
+      let total = 0;
+      for (let i = 1; i < state.path.length; i += 1) total += haversineKm(state.path[i - 1], state.path[i]);
+      return total;
+    }
+
+    function timeString(date = new Date()) {
+      return new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' }).format(date);
+    }
+
+    function hoursSinceStart() {
+      return Math.max(0, (Date.now() - state.sessionStartedAt.getTime()) / 36e5);
+    }
+
+    function widmarkFactor() {
+      return els.bodySex.value === 'female' ? 0.55 : 0.68;
+    }
+
+    function estimatedBac() {
+      const gramsPerBeer = 19.7;
+      const weightKg = Math.max(35, Number(els.bodyWeight.value) || 80);
+      const alcoholGrams = state.totalBeers * gramsPerBeer;
+      const raw = (alcoholGrams / (weightKg * 1000 * widmarkFactor())) * 100;
+      return Math.max(0, raw - (0.015 * hoursSinceStart()));
+    }
+
+    function sobrietyEtaString(bac) {
+      if (bac <= 0) return 'Now';
+      const hours = bac / 0.015;
+      const eta = new Date(Date.now() + hours * 36e5);
+      return new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' }).format(eta);
+    }
+
+    function fitMapToData() {
+      const layers = [];
+      if (state.path.length) layers.push(pathLine);
+      if (state.stops.length) stopMarkers.eachLayer(layer => layers.push(layer));
+      if (!layers.length) return;
+      const group = L.featureGroup(layers);
+      map.fitBounds(group.getBounds().pad(0.2), { maxZoom: 16 });
+    }
+
+    async function geocodeAddress(query) {
+      const q = (query || '').trim();
+      if (!q) return null;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`;
+      try {
+        const res = await fetch(url, {
+          headers: { 'Accept-Language': 'en', 'User-Agent': 'BeerPathDemo/1.0' }
+        });
+        const data = await res.json();
+        if (!data.length) return null;
+        return {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon),
+          displayName: data[0].display_name
+        };
+      } catch (err) {
+        console.error('Geocoding failed', err);
+        return null;
+      }
+    }
+
+    
+async function fetchRoute(points) {
+  if (points.length < 2) return points;
+
+  const coords = points.map(p => `${p.lng},${p.lat}`).join(';');
+  const url = `https://router.project-osrm.org/route/v1/foot/${coords}?overview=full&geometries=geojson`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.routes || !data.routes.length) return points;
+
+    return data.routes[0].geometry.coordinates.map(c => ({
+      lat: c[1],
+      lng: c[0]
+    }));
+  } catch (err) {
+    console.error('Routing failed', err);
+    return points;
+  }
+}
+
+function routeToOverlayPath(points, width = 420, height = 760, padding = 54) {
+      if (!points.length) {
+        const x = width / 2;
+        return {
+          d: `M ${x} ${padding} L ${x} ${height - padding}`,
+          dots: [{ x, y: padding }, { x, y: height - padding }]
+        };
+      }
+      const lats = points.map(p => p.lat);
+      const lngs = points.map(p => p.lng);
+      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+      const spanLat = Math.max(0.0008, maxLat - minLat);
+      const spanLng = Math.max(0.0008, maxLng - minLng);
+      const innerW = width - padding * 2;
+      const innerH = height - padding * 2;
+      const projected = points.map((point, i) => {
+        const x = padding + ((point.lng - minLng) / spanLng) * innerW;
+        const y = height - padding - ((point.lat - minLat) / spanLat) * innerH;
+        const bend = Math.sin((i / Math.max(1, points.length - 1)) * Math.PI) * 24;
+        return { x: x + bend, y };
+      });
+      const d = projected.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+      const stopDots = state.stops.length ? state.stops.map(stop => {
+        const nearest = projected.reduce((best, point, index) => {
+          const src = points[index] || points[points.length - 1];
+          const dist = Math.abs(src.lat - stop.lat) + Math.abs(src.lng - stop.lng);
+          return dist < best.dist ? { dist, point } : best;
+        }, { dist: Infinity, point: projected[0] });
+        return nearest.point;
+      }) : [projected[0], projected[projected.length - 1]];
+      return { d, dots: stopDots };
+    }
+
+    
+function totalTimeMinutes() {
+  return Math.max(1, (Date.now() - state.sessionStartedAt.getTime()) / 60000);
+}
+
+function formatTime(mins) {
+  const h = Math.floor(mins / 60);
+  const m = Math.floor(mins % 60);
+  return h > 0 ? `${h}:${m.toString().padStart(2, '0')}` : `${m} min`;
+}
+
+function formatPace(distanceKm, mins) {
+  if (distanceKm <= 0) return '--';
+  const pace = mins / distanceKm;
+  const pMin = Math.floor(pace);
+  const pSec = Math.floor((pace - pMin) * 60);
+  return `${pMin}:${pSec.toString().padStart(2, '0')} /km`;
+}
+
+function updateOverlay() {
+  const sourcePoints = state.path.length ? state.path : state.stops.map(stop => ({ lat: stop.lat, lng: stop.lng }));
+  const overlay = routeToOverlayPath(sourcePoints);
+
+  els.overlayRouteGlow.setAttribute('d', overlay.d);
+  els.overlayRouteMain.setAttribute('d', overlay.d);
+  els.overlayRouteDash.setAttribute('d', overlay.d);
+
+  els.overlayDots.innerHTML = overlay.dots.map((point, index) => `
+    <circle class="${index === overlay.dots.length - 1 ? 'overlay-dot-end' : 'overlay-dot'}"
+      cx="${point.x.toFixed(1)}"
+      cy="${point.y.toFixed(1)}"
+      r="${index === overlay.dots.length - 1 ? 13 : 11}">
+    </circle>
+  `).join('');
+
+  // 🔥 IMPORTANT: ALWAYS SET THESE HERE
+  const dist = totalDistanceKm();
+  const mins = Math.max(1, (Date.now() - state.sessionStartedAt.getTime()) / 60000);
+
+  const h = Math.floor(mins / 60);
+  const m = Math.floor(mins % 60);
+  const timeStr = h > 0 ? `${h}:${m.toString().padStart(2,'0')}` : `${m} min`;
+
+  let paceStr = '--';
+  if (dist > 0) {
+    const pace = mins / dist;
+    const pm = Math.floor(pace);
+    const ps = Math.floor((pace - pm) * 60);
+    paceStr = `${pm}:${ps.toString().padStart(2,'0')} /km`;
+  }
+
+  els.overlayDrinkCount.textContent = state.totalBeers;
+  els.overlayDistance.textContent = `${dist.toFixed(1)} km`;
+  els.overlayTime.textContent = timeStr;
+  els.overlayPace.textContent = paceStr;
+
+  els.overlayNightNote.textContent =
+    els.nightNote.value.trim() || 'One route, one night, one excellent bad decision.';
+}
+
+    function renderTimeline() {
+      els.timelineList.innerHTML = '';
+      stopMarkers.clearLayers();
+
+      state.stops.forEach((stop, index) => {
+        const li = document.createElement('li');
+        li.className = 'timeline-item';
+        li.innerHTML = `
+          <div>
+            <strong>${stop.name}</strong>
+            <span>Stop ${index + 1} · ${stop.time} · ${stop.lat.toFixed(4)}, ${stop.lng.toFixed(4)}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <div class="beer-badge">${stop.beers}</div>
+            <button type="button" class="btn btn-secondary" style="min-height:36px;font-size:0.75rem;padding-inline:0.7rem;" data-remove-stop="${index}">Remove</button>
+          </div>
+        `;
+        els.timelineList.appendChild(li);
+
+        L.marker([stop.lat, stop.lng], { icon: beerIcon })
+          .bindPopup(`<strong>${stop.name}</strong><br>${stop.beers} beer${stop.beers === 1 ? '' : 's'}<br>${stop.time}`)
+          .addTo(stopMarkers);
+      });
+
+      els.emptyState.style.display = state.stops.length ? 'none' : 'block';
+      els.timelineMeta.textContent = state.stops.length
+        ? `${state.stops.length} stop${state.stops.length === 1 ? '' : 's'} logged tonight.`
+        : 'No stops yet.';
+    }
+
+    function checkLimitAlert() {
+      const limit = Math.max(1, Number(els.drinkLimit.value) || 4);
+      const remaining = limit - state.totalBeers;
+      if (state.totalBeers >= limit) {
+        els.alertState.textContent = 'Limit reached';
+        els.alertHint.textContent = `You are ${Math.abs(remaining)} drink${Math.abs(remaining) === 1 ? '' : 's'} past your set cap.`;
+        if (!state.limitAlertShown) {
+          state.limitAlertShown = true;
+          setTimeout(() => alert(`Drink limit reached: ${state.totalBeers}/${limit} beers logged. Consider water, food, and a safe ride home.`), 50);
+        }
+      } else {
+        state.limitAlertShown = false;
+        els.alertState.textContent = 'Within limit';
+        els.alertHint.textContent = `${remaining} drink${remaining === 1 ? '' : 's'} left before your alert.`;
+      }
+    }
+
+    function renderStats() {
+      els.beersTotal.textContent = state.totalBeers;
+      els.barsTotal.textContent = state.stops.length;
+      els.streakTotal.textContent = state.stops.length;
+      els.distancePill.textContent = `${totalDistanceKm().toFixed(1)} km`;
+      els.stopsPillTop.textContent = state.stops.length;
+
+      const bac = estimatedBac();
+      const hours = hoursSinceStart();
+      els.bacTotal.textContent = `${bac.toFixed(3)}%`;
+      els.bacState.textContent = `Estimate after ${hours.toFixed(1)} hour${hours.toFixed(1) === '1.0' ? '' : 's'} since first logged stop.`;
+      els.soberEta.textContent = sobrietyEtaString(bac);
+      els.soberHint.textContent = bac > 0 ? 'Approximate time to return near 0.000%.' : 'No active alcohol estimate right now.';
+      checkLimitAlert();
+      updateOverlay();
+    }
+
+    function saveSessionToStorage() {
+      const payload = {
+        stops: state.stops,
+        totalBeers: state.totalBeers,
+        sessionStartedAt: state.sessionStartedAt.toISOString()
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.error('Failed to store session', err);
+      }
+    }
+
+    function loadSessionFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        state.stops = Array.isArray(data.stops) ? data.stops : [];
+        state.totalBeers = typeof data.totalBeers === 'number' ? data.totalBeers : 0;
+        state.sessionStartedAt = data.sessionStartedAt ? new Date(data.sessionStartedAt) : new Date();
+        
+(async () => {
+  const simplePath = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+  state.path = await fetchRoute(simplePath);
+  pathLine.setLatLngs(state.path);
+})();
+
+        renderTimeline();
+        renderStats();
+        fitMapToData();
+      } catch (err) {
+        console.error('Failed to load session', err);
+      }
+    }
+
+    function clearSession() {
+      localStorage.removeItem(STORAGE_KEY);
+      state.stops = [];
+      state.totalBeers = 0;
+      state.path = [];
+      state.sessionStartedAt = new Date();
+      pathLine.setLatLngs([]);
+      stopMarkers.clearLayers();
+      renderTimeline();
+      renderStats();
+      els.coordHint.textContent = 'Waiting for the first stop.';
+    }
+
+    function addStopRaw(stop) {
+      state.stops.push(stop);
+      state.totalBeers += stop.beers;
+      
+(async () => {
+  const simplePath = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+  state.path = await fetchRoute(simplePath);
+  pathLine.setLatLngs(state.path);
+})();
+
+      renderTimeline();
+      renderStats();
+      fitMapToData();
+      saveSessionToStorage();
+    }
+
+    async function addStopFromInputs() {
+      const name = els.barName.value;
+      const beers = Number(els.beerCount.value || 1);
+      const addressQuery = els.barAddress.value || name;
+
+      const geo = await geocodeAddress(addressQuery);
+      if (!geo) {
+        alert('Could not find that place. Try a more specific address or city.');
+        return;
+      }
+
+      if (state.stops.length === 0) state.sessionStartedAt = new Date();
+
+      const safeName = name && name.trim() ? name.trim() : geo.displayName || `Bar stop ${state.stops.length + 1}`;
+      const beerNumber = Math.max(0, Number.isFinite(+beers) ? Math.round(+beers) : 0);
+
+      const stop = {
+        name: safeName,
+        beers: beerNumber,
+        lat: geo.lat,
+        lng: geo.lng,
+        time: timeString()
+      };
+
+      addStopRaw(stop);
+
+      els.barName.value = '';
+      els.barAddress.value = '';
+      els.beerCount.value = '1';
+      els.coordHint.textContent = `Last pinned: ${geo.displayName}`;
+    }
+
+async function downloadOverlayPng() {
+  try {
+    // 🔥 FORCE UPDATE
+    updateOverlay();
+
+    // 🔥 WAIT so DOM actually updates
+    await new Promise(r => setTimeout(r, 150));
+
+    const dataUrl = await window.htmlToImage.toPng(els.overlayCard, {
+      cacheBust: true,
+      pixelRatio: 3,
+      backgroundColor: 'transparent'
+    });
+
+    const link = document.createElement('a');
+    link.download = 'beer-path-overlay.png';
+    link.href = dataUrl;
+    link.click();
+
+  } catch (error) {
+    console.error(error);
+    alert('Overlay export could not be created.');
+  }
+}
+
+    els.logStopBtn.addEventListener('click', addStopFromInputs);
+    els.downloadOverlayBtn.addEventListener('click', downloadOverlayPng);
+    els.clearSessionBtn.addEventListener('click', () => {
+      if (confirm('Clear this night? This removes all stops and stats from this device.')) clearSession();
+    });
+    [els.drinkLimit, els.bodyWeight, els.bodySex].forEach(el => el.addEventListener('input', renderStats));
+    els.nightNote.addEventListener('input', updateOverlay);
+
+    els.timelineList.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-remove-stop]');
+      if (!btn) return;
+      const index = Number(btn.getAttribute('data-remove-stop'));
+      if (!Number.isInteger(index) || index < 0 || index >= state.stops.length) return;
+      const stop = state.stops[index];
+      const ok = confirm(`Remove stop "${stop.name}" and its ${stop.beers} beer(s)?`);
+      if (!ok) return;
+      state.totalBeers -= stop.beers;
+      state.stops.splice(index, 1);
+      
+(async () => {
+  const simplePath = state.stops.map(s => ({ lat: s.lat, lng: s.lng }));
+  state.path = await fetchRoute(simplePath);
+  pathLine.setLatLngs(state.path);
+})();
+
+      renderTimeline();
+      renderStats();
+      fitMapToData();
+      saveSessionToStorage();
+    });
+
+    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+    });
+
+    loadSessionFromStorage();
+    updateOverlay();
+  </script>
+</body>
+</html>
+.overlay-stats-box {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.3rem;
+  background: rgba(18,16,14,0.92);
+  color: #f4ede1;
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  max-width: 100%;
+}
+
+.overlay-stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.overlay-stats-box span {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244,237,225,0.7);
+}
+
+.overlay-stats-box strong {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 0.15rem;
+}
+
