@@ -135,6 +135,41 @@
     .field input::placeholder, .field textarea::placeholder { color: var(--color-text-faint); }
     .field input[type="number"] { appearance: textfield; }
 
+    /* ABV Input Styling */
+    .abv-field { flex: 1 1 140px; }
+    .abv-field label { display: flex; align-items: center; gap: 0.4rem; }
+    .abv-icon { font-size: 1.1rem; }
+    .abv-input-wrapper {
+      position: relative; display: flex; align-items: center; border-radius: 0.9rem;
+      border: 2px solid color-mix(in oklab, var(--color-primary) 22%, transparent);
+      background: linear-gradient(135deg, 
+        color-mix(in oklab, var(--color-primary) 6%, var(--color-surface-2)), 
+        color-mix(in oklab, var(--color-surface-2) 98%, transparent));
+      transition: all 0.2s ease;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .abv-input-wrapper:hover {
+      border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
+      background: linear-gradient(135deg, 
+        color-mix(in oklab, var(--color-primary) 10%, var(--color-surface-2)), 
+        color-mix(in oklab, var(--color-surface-2) 99%, transparent));
+    }
+    .abv-input-wrapper:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 0 0 3px color-mix(in oklab, var(--color-primary) 18%, transparent);
+    }
+    .abv-input-wrapper input {
+      border: none !important; background: transparent !important;
+      padding: 0.85rem 0.95rem !important; min-height: 48px; flex: 1;
+      font-weight: 600; font-size: 1.1rem; color: var(--color-text);
+      box-shadow: none !important;
+    }
+    .abv-input-wrapper input::placeholder { font-weight: 400; font-size: 1rem; }
+    .abv-unit {
+      padding-right: 0.95rem; font-weight: 700; font-size: 0.95rem;
+      color: var(--color-primary); letter-spacing: 0.05em;
+    }
+
     .stats-grid {
       display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-4);
     }
@@ -420,6 +455,20 @@
             <label for="beerCount">Beers here</label>
             <input id="beerCount" type="number" min="0" step="1" value="1" />
           </div>
+          <div class="field abv-field">
+            <label for="beerAbv"><span class="abv-icon">🍺</span> Alcohol %</label>
+            <div class="abv-input-wrapper">
+              <input id="beerAbv" type="number" min="0.5" max="20" step="0.1" value="5" placeholder="5" />
+              <span class="abv-unit">%</span>
+            </div>
+          </div>
+          <div class="field volume-field">
+            <label for="beerVolume"><span class="volume-icon">📏</span> Volume</label>
+            <div class="volume-input-wrapper">
+              <input id="beerVolume" type="number" min="10" max="1000" step="10" value="50" placeholder="50" />
+              <span class="volume-unit">cl</span>
+            </div>
+          </div>
           <button class="btn btn-primary" id="logStopBtn">Log stop</button>
         </div>
 
@@ -614,6 +663,7 @@
       barName: document.getElementById('barName'),
       barAddress: document.getElementById('barAddress'),
       beerCount: document.getElementById('beerCount'),
+      beerAbv: document.getElementById('beerAbv'),
       beersTotal: document.getElementById('beersTotal'),
       barsTotal: document.getElementById('barsTotal'),
       streakTotal: document.getElementById('streakTotal'),
@@ -680,10 +730,22 @@
       return els.bodySex.value === 'female' ? 0.55 : 0.68;
     }
 
+    function calculateTotalAlcoholGrams() {
+      // Calculate total alcohol grams based on ABV of each beer
+      let totalGrams = 0;
+      state.stops.forEach(stop => {
+        const abv = stop.abv || 5; // default to 5% if not set
+        const beerSizeL = 0.5; // assume 500ml beer
+        const alcoholContent = (abv / 100) * beerSizeL; // volume of alcohol in liters
+        const alcoholGrams = alcoholContent * 789; // alcohol density: 789 g/L
+        totalGrams += stop.beers * alcoholGrams;
+      });
+      return totalGrams;
+    }
+
     function estimatedBac() {
-      const gramsPerBeer = 19.7;
       const weightKg = Math.max(35, Number(els.bodyWeight.value) || 80);
-      const alcoholGrams = state.totalBeers * gramsPerBeer;
+      const alcoholGrams = calculateTotalAlcoholGrams();
       const raw = (alcoholGrams / (weightKg * 1000 * widmarkFactor())) * 100;
       return Math.max(0, raw - (0.015 * hoursSinceStart()));
     }
@@ -849,10 +911,11 @@ function updateOverlay() {
       state.stops.forEach((stop, index) => {
         const li = document.createElement('li');
         li.className = 'timeline-item';
+        const abvDisplay = stop.abv ? `${stop.abv}% ABV` : '5% ABV';
         li.innerHTML = `
           <div>
             <strong>${stop.name}</strong>
-            <span>Stop ${index + 1} · ${stop.time} · ${stop.lat.toFixed(4)}, ${stop.lng.toFixed(4)}</span>
+            <span>Stop ${index + 1} · ${stop.time} · ${stop.lat.toFixed(4)}, ${stop.lng.toFixed(4)} · ${abvDisplay}</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.5rem;">
             <div class="beer-badge">${stop.beers}</div>
@@ -862,7 +925,7 @@ function updateOverlay() {
         els.timelineList.appendChild(li);
 
         L.marker([stop.lat, stop.lng], { icon: beerIcon })
-          .bindPopup(`<strong>${stop.name}</strong><br>${stop.beers} beer${stop.beers === 1 ? '' : 's'}<br>${stop.time}`)
+          .bindPopup(`<strong>${stop.name}</strong><br>${stop.beers} beer${stop.beers === 1 ? '' : 's'} (${stop.abv || 5}% ABV)<br>${stop.time}`)
           .addTo(stopMarkers);
       });
 
@@ -896,10 +959,12 @@ function updateOverlay() {
       els.distancePill.textContent = `${totalDistanceKm().toFixed(1)} km`;
       els.stopsPillTop.textContent = state.stops.length;
 
+      const totalAlcoholGrams = calculateTotalAlcoholGrams();
       const bac = estimatedBac();
       const hours = hoursSinceStart();
       els.bacTotal.textContent = `${bac.toFixed(3)}%`;
-      els.bacState.textContent = `Estimate after ${hours.toFixed(1)} hour${hours.toFixed(1) === '1.0' ? '' : 's'} since first logged stop.`;
+      const alcoholML = Math.round(totalAlcoholGrams / 0.789);
+      els.bacState.textContent = `Estimate: ${totalAlcoholGrams.toFixed(1)}g alcohol after ${hours.toFixed(1)} hour${hours.toFixed(1) === '1.0' ? '' : 's'}.`;
       els.soberEta.textContent = sobrietyEtaString(bac);
       els.soberHint.textContent = bac > 0 ? 'Approximate time to return near 0.000%.' : 'No active alcohol estimate right now.';
       checkLimitAlert();
@@ -924,7 +989,10 @@ function updateOverlay() {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const data = JSON.parse(raw);
-        state.stops = Array.isArray(data.stops) ? data.stops : [];
+        state.stops = Array.isArray(data.stops) ? data.stops.map(stop => ({
+          ...stop,
+          abv: stop.abv || 5 // default to 5% if not set
+        })) : [];
         state.totalBeers = typeof data.totalBeers === 'number' ? data.totalBeers : 0;
         state.sessionStartedAt = data.sessionStartedAt ? new Date(data.sessionStartedAt) : new Date();
         
@@ -976,6 +1044,13 @@ function updateOverlay() {
       const beers = Number(els.beerCount.value || 1);
       const addressQuery = els.barAddress.value || name;
 
+      // Get ABV value directly from input
+      let abv = Number(els.beerAbv.value);
+      if (!abv || abv < 0.5 || abv > 20) {
+        alert('Please enter a valid alcohol percentage between 0.5% and 20%');
+        return;
+      }
+
       const geo = await geocodeAddress(addressQuery);
       if (!geo) {
         alert('Could not find that place. Try a more specific address or city.');
@@ -990,6 +1065,7 @@ function updateOverlay() {
       const stop = {
         name: safeName,
         beers: beerNumber,
+        abv: abv,
         lat: geo.lat,
         lng: geo.lng,
         time: timeString()
@@ -1000,6 +1076,7 @@ function updateOverlay() {
       els.barName.value = '';
       els.barAddress.value = '';
       els.beerCount.value = '1';
+      els.beerAbv.value = '5';
       els.coordHint.textContent = `Last pinned: ${geo.displayName}`;
     }
 
