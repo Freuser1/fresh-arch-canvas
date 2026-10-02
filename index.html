@@ -1,125 +1,368 @@
-<!doctype html>
-<html lang="sv">
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfölj — Portfolio</title>
-  <link href="styles.css" rel="stylesheet" />
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faraz Faramarzi — Portfölj och CV</title>
+<meta name="description" content="Faraz Faramarzi, byggingenjör från KTH. Projekt, examensarbete, CV och hobbyprojektet Beer Path.">
+<meta name="color-scheme" content="dark light">
+<meta property="og:title" content="Faraz Faramarzi — Portfölj och CV">
+<meta property="og:description" content="Starkt är vackert. Byggteknik och design, KTH.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0d0c'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%23c2603a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="brand">
-      <h1>Faraz Faramarzi</h1>
-      <p>• Starkt är vackert •</p>
-    </div>
-    <nav class="nav">
-      <a href="#byggnad">Hem</a>
-      <a href="#verk">Erfarenhet</a>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">Till innehållet</a>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="./index.html">Faraz Faramarzi</a>
+    <nav class="nav-links" aria-label="Huvudmeny">
+      <a href="#projekt">Projekt</a>
+      <a href="#cv">CV</a>
+      <a href="#kth">KTH</a>
+      <a href="./BEER-VA.html">Beer Path</a>
       <a href="#kontakt">Kontakt</a>
-      <a href="/BEER-VA.html">lager-va</a>
+      <button class="theme-toggle" type="button" id="themeToggle" aria-label="Byt mellan ljust och mörkt tema">Ljust</button>
     </nav>
-  </header>
-
-<section class="profile-cv-section" id="om-mig">
-  <div class="profile-cv-image">
-    <img src="./pdfs/bildhemsida.png" alt="Porträtt av Ditt namn">
   </div>
+</header>
 
-  <div class="profile-cv-content">
-    <p class="profile-cv-label">OM MIG</p>
+<main id="main">
 
-    <h2>Faraz Faramarzi</h2>
+  <!-- ============================================================ hero -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div class="grid">
+        <div class="col-7">
+          <h1 class="display" id="heroTitle">Faraz<br>Faramarzi</h1>
+          <p class="tagline mt-2">• Starkt är vackert •</p>
+          <p class="lead mt-2">Byggteknik och design på KTH, inriktning arkitektur och fastighetsutveckling.
+            Här är mina projekt och mitt CV — och ett hobbyprojekt som blev en app.</p>
+          <div class="btn-row">
+            <a class="btn primary large" href="#projekt">Se projekt</a>
+            <a class="btn large" href="#cv">CV och bakgrund</a>
+            <a class="btn large" href="./BEER-VA.html">Beer Path</a>
+          </div>
+          <div class="scroll-cue" aria-hidden="true"><span></span> Skrolla</div>
+        </div>
+        <div class="col-5">
+          <figure class="portrait parallax" data-fallback-box data-parallax="0.06" style="margin:0">
+            <img src="./pdfs/bildhemsida.png" alt="Porträtt av Faraz Faramarzi" width="900" height="1200" data-fallback="Porträtt">
+          </figure>
+        </div>
+      </div>
 
-    <p>
-      Utbildning: byggteknik och design på KTH
-    </p>
-
-<p>
-  Välkommen till min portfölj! Här visar jag en liten andel av det jag har lärt mig under min utbildning samt delar med mig av mina hobbyprojekt. Rekryterare är välkomman att trycka sig vidare till lager-va med uppmärksamhet på att det enbart är en hobbyproekt och inte en del av min utbildning. Jag är alltid öppen för nya möjligheter och samarbeten, så tveka inte att kontakta mig om du vill diskutera ett projekt eller om du har några frågor. 
-</p>
-<iframe
-  class="cv-preview"
-  src="./pdfs/CV_FarazFaramarzi_2026_2.pdf"
-  title="CV">
-</iframe>
-  </div>
-</section>
-  
-  <main>
-<section class="hero">
-  <div class="circle-wrap">
-    <div class="circle circle1">
-      <p>• • Funkis •  •  </p>
+      <dl class="hero-meta">
+        <div><dt>Utbildning</dt><dd>KTH — Byggteknik och design</dd></div>
+        <div><dt>Inriktning</dt><dd>Arkitektur och fastighetsutveckling</dd></div>
+        <div><dt>Examensarbete</dt><dd>Parkering i befintlig bebyggelse, 2026</dd></div>
+        <div><dt>Status</dt><dd>Öppen för möjligheter</dd></div>
+      </dl>
     </div>
-    <div class="circle circle2">
-      <p>• • Snickarglädje•  •  </p>
-    </div>
-    <div class="circle circle3">
-      <p>• • Folkhemmet •  • </p>
-    </div>
-    <div class="circle circle4">
-      <p>• • Jugend •  • </p>
-    </div>
-        <div class="circle circle4">
-      <p>• • Nymodernism •  • </p>
-    </div>
-        <div class="circle circle4">
-      <p>• • Miljonprogrammet •  • </p>
-    </div>
-  </div>
-</section>
+  </section>
 
+  <!-- ============================================================ om -->
+  <section id="om" aria-labelledby="omTitle">
+    <div class="wrap">
+      <div class="grid">
+        <div class="col-5 reveal">
+          <h2 class="headline" id="omTitle">Starkt är vackert.</h2>
+        </div>
+        <div class="col-7 reveal" style="--delay:90ms">
+          <p class="body-text">
+            Välkommen till min portfölj. Här visar jag en liten andel av det jag lärt mig under min utbildning,
+            och delar med mig av mina hobbyprojekt. Rekryterare är välkomna att klicka vidare till Beer Path —
+            med uppmärksamhet på att det enbart är ett hobbyprojekt och inte en del av min utbildning.
+          </p>
+          <p class="body-text mt-2">
+            Jag är alltid öppen för nya möjligheter och samarbeten, så hör av dig om du vill diskutera ett
+            projekt eller har frågor.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ============================================================ projekt -->
+  <section id="projekt" class="section-soft" aria-labelledby="projTitle">
+    <div class="wrap">
+      <p class="label">Projekt</p>
+      <h2 class="headline" id="projTitle">Det jag har ritat, modellerat och skrivit.</h2>
+      <p class="lead">Renderingar, fasader och rapporter från utbildningen. Klicka för att öppna i en ny flik.</p>
 
-    <!-- PDF-galleri -->
-    <section id="verk" class="container">
-      <h3>Erfarenhet (PDF-galleri)</h3>
-      <p class="hint">Klicka på ett dokument för att öppna det i ny flik.</p>
-      <div class="pdf-gallery">
-        <a href="./pdfs/Parkering i befintlig bebyggelse (2).pdf" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Examensarbete 2026</h4>
+      <div class="grid mt-3">
+        <a class="col-6 media media-wide reveal" href="./pdfs/baren%20(1).jpg" target="_blank" rel="noopener"
+           data-fallback-box aria-label="Öppna rendering: Projekt 1:2">
+          <img src="./pdfs/baren%20(1).jpg" alt="Rendering av baren, projekt 1:2" loading="lazy" data-fallback="Rendering">
         </a>
-        <a href="./pdfs/verk_01_portal.pdf" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Projekt 1 schematisk</h4>
+        <a class="col-6 media media-wide reveal" href="./pdfs/Utomhus%20(1).jpg" target="_blank" rel="noopener"
+           data-fallback-box aria-label="Öppna rendering: Projekt 1:3" style="--delay:80ms">
+          <img src="./pdfs/Utomhus%20(1).jpg" alt="Rendering av utomhusmiljö, projekt 1:3" loading="lazy" data-fallback="Rendering">
         </a>
-        <a href="./pdfs/baren (1).jpg" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Projekt 1:2 Rendering</h4>
+        <p class="col-6 media-caption">Projekt 1:2 — Rendering, interiör.</p>
+        <p class="col-6 media-caption">Projekt 1:3 — Rendering, utemiljö.</p>
+      </div>
+
+      <div class="rows mt-3">
+        <a class="row-item reveal" href="./pdfs/Parkering%20i%20befintlig%20bebyggelse%20(2).pdf" target="_blank" rel="noopener">
+          <span class="row-num">01</span>
+          <span>
+            <span class="row-meta">Examensarbete · 2026 · PDF</span>
+            <h3>Parkering i befintlig bebyggelse</h3>
+            <p>Examensarbete på grundnivå, 15 hp, inom samhällsbyggnad. Hur parkering kan lösas i redan byggd miljö.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
         </a>
-        <a href="./pdfs/Utomhus (1).jpg" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Projekt 1:3 Rendering</h4>
+
+        <a class="row-item reveal" href="./pdfs/verk_01_portal.pdf" target="_blank" rel="noopener">
+          <span class="row-num">02</span>
+          <span>
+            <span class="row-meta">Projekt 1 · PDF</span>
+            <h3>Schematisk portal</h3>
+            <p>Tidigt skissarbete: entré och portal i plan och sektion.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
         </a>
-        <a href="./pdfs/AF1743_Fasad Norr (1).pdf" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Icke renderat</h4>
+
+        <a class="row-item reveal" href="./pdfs/AF1743_Fasad%20Norr%20(1).pdf" target="_blank" rel="noopener">
+          <span class="row-num">03</span>
+          <span>
+            <span class="row-meta">Fasad · PDF</span>
+            <h3>Icke renderat — fasad norr</h3>
+            <p>Fasadritning AF1743, norr. Underlag före visualisering.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
         </a>
-        <a href="./pdfs/AF1752grupp7.pdf" target="_blank" class="pdf-card">
-        <span>📄</span><h4>Projekt 2:1</h4>  
+
+        <a class="row-item reveal" href="./pdfs/AF1752grupp7.pdf" target="_blank" rel="noopener">
+          <span class="row-num">04</span>
+          <span>
+            <span class="row-meta">Projekt 2 · grupp 7 · PDF</span>
+            <h3>Projekt 2:1</h3>
+            <p>Grupparbete i projekt 2 — samordning, konstruktion och redovisning.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
         </a>
-        <a href="./pdfs/ProjROT2Grupp7 (1).pdf" target="_blank" class="pdf-card">
-          <span>📄</span><h4>Projekt 2:2</h4>
+
+        <a class="row-item reveal" href="./pdfs/ProjROT2Grupp7%20(1).pdf" target="_blank" rel="noopener">
+          <span class="row-num">05</span>
+          <span>
+            <span class="row-meta">Projekt 2 · ROT · grupp 7 · PDF</span>
+            <h3>Projekt 2:2 — ROT</h3>
+            <p>Ombyggnad av befintlig byggnad: förutsättningar, åtgärder och konsekvenser.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="row-item reveal" href="./BEER-VA.html">
+          <span class="row-num">06</span>
+          <span>
+            <span class="row-meta">Hobbyprojekt · webb</span>
+            <h3>Beer Path</h3>
+            <p>Strava, but lager — logga kvällens barer och exportera en transparent overlay. Inte en del av utbildningen.</p>
+          </span>
+          <span class="row-arrow" aria-hidden="true">→</span>
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Kontakt -->
-    <section id="kontakt" class="container">
-      <h3>Kontakt</h3>
-      <a class="mailto-btn" href="mailto:farazfaramarzi@gmail.com" target="_blank" rel="noopener">
-        📧 Skicka e-post
-      </a>
-    </section>
-  </main>
+  <!-- ============================================================ CV -->
+  <section id="cv" aria-labelledby="cvTitle">
+    <div class="wrap">
+      <p class="label">CV</p>
+      <h2 class="headline" id="cvTitle">Bakgrund och erfarenhet.</h2>
+      <p class="lead">Så beskriver jag mig själv i mitt CV: byggingenjör från KTH med fokus på
+        fastighetsutveckling och arkitektur, van att arbeta i team och leverera kvalitet även under press.</p>
 
-  <footer class="site-footer">
-    <p>© <span id="year"></span> Faraz Faramarzi</p>
-  </footer>
-  <!-- ✅ Three.js via CDNJS (no modules/imports) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/controls/OrbitControls.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/EffectComposer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/RenderPass.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/examples/js/postprocessing/UnrealBloomPass.min.js"></script>
-  <!-- Your logic -->
-  <script src="script.js" defer></script>
+      <div class="btn-row">
+        <a class="btn primary" href="mailto:farazfaramarzi@gmail.com">farazfaramarzi@gmail.com</a>
+        <a class="btn" href="#projekt">Se projekten</a>
+      </div>
+
+      <div class="cv-grid mt-3">
+        <div class="cv-block reveal">
+          <h3>Utbildning</h3>
+          <div class="cv-entry">
+            <h4>Kungliga Tekniska Högskolan</h4>
+            <p class="cv-when">Byggteknik och design, kandidat · inriktning arkitektur och fastighetsutveckling</p>
+            <p class="cv-when">Examensarbete 2026 · Stockholm, Valhallavägen</p>
+          </div>
+          <div class="cv-entry">
+            <h4>Stockholms universitet</h4>
+            <p class="cv-when">Företagsekonomi och arkitektur · 2024–2025 · Frescati</p>
+          </div>
+        </div>
+
+        <div class="cv-block reveal" style="--delay:80ms">
+          <h3>Erfarenhet</h3>
+          <div class="cv-entry">
+            <h4>Planner · IKEA</h4>
+            <p class="cv-when">Stockholm, Barkarby och Bromma · 2021–2024</p>
+            <ul class="cv-list">
+              <li>Planering av sovrum, badrum och kök för kunder.</li>
+              <li>Koordinering av dagliga arbets- och passcheman.</li>
+              <li>Montering av möbler och inredning.</li>
+            </ul>
+          </div>
+          <div class="cv-entry">
+            <h4>Kundvärd · Operakällaren / Friends Arena</h4>
+            <p class="cv-when">Stockholm och Solna · 2018–2019</p>
+            <ul class="cv-list">
+              <li>Tog emot och hjälpte gäster vid evenemang på arenan.</li>
+              <li>Säkerställde hög servicegrad och trevligt bemötande i publikytor.</li>
+              <li>Guidade gäster till rätt sektioner och hanterade frågor.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cv-block reveal" style="--delay:160ms">
+          <h3>Meriter och uppdrag</h3>
+          <div class="cv-entry">
+            <h4>Sekreterare, Ingenjörssektionen Bygg (ISB)</h4>
+            <p class="cv-when">2024–2025</p>
+          </div>
+          <div class="cv-entry">
+            <h4>Näringslivsansvarig, Byggarnas Idrottsmästare (BIM)</h4>
+            <p class="cv-when">2024–2025</p>
+          </div>
+          <div class="cv-entry">
+            <h4>Stipendium, Gålöstiftelsen</h4>
+            <p class="cv-when">2019–2020</p>
+          </div>
+        </div>
+
+        <div class="cv-block reveal" style="--delay:240ms">
+          <h3>Språk och verktyg</h3>
+          <ul class="cv-list mb-2">
+            <li>Svenska — flytande</li>
+            <li>Engelska — flytande</li>
+            <li>Tyska — gymnasienivå</li>
+          </ul>
+
+          <h4 class="mt-2">Verktyg</h4>
+          <ul class="chips mb-2">
+            <li class="chip">Autodesk AutoCAD</li>
+            <li class="chip">Autodesk Revit</li>
+            <li class="chip">SketchUp</li>
+            <li class="chip">Lumion</li>
+            <li class="chip">3D-modellering</li>
+            <li class="chip">Rendering</li>
+            <li class="chip">Office 365</li>
+            <li class="chip">CRM</li>
+          </ul>
+
+          <h4 class="mt-2">Fastighet och utveckling</h4>
+          <ul class="chips mb-2">
+            <li class="chip">Fastighetsjuridik</li>
+            <li class="chip">Bygglov och PBL</li>
+            <li class="chip">ROT-projekt</li>
+            <li class="chip">Entreprenadprocessen</li>
+            <li class="chip">Byggteknik</li>
+          </ul>
+
+          <h4 class="mt-2">Intressen</h4>
+          <ul class="chips">
+            <li class="chip">Finansiella investeringar</li>
+            <li class="chip">Språk</li>
+            <li class="chip">Historia</li>
+            <li class="chip">Skönlitteratur</li>
+            <li class="chip">Styrketräning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ KTH -->
+  <section id="kth" class="section-soft" aria-labelledby="kthTitle">
+    <div class="wrap">
+      <p class="label">Referens</p>
+      <h2 class="headline" id="kthTitle">Vad jag läser på KTH.</h2>
+      <p class="lead">Programmet är tre år och avslutas med ett examensarbete. Så här är det upplagt — och det är
+        därifrån kunskaperna i mitt CV kommer.</p>
+
+      <div class="cv-grid mt-3">
+        <div class="cv-block reveal">
+          <h3>Årskurs 1</h3>
+          <p class="body-text">Matematiskt-naturvetenskapliga och samhällsbyggnadsspecifika kurser. Fokus ligger på
+            projektering och produktion av småhus, plus den teori som krävs för år 2 och 3.</p>
+        </div>
+        <div class="cv-block reveal" style="--delay:80ms">
+          <h3>Årskurs 2</h3>
+          <p class="body-text">Mer tyngd mot samhällsbyggnad, konstruktion och tillämpning: hållbarhet, konstruktion,
+            ekonomi samt projektering och produktion av flerfamiljshus. Inriktningen väljs i slutet av året.</p>
+        </div>
+        <div class="cv-block reveal" style="--delay:160ms">
+          <h3>Årskurs 3</h3>
+          <p class="body-text">Fördjupningskurser inom bland annat arkitektur och fastighetsutveckling, konstruktion
+            och produktion — och ett examensarbete på 15 hp inom samhällsbyggnad.</p>
+        </div>
+        <div class="cv-block reveal" style="--delay:240ms">
+          <h3>Min koppling</h3>
+          <ul class="cv-list">
+            <li>Vald inriktning: <strong>arkitektur och fastighetsutveckling</strong> (årskurs 3).</li>
+            <li>Examensarbete: <strong>Parkering i befintlig bebyggelse</strong>, 15 hp, 2026.</li>
+            <li>Projektarbeten i konstruktion och ROT — se <a href="#projekt">projekten</a>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mono muted mt-3">
+        Källa: <a href="https://www.kth.se/utbildning/hogskoleingenjor/byggteknik-design/kurser-byggteknik-och-design-180-hp-1.513008" target="_blank" rel="noopener">KTH — Kurser, Byggteknik och design 180 hp</a>
+        (senast ändrad 2026-06-24). Kursupplägget kan ändras.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ beer -->
+  <section id="beer" aria-labelledby="beerTitle">
+    <div class="wrap">
+      <div class="grid">
+        <div class="col-6 reveal">
+          <p class="label">Hobbyprojekt</p>
+          <h2 class="headline" id="beerTitle">Beer Path</h2>
+          <p class="lead">Strava, but lager. Logga kvällens barer, räkna öl och exportera en transparent overlay
+            till storyn — helt lokalt i webbläsaren.</p>
+          <div class="btn-row">
+            <a class="btn primary" href="./BEER-VA.html">Öppna Beer Path</a>
+          </div>
+        </div>
+        <div class="col-6 reveal" style="--delay:90ms">
+          <div class="panel">
+            <h3>Så funkar det</h3>
+            <p class="body-text mt-1">Skriv var du är och hur många öl. Appen håller tidslinjen, räknar en
+              uppskattad promille och bygger en transparent overlay åt dig. Allt sparas bara i din webbläsare.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ kontakt -->
+  <section id="kontakt" class="section-soft" aria-labelledby="kontaktTitle">
+    <div class="wrap center">
+      <h2 class="headline reveal" id="kontaktTitle">Hör av dig.</h2>
+      <p class="lead reveal" style="--delay:80ms">Öppen för nya möjligheter, samarbeten och frågor.</p>
+      <div class="btn-row reveal" style="justify-content:center;--delay:160ms">
+        <a class="btn primary large" href="mailto:farazfaramarzi@gmail.com">farazfaramarzi@gmail.com</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span class="footer-note">© <span id="year">2026</span> Faraz Faramarzi</span>
+    <span class="footer-note">Byggteknik och design · KTH</span>
+  </div>
+</footer>
+
+<script src="./assets/site.js" defer></script>
 </body>
 </html>
