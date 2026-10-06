@@ -17,7 +17,7 @@ window.__skyviewReady = true;
    Byt ut texterna nedan mot dina egna projekt. Nyckeln måste
    matcha objektnamnet i Blender (interactive_...).
    --------------------------------------------------------- */
-const MODEL_URL = '.pdf/skyview/models/scene.glb';
+const MODEL_URL = './skyview/models/scene.glb';
 
 const PROJECTS = {
   interactive_stadshuset: {
