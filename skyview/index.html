@@ -1,0 +1,269 @@
+<!doctype html>
+<!--
+  Sky View Portfolio
+  ------------------
+  Filstruktur:
+    index.html
+    styles.css
+    main.js
+    models/scene.glb      <- exporteras av blender_generate_scene.py
+
+  Kör lokalt (ES-moduler + glb kräver en webbserver, inte file://):
+    python3 -m http.server 8000   ->  http://localhost:8000
+    eller: npx serve .
+-->
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Faraz Faramarzi — Portfolio</title>
+  <meta name="description" content="Portfolio av Faraz Faramarzi — byggteknik och design, utforskad som en 3D-vy över molnen." />
+  <meta name="theme-color" content="#B9C9EC" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Three.js via import map (ES-moduler) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- GSAP för mjuka övergångar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#projects-toggle">Hoppa till menyn</a>
+  <h1 class="sr-only">Faraz Faramarzi — portfolio</h1>
+
+  <!-- 3D-scenen -->
+  <canvas id="scene" aria-label="3D-vy över moln och svenska landmärken. Använd menyn Projekt för att navigera med tangentbord."></canvas>
+
+  <!-- Laddningsskärm -->
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader__inner">
+      <div class="loader__sun" aria-hidden="true"></div>
+      <p class="loader__title">Lyfter över molnen…</p>
+      <div class="loader__bar"><span id="loader-progress"></span></div>
+      <p id="loader-msg" class="loader__msg"></p>
+    </div>
+  </div>
+
+  <!-- Statisk fallback: CV och kontakt nåbara även om 3D-motorn inte laddar (eller utan JS). -->
+  <div id="fallback" class="fallback">
+    <div class="fallback__inner">
+      <p class="eyebrow">Portfolio</p>
+      <p class="fallback__name">Faraz Faramarzi</p>
+      <p class="fallback__role">Byggteknik och design · KTH</p>
+      <p id="fallback-note" class="fallback__note" hidden>3D-scenen kunde inte laddas. Här är innehållet i stället.</p>
+      <p class="fallback__lead">Byggingenjör från KTH med fokus på fastighetsutveckling och arkitektur. Van att arbeta i team och leverera kvalitet även under press.</p>
+
+      <h2>Utbildning</h2>
+      <ul class="plain">
+        <li><strong>Byggteknik och design, kandidat</strong><br /><span class="muted">KTH · arkitektur och fastighetsutveckling · examensarbete 2026</span></li>
+        <li><strong>Företagsekonomi och arkitektur</strong><br /><span class="muted">Stockholms universitet · 2024 – 2025</span></li>
+      </ul>
+
+      <h2>Erfarenhet</h2>
+      <ul class="plain">
+        <li><strong>Planner · IKEA</strong> · 2021 – 2024</li>
+        <li><strong>Kundvärd · Operakällaren / Friends Arena</strong> · 2018 – 2019</li>
+      </ul>
+
+      <h2>Kontakt</h2>
+      <p><a class="btn" href="mailto:farazfaramarzi@gmail.com">farazfaramarzi@gmail.com</a></p>
+    </div>
+  </div>
+
+  <!-- Toppmeny -->
+  <header class="topbar">
+    <a href="#" class="brand" id="brand-home" aria-label="Till startvyn">
+      <span class="brand__mark" aria-hidden="true">FF</span>
+      <span class="brand__text">
+        <strong>Faraz Faramarzi</strong>
+        <small>Byggteknik och design</small>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Huvudmeny">
+      <div class="nav__dropdown">
+        <button class="nav__btn" id="projects-toggle" aria-expanded="false" aria-controls="projects-menu">
+          Projekt
+          <svg class="nav__chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="dropdown" id="projects-menu" hidden><!-- fylls av main.js --></ul>
+      </div>
+      <button class="nav__btn nav__btn--primary" id="cv-open" aria-haspopup="dialog">CV / Om mig</button>
+      <button class="nav__btn nav__btn--ghost" id="contact-open" aria-haspopup="dialog">Kontakt</button>
+    </nav>
+  </header>
+
+  <!-- Hotspots som följer landmärkena (skapas av main.js) -->
+  <div id="pins" class="pins"></div>
+
+  <!-- Hover-tooltip -->
+  <div id="tooltip" class="tooltip" aria-hidden="true">
+    <span class="tooltip__name" id="tooltip-name"></span>
+    <span class="tooltip__cta">Klicka för att öppna</span>
+  </div>
+
+  <p class="hint" id="hint">
+    <span class="hint__desktop">Dra för att rotera · Scrolla för zoom · Klicka på ett landmärke</span>
+    <span class="hint__touch">Svep för att rotera · Tryck på ett landmärke</span>
+  </p>
+
+  <!-- ===================== PROJEKT-MODAL ===================== -->
+  <aside id="project-modal" class="project-modal" role="dialog" aria-modal="false"
+         aria-labelledby="pm-title" aria-hidden="true">
+    <div class="project-modal__hero" id="pm-hero">
+      <span class="pm-index" id="pm-index">01 / 03</span>
+      <button class="icon-btn" data-close="project" aria-label="Stäng projekt">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <p class="pm-landmark"><span class="pm-dot" aria-hidden="true"></span><span id="pm-landmark"></span></p>
+    </div>
+
+    <div class="project-modal__body">
+      <h2 id="pm-title" class="pm-title"></h2>
+      <p id="pm-subtitle" class="pm-subtitle"></p>
+
+      <dl class="pm-meta">
+        <div><dt>År</dt><dd id="pm-year"></dd></div>
+        <div><dt>Roll</dt><dd id="pm-role"></dd></div>
+        <div><dt>Uppdrag</dt><dd id="pm-client"></dd></div>
+      </dl>
+
+      <div id="pm-description" class="pm-description"></div>
+
+      <ul id="pm-tags" class="tags" aria-label="Tekniker"></ul>
+
+      <div class="pm-actions">
+        <div id="pm-links" class="pm-links"></div>
+        <button class="link-btn" id="pm-next">Nästa projekt <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================== CV / OM MIG ===================== -->
+  <div id="cv-panel" class="cv" role="dialog" aria-modal="true" aria-labelledby="cv-title" aria-hidden="true">
+    <div class="cv__backdrop" data-close="cv"></div>
+
+    <article class="cv__sheet" tabindex="-1">
+      <button class="icon-btn cv__close" data-close="cv" aria-label="Stäng CV">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+
+      <header class="cv__header">
+        <div class="cv__avatar" aria-hidden="true">FF</div>
+        <div>
+          <p class="eyebrow">CV / Om mig</p>
+          <h2 id="cv-title" class="cv__name">Faraz Faramarzi</h2>
+          <p class="cv__role">Byggteknik och design · KTH, Stockholm</p>
+        </div>
+      </header>
+
+      <section class="cv__section">
+        <h3>Om mig</h3>
+        <p>
+          Byggingenjör från KTH med fokus på fastighetsutveckling och arkitektur.
+          Van att arbeta i team och leverera kvalitet även under press. Strukturerad
+          och målfokuserad, med ambition att växa i en roll där jag kan bidra långsiktigt.
+        </p>
+      </section>
+
+      <section class="cv__section">
+        <h3>Erfarenhet</h3>
+        <ol class="timeline">
+          <li>
+            <span class="timeline__when">2021 – 2024</span>
+            <div>
+              <h4>Planner <span>· IKEA</span></h4>
+              <p>Planering av sovrum, badrum och kök för kunder, koordinering av arbets- och passcheman samt montering av möbler och inredning.</p>
+            </div>
+          </li>
+          <li>
+            <span class="timeline__when">2018 – 2019</span>
+            <div>
+              <h4>Kundvärd <span>· Operakällaren / Friends Arena</span></h4>
+              <p>Tog emot och hjälpte gäster vid evenemang, säkerställde hög servicegrad och guidade gäster till rätt sektioner.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="cv__section cv__grid">
+        <div>
+          <h3>Utbildning</h3>
+          <ul class="plain">
+            <li><strong>Byggteknik och design, kandidat</strong><br /><span class="muted">KTH · inriktning arkitektur och fastighetsutveckling · examensarbete 2026</span></li>
+            <li><strong>Företagsekonomi och arkitektur</strong><br /><span class="muted">Stockholms universitet · 2024 – 2025</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Kompetenser</h3>
+          <ul class="tags">
+            <li>AutoCAD</li><li>Revit</li><li>SketchUp</li><li>Lumion</li>
+            <li>3D-modellering</li><li>Rendering</li><li>Office 365</li><li>CRM</li>
+            <li>Fastighetsjuridik</li><li>Bygglov &amp; PBL</li><li>ROT-projekt</li><li>Entreprenadprocessen</li><li>Byggteknik</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cv__section cv__grid">
+        <div>
+          <h3>Meriter</h3>
+          <ul class="plain">
+            <li><strong>Sekreterare, Ingenjörssektionen Bygg (ISB)</strong><br /><span class="muted">2024 – 2025</span></li>
+            <li><strong>Näringslivsansvarig, Byggarnas Idrottsmästare (BIM)</strong><br /><span class="muted">2024 – 2025</span></li>
+            <li><strong>Stipendium, Gålöstiftelsen</strong><br /><span class="muted">2019 – 2020</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Språk</h3>
+          <ul class="plain">
+            <li><strong>Svenska</strong><br /><span class="muted">Flytande</span></li>
+            <li><strong>Engelska</strong><br /><span class="muted">Flytande</span></li>
+            <li><strong>Tyska</strong><br /><span class="muted">Gymnasienivå</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cv__section" id="cv-contact">
+        <h3>Kontakt</h3>
+        <ul class="contact">
+          <li><span>E-post</span><a href="mailto:farazfaramarzi@gmail.com">farazfaramarzi@gmail.com</a></li>
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <noscript>
+    <style>#loader { display: none; }</style>
+    <div class="noscript">Den här portfolion behöver JavaScript för att visa 3D-scenen — CV och kontakt visas nedan.</div>
+  </noscript>
+
+  <script>
+    // Om three.js-modulen inte har startat (t.ex. CDN blockerad), dölj loadern så
+    // den statiska fallbacken med CV och kontakt blir synlig. main.js sätter flaggan
+    // när modulen laddats och gömmer fallbacken när 3D-scenen är klar.
+    window.__skyviewReady = false;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.__skyviewReady) {
+          var loader = document.getElementById('loader');
+          var note = document.getElementById('fallback-note');
+          if (loader) loader.classList.add('is-done');
+          if (note) note.hidden = false;
+        }
+      }, 8000);
+    });
+  </script>
+</body>
+</html>
