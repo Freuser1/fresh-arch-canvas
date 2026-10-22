@@ -37,7 +37,66 @@ const PROJECTS = {
       { label: 'Öppna rapport (PDF)', url: '../pdfs/Parkering%20i%20befintlig%20bebyggelse%20(2).pdf' },
     ],
   },
-
+    interactive_Rhino: {
+    landmark: 'Projekt Rhino och Grasshopper',
+    title: 'Mitt nya projekt',
+    subtitle: 'Kort beskrivning av projektet',
+    year: '2026',
+    role: 'Projektör',
+    client: 'KTH — Byggteknik och design',
+    accent: '#8F8A4B',
+    image: '',
+    description: `
+      <p>En liten men väl grundad parametrisk tunnel</p>`,
+    tags: ['Projektering', 'Konstruktion', 'CAD'],
+    links: [
+      {
+        label: 'Öppna projekt (GH)',
+        url: './pdfs/Faraz tunnel.gh'
+      },
+      {
+        label: 'Öppna projekt (RVT)',
+        url: './pdfs/Faraz Tunnel.rvt'
+      },
+    ],
+  },
+    interactive_fastigheter: {
+    landmark: 'fastighetsvärendering',
+    title: 'fastighetskostnader och intäkter',
+    subtitle: 'Kort beskrivning av projektet',
+    year: '2026',
+    role: 'Projektör',
+    client: 'KTH — Byggteknik och design',
+    accent: '#6A4B4F',
+    image: '',
+    description: `
+      <p>Ett beräkningsark för diverse hyresgäster</p>`,
+    tags: ['Projektering', 'Konstruktion', 'CAD'],
+    links: [
+      {
+        label: 'Öppna projekt (XLSX)',
+        url: './pdfs/investeringskalkyl.xlsx'
+      },
+    ],
+  },
+  interactive_mittprojekt: {
+    landmark: 'Västraskogen',
+    title: 'Skogsterrasserna',
+    subtitle: 'den nya stadsdelen i Västraskogen',
+    year: '2026',
+    role: 'konceptist och projektering',
+    client: 'Solna stad - förhoppningsvis',
+    accent: '#7C8FA6',
+    image: '',
+    description: `
+      <p>Detta är en projekt ritat av mig men sedan inmatad till Claude opus för att mäta till vilken grad verktyget kan brukas. Intressant nog så är alla planritningar fåniga, kika gärna på dörr och väggplaceringar.</p>`,
+    tags: ['Projektering', 'Konstruktion', 'CAD'],
+    links: [
+      { label: 'Öppna projekt Svenska (PDF)', url: '../pdfs/Skogsterrasserna_Gestaltningsprogram.pdf'},
+      {  label: 'Öppna projekt Engelska (PDF)', url: '../pdfs/Skogsterrasserna_DesignProgramme.pdf'},
+      
+    ],
+  },
   interactive_sofiakyrkan: {
     landmark: 'Projekt 1',
     title: 'Portal & renderingar',
