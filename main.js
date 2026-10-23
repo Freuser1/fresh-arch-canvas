@@ -80,9 +80,9 @@ const PROJECTS = {
     ],
   },
   interactive_mittprojekt: {
-    landmark: 'Västraskogen',
+    landmark: 'Västra skogen',
     title: 'Skogsterrasserna',
-    subtitle: 'den nya stadsdelen i Västraskogen',
+    subtitle: 'den nya stadsdelen i Västra skogen',
     year: '2026',
     role: 'konceptist och projektering',
     client: 'Solna stad - förhoppningsvis',
