@@ -16,8 +16,8 @@ export function useTypewriter({
 
   useEffect(() => {
     let index = 0;
-    let timer: NodeJS.Timeout | null = null;
-    let delayTimer: NodeJS.Timeout | null = null;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let delayTimer: ReturnType<typeof setTimeout> | null = null;
 
     setDisplayed('');
     setDone(false);
