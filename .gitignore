@@ -1,0 +1,9 @@
+# Dependencies and build output are recreated by `npm ci` / `npm run build`
+node_modules/
+dist/
+
+# OS / editor clutter
+desktop.ini
+Thumbs.db
+.DS_Store
+*.log
