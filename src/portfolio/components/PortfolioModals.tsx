@@ -17,7 +17,7 @@ interface PortfolioModalsProps {
 
 export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) {
   const [contactSubmitted, setContactSubmitted] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'interactive' | 'systems' | 'visual'>('all');
+  const [filter, setFilter] = useState<'all' | 'parametrisk' | 'bim' | 'fastighet'>('all');
 
   // Close with Escape and stop the page behind the dialog from scrolling.
   useEffect(() => {
@@ -57,50 +57,73 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
     setContactSubmitted(true);
   };
 
+  // Projekten här motsvarar filerna i public/pdfs/ (samma som i 3D-vyn på startsidan).
   const projects = [
     {
-      id: 'kinetic-canvas',
-      title: 'Kinetic Motion Studio',
-      category: 'interactive',
-      role: 'Creative Technologist & UI Lead',
+      id: 'parkering',
+      title: 'Parkering i befintlig bebyggelse',
+      category: 'fastighet',
+      role: 'Examensarbete, författare',
       year: '2026',
       description:
-        'A browser-based interactive canvas blending GLSL fragment shaders with mouse-scrubbed typography and inertia physics.',
-      stack: ['WebGL', 'Three.js', 'React', 'Tailwind CSS'],
-      metric: '60fps across mobile & desktop',
+        'Examensarbete på grundnivå (15 hp) inom samhällsbyggnad. Hur parkering kan lösas i redan byggd miljö, där ytan är begränsad och nya funktioner ska passa in i befintliga strukturer.',
+      stack: ['Samhällsbyggnad', 'PBL', 'Platsanalys'],
+      metric: 'KTH · Byggteknik och design',
     },
     {
-      id: 'aurora-design-system',
-      title: 'Aurora Spatial Design System',
-      category: 'systems',
-      role: 'Design Engineer',
-      year: '2025',
+      id: 'tunnel',
+      title: 'Parametrisk tunnel',
+      category: 'parametrisk',
+      role: 'Projektör',
+      year: '2026',
       description:
-        'An accessible, multi-platform component ecosystem engineered for fluid dark-mode transitions, micro-haptics, and responsive math.',
-      stack: ['TypeScript', 'Design Systems', 'Figma Tokens', 'React'],
-      metric: 'Adopted across 14 commercial applications',
+        'En liten men väl grundad parametrisk tunnel. Geometrin styrs av parametrar i Grasshopper och förs vidare till en BIM-modell i Revit.',
+      stack: ['Rhino', 'Grasshopper', 'Revit'],
+      metric: 'Grasshopper- och Revit-fil',
     },
     {
-      id: 'verve-audio',
-      title: 'Verve Generative Soundscape',
-      category: 'interactive',
-      role: 'Full Stack Creative Developer',
-      year: '2025',
+      id: 'skogsterrasserna',
+      title: 'Skogsterrasserna',
+      category: 'fastighet',
+      role: 'Koncept och projektering',
+      year: '2026',
       description:
-        'Real-time Web Audio API synthesizer that visualizes ambient sound frequencies into morphing 3D geometric ribbon meshes.',
-      stack: ['Web Audio API', 'Canvas API', 'GLSL', 'Vite'],
-      metric: 'Over 120,000 community interactions',
+        'Förslag till en ny stadsdel i Västra skogen, Solna, med gestaltningsprogram på svenska och engelska. Projektet användes också för att testa hur långt AI går att använda i ritarbetet – kika gärna på dörr- och väggplaceringarna.',
+      stack: ['Stadsbyggnad', 'Gestaltningsprogram', 'AI'],
+      metric: 'Gestaltningsprogram (SV/EN)',
     },
     {
-      id: 'monolith-flagship',
-      title: 'Monolith Architectural Flagship',
-      category: 'visual',
-      role: 'Creative Director & Frontend Developer',
-      year: '2024',
+      id: 'investeringskalkyl',
+      title: 'Investeringskalkyl',
+      category: 'fastighet',
+      role: 'Fastighetsekonomi',
+      year: '2026',
       description:
-        'Immersive digital flagship for a contemporary architecture studio featuring dynamic viewport projections and unhurried editorial layouts.',
-      stack: ['Next.js', 'Tailwind CSS', 'Framer Motion'],
-      metric: 'Site of the Day & FWA Nominee',
+        'Beräkningsark för fastighetens kostnader och hyresintäkter, uppbyggt för att jämföra olika hyresgäster och upplägg.',
+      stack: ['Excel', 'Fastighetsvärdering', 'Kalkyl'],
+      metric: 'Kalkylark (XLSX)',
+    },
+    {
+      id: 'konstruktion-rot',
+      title: 'Konstruktion & ROT',
+      category: 'bim',
+      role: 'Grupparbete',
+      year: 'KTH',
+      description:
+        'Projektering i grupp med samordning, konstruktion och redovisning, samt ett ROT-projekt om ombyggnad av en befintlig byggnad med fasader, sektioner och planer.',
+      stack: ['Revit', 'AutoCAD', 'ROT', 'Konstruktion'],
+      metric: 'Ritningar och rapporter (PDF)',
+    },
+    {
+      id: 'portal',
+      title: 'Portal & renderingar',
+      category: 'bim',
+      role: 'Projektering',
+      year: 'KTH',
+      description:
+        'Tidigt skissarbete kring entré och portal, tillsammans med renderade vyer av interiören och utemiljön.',
+      stack: ['SketchUp', 'Lumion', 'Rendering'],
+      metric: 'Skiss och renderingar',
     },
   ];
 
@@ -124,7 +147,7 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         <button
           onClick={onClose}
           className="absolute top-5 right-5 w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:text-white hover:border-white transition-colors text-sm cursor-pointer"
-          aria-label="Close dialog"
+          aria-label="Stäng"
         >
           ✕
         </button>
@@ -133,25 +156,25 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'projects' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Selected Works</span>
+              <span>Utvalda projekt</span>
               <span>·</span>
               <span>2024 — 2026</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-2">
-              Featured Projects
+              Projekt
             </h2>
             <p className="text-sm sm:text-base text-white/70 mb-6 leading-relaxed">
-              A curated selection of interactive web flagships, design systems, and creative technology experiments.
+              Ett urval av projekt inom byggteknik, BIM, parametrisk design och fastighetsutveckling – från examensarbete till kalkyl. Alla filer finns att öppna från startsidans 3D-vy.
             </p>
 
             {/* Filter pills */}
             <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 text-xs">
               {(
                 [
-                  { id: 'all', label: 'All Works' },
-                  { id: 'interactive', label: 'Interactive & Motion' },
-                  { id: 'systems', label: 'Design Systems' },
-                  { id: 'visual', label: 'Editorial & Brand' },
+                  { id: 'all', label: 'Alla projekt' },
+                  { id: 'parametrisk', label: 'Parametrisk design' },
+                  { id: 'bim', label: 'BIM & projektering' },
+                  { id: 'fastighet', label: 'Fastighet & stad' },
                 ] as const
               ).map((tab) => (
                 <button
@@ -208,32 +231,32 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'about' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Bio & Background</span>
+              <span>Bakgrund</span>
               <span>·</span>
-              <span>Design & Code</span>
+              <span>Bygg & design</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">
-              About Me
+              Om mig
             </h2>
             <div className="space-y-4 text-sm sm:text-base text-white/80 leading-relaxed">
               <p>
-                Hello! I am a creative technologist and senior design engineer specializing in crafting tactile, high-performance web experiences. My work lives at the convergence of graphic discipline, fluid animation choreography, and modern software engineering.
+                Hej! Jag är en otroligt nyfiken person som verkligen gillar att kasta mig in i projekt och lära mig på vägen. Jag har en bakgrund inom design och bygg och studerar Byggteknik och design på KTH.
               </p>
               <p>
-                With over seven years of practice across agency flagships and technology ventures, I champion the idea that digital interfaces shouldn&apos;t feel like static paperwork—they should breathe, react, and respond intuitively to human presence.
+                Min professionella erfarenhet är betydligt mindre än min nyfikenhet, och jag har en tendens att lära mig nya saker snabbt. Jag är alltid på jakt efter nya utmaningar och möjligheter att växa.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/10 text-xs">
                 <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                  <div className="text-white/50 uppercase tracking-wider mb-1">Focus</div>
-                  <div className="font-medium text-white">Interactive Engineering & UI Systems</div>
+                  <div className="text-white/50 uppercase tracking-wider mb-1">Fokus</div>
+                  <div className="font-medium text-white">Byggteknik, BIM & parametrisk design</div>
                 </div>
                 <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                  <div className="text-white/50 uppercase tracking-wider mb-1">Availability</div>
-                  <div className="font-medium text-white">Open for select commissions & roles</div>
+                  <div className="text-white/50 uppercase tracking-wider mb-1">Tillgänglighet</div>
+                  <div className="font-medium text-white">Öppen för nya roller och samarbeten</div>
                 </div>
                 <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-                  <div className="text-white/50 uppercase tracking-wider mb-1">Location</div>
-                  <div className="font-medium text-white">Remote / Worldwide</div>
+                  <div className="text-white/50 uppercase tracking-wider mb-1">Plats</div>
+                  <div className="font-medium text-white">Stockholm</div>
                 </div>
               </div>
             </div>
@@ -244,55 +267,55 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'skills' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Capabilities</span>
+              <span>Kompetenser</span>
               <span>·</span>
-              <span>Tooling & Craft</span>
+              <span>Verktyg & kunskap</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">
-              My Skills & Stack
+              Kompetenser & verktyg
             </h2>
             <p className="text-sm text-white/70 mb-6">
-              A comprehensive view of the languages, frameworks, graphics pipelines, and workflows I leverage daily.
+              Programvaror och kunskapsområden från utbildningen på KTH och mina egna projekt.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-2">
                 <div className="text-white font-medium text-sm flex items-center justify-between">
-                  <span>Frontend & Architecture</span>
-                  <span className="text-white/40">Tier 1</span>
+                  <span>CAD & BIM</span>
+                  <span className="text-white/40">Revit · CAD</span>
                 </div>
                 <p className="text-white/60 text-[11px]">
-                  React 19, TypeScript, Next.js, Vite, Tailwind CSS, State Machines, Web Components.
+                  Revit, AutoCAD och SketchUp – modellering, ritningar, planer, fasader och sektioner.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-2">
                 <div className="text-white font-medium text-sm flex items-center justify-between">
-                  <span>Motion & Creative Coding</span>
-                  <span className="text-white/40">Tier 1</span>
+                  <span>Parametrisk design</span>
+                  <span className="text-white/40">Rhino</span>
                 </div>
                 <p className="text-white/60 text-[11px]">
-                  Three.js, WebGL, GLSL Shaders, Framer Motion, HTML5 Canvas, Web Audio API.
+                  Rhino och Grasshopper – parameterstyrd geometri som förs vidare till BIM-modeller.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-2">
                 <div className="text-white font-medium text-sm flex items-center justify-between">
-                  <span>Product Design & Systems</span>
-                  <span className="text-white/40">Tier 1</span>
+                  <span>Visualisering</span>
+                  <span className="text-white/40">Lumion</span>
                 </div>
                 <p className="text-white/60 text-[11px]">
-                  Figma, Design Tokens, Micro-Interactions, Responsive Type Math, WCAG Accessibility.
+                  Lumion, rendering och 3D-modellering för presentationer och gestaltningsprogram.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-2">
                 <div className="text-white font-medium text-sm flex items-center justify-between">
-                  <span>Performance & Delivery</span>
-                  <span className="text-white/40">Tier 1</span>
+                  <span>Byggprocess & fastighet</span>
+                  <span className="text-white/40">KTH</span>
                 </div>
                 <p className="text-white/60 text-[11px]">
-                  Lighthouse 95+, 60fps compositor optimization, Bundle tuning, Node.js, Git CI/CD.
+                  Bygglov & PBL, entreprenadprocessen, ROT-projekt, fastighetsjuridik och fastighetsvärdering.
                 </p>
               </div>
             </div>
@@ -303,47 +326,47 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'process' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Methodology</span>
+              <span>Arbetssätt</span>
               <span>·</span>
-              <span>How I Work</span>
+              <span>Så jobbar jag</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">
-              My Creative Process
+              Min arbetsprocess
             </h2>
             <div className="space-y-4 text-xs sm:text-sm text-white/80 leading-relaxed">
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  01. Intent & Architectural Discovery
+                  01. Förutsättningar & analys
                 </div>
                 <p className="text-white/60 text-xs">
-                  Understanding the core thesis, audience psychology, and performance requirements before writing a single line of markup.
+                  Platsanalys, detaljplan och regelverk (PBL) – vad som får och kan byggas innan första linjen ritas.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  02. Rapid Interactive Prototyping
+                  02. Skiss & parametrisk utforskning
                 </div>
                 <p className="text-white/60 text-xs">
-                  Prototyping directly in code to test real physics, frame rate curves, gesture friction, and viewport boundaries.
+                  Tidiga volymer och alternativ testas snabbt i Rhino och Grasshopper, där geometrin styrs av parametrar.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  03. Kinetic Polish & Typographic Hierarchy
+                  03. BIM-modellering & projektering
                 </div>
                 <p className="text-white/60 text-xs">
-                  Dialing in optical font weights, smooth easing curves (cubic-bezier), micro-interactions, and contrast ratios.
+                  Förslaget byggs upp i Revit med konstruktion, planer, fasader och sektioner, samordnat med övriga discipliner.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  04. Production Hardening & Delivery
+                  04. Visualisering & ekonomi
                 </div>
                 <p className="text-white/60 text-xs">
-                  Zero memory leaks, rigorous cross-browser testing, SEO and OpenGraph metadata, and seamless hosting setup.
+                  Renderingar och gestaltningsprogram för att kommunicera idén, och kalkyler för att pröva att projektet håller ekonomiskt.
                 </p>
               </div>
             </div>
@@ -354,56 +377,56 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'experiments' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Code Sandbox</span>
+              <span>Egna tester</span>
               <span>·</span>
-              <span>Playground</span>
+              <span>Lab</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-3">
-              Experiments & Lab
+              Experiment
             </h2>
             <p className="text-sm text-white/70 mb-5">
-              Micro-interactions, shader sketches, and non-traditional UI concepts explored in code.
+              Sidoprojekt där jag testar nya verktyg och arbetssätt inom bygg och design.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  Exp 01: Bi-directional Video Scrub
+                  Exp 01: Från Grasshopper till Revit
                 </div>
                 <p className="text-white/60 text-xs mb-2">
-                  Scrubbing H.264 video frames via pointer delta and target time queues without browser seek flooding (active on this page!).
+                  En parametrisk tunnel där geometrin tas fram i Grasshopper och sedan förs över till en BIM-modell i Revit.
                 </p>
-                <span className="text-[10px] text-white/40 uppercase tracking-wider">Canvas & Video API</span>
+                <span className="text-[10px] text-white/40 uppercase tracking-wider">Rhino · Grasshopper · Revit</span>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  Exp 02: Variable Font Distortions
+                  Exp 02: AI som ritverktyg
                 </div>
                 <p className="text-white/60 text-xs mb-2">
-                  Fluid typography scaling based on cursor distance and scroll momentum curves.
+                  Skogsterrasserna ritades av mig och matades sedan in i en AI-modell för att se hur långt den klarar planritningar – resultatet är lärorikt.
                 </p>
-                <span className="text-[10px] text-white/40 uppercase tracking-wider">Variable Fonts & Math</span>
+                <span className="text-[10px] text-white/40 uppercase tracking-wider">AI · Planlösningar</span>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  Exp 03: Shader Noise Displacement
+                  Exp 03: Portfolio i 3D
                 </div>
                 <p className="text-white/60 text-xs mb-2">
-                  Simplex noise applied to geometry vertices for organic liquid wave effects.
+                  Startsidan är en egen 3D-scen över Stockholm där varje byggnad öppnar ett projekt.
                 </p>
-                <span className="text-[10px] text-white/40 uppercase tracking-wider">Three.js & GLSL</span>
+                <span className="text-[10px] text-white/40 uppercase tracking-wider">Blender · Three.js</span>
               </div>
 
               <div className="p-4 rounded-xl border border-white/10 bg-white/5">
                 <div className="text-white font-medium text-sm mb-1">
-                  Exp 04: Zero-Latency Search
+                  Exp 04: Kalkylmodell för hyresgäster
                 </div>
                 <p className="text-white/60 text-xs mb-2">
-                  In-memory indexing for instantaneous fuzzy matching across documentation sets.
+                  Ett kalkylark som räknar fastighetens kostnader mot hyresintäkter för olika typer av hyresgäster.
                 </p>
-                <span className="text-[10px] text-white/40 uppercase tracking-wider">Bitwise Algorithms</span>
+                <span className="text-[10px] text-white/40 uppercase tracking-wider">Excel · Fastighetsekonomi</span>
               </div>
             </div>
           </div>
@@ -413,23 +436,23 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
         {activeModal === 'contact' && (
           <div>
             <div className="flex items-center gap-2 mb-2 text-xs uppercase tracking-widest text-white/60">
-              <span>Get In Touch</span>
+              <span>Kontakt</span>
               <span>·</span>
-              <span>Say Hello</span>
+              <span>Säg hej</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight mb-3">
-              Let&apos;s Build Together
+              Hör av dig
             </h2>
             <p className="text-sm text-white/70 mb-6">
-              Have a project, role, or collaboration in mind? Drop a note below or reach out directly.
+              Har du ett projekt, en tjänst eller ett samarbete i åtanke? Skriv en rad här nedan eller mejla mig direkt.
             </p>
 
             {contactSubmitted ? (
               <div className="bg-white/5 border border-white/20 rounded-xl p-6 text-center py-10">
                 <div className="text-3xl mb-3">✳︎</div>
-                <h3 className="text-lg font-medium mb-1">Your mail app should open now</h3>
+                <h3 className="text-lg font-medium mb-1">Ditt mejlprogram öppnas nu</h3>
                 <p className="text-sm text-white/60 max-w-md mx-auto mb-6">
-                  Your message is pre-filled – just press send. If nothing opened, write to{' '}
+                  Meddelandet är redan ifyllt – tryck bara på skicka. Öppnades inget? Skriv till{' '}
                   <a href={`mailto:${CONTACT_EMAIL}`} className="text-white underline">
                     {CONTACT_EMAIL}
                   </a>
@@ -439,7 +462,7 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
                   onClick={onClose}
                   className="px-5 py-2 text-xs uppercase tracking-wider bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors cursor-pointer"
                 >
-                  Return to Portfolio
+                  Tillbaka
                 </button>
               </div>
             ) : (
@@ -450,27 +473,27 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="contact-name" className="block text-xs uppercase tracking-wider text-white/60 mb-1">
-                      Your Name
+                      Ditt namn
                     </label>
                     <input
                       id="contact-name"
                       name="name"
                       required
                       type="text"
-                      placeholder="Alex Morgan"
+                      placeholder="Förnamn Efternamn"
                       className="w-full bg-white/5 border border-white/20 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
                   <div>
                     <label htmlFor="contact-email" className="block text-xs uppercase tracking-wider text-white/60 mb-1">
-                      Your Email
+                      Din e-post
                     </label>
                     <input
                       id="contact-email"
                       name="email"
                       required
                       type="email"
-                      placeholder="alex@domain.com"
+                      placeholder="namn@exempel.se"
                       className="w-full bg-white/5 border border-white/20 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
@@ -478,35 +501,35 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
 
                 <div>
                   <label htmlFor="contact-subject" className="block text-xs uppercase tracking-wider text-white/60 mb-1">
-                    Subject / Project Interest
+                    Ämne
                   </label>
                   <input
                     id="contact-subject"
                     name="subject"
                     required
                     type="text"
-                    placeholder="New digital flagship / Contract role / Creative collaboration"
+                    placeholder="Tjänst / Examensarbete / Samarbete / Projekt"
                     className="w-full bg-white/5 border border-white/20 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white transition-colors"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-message" className="block text-xs uppercase tracking-wider text-white/60 mb-1">
-                    Message
+                    Meddelande
                   </label>
                   <textarea
                     id="contact-message"
                     name="message"
                     required
                     rows={4}
-                    placeholder="Tell me a bit about what you're working on and how I can help..."
+                    placeholder="Berätta kort om projektet eller rollen…"
                     className="w-full bg-white/5 border border-white/20 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white transition-colors resize-none"
                   />
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="text-xs text-white/50">
-                    Direct email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-white underline">{CONTACT_EMAIL}</a>
+                    Direkt e-post: <a href={`mailto:${CONTACT_EMAIL}`} className="text-white underline">{CONTACT_EMAIL}</a>
                   </div>
                   <div className="flex justify-end gap-3">
                     <button
@@ -514,13 +537,13 @@ export function PortfolioModals({ activeModal, onClose }: PortfolioModalsProps) 
                       onClick={onClose}
                       className="px-4 py-2 text-xs uppercase tracking-wider text-white/60 hover:text-white transition-colors cursor-pointer"
                     >
-                      Cancel
+                      Avbryt
                     </button>
                     <button
                       type="submit"
                       className="px-6 py-2.5 text-xs uppercase tracking-wider bg-white text-black font-medium rounded-full hover:bg-white/90 transition-colors cursor-pointer"
                     >
-                      Send Message
+                      Skicka
                     </button>
                   </div>
                 </div>

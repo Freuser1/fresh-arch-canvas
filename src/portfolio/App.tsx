@@ -156,11 +156,11 @@ export default function App() {
         <div className="flex items-center gap-3">
           <a
             href="index.html"
-            title="Back to the main portfolio"
+            title="Tillbaka till startsidan"
             style={{ fontFamily: 'var(--font-heading)' }}
-            className="text-[21px] sm:text-[26px] tracking-tight text-white select-none no-underline hover:opacity-60 transition-opacity"
+            className="text-[21px] sm:text-[26px] tracking-tight text-white whitespace-nowrap select-none no-underline hover:opacity-60 transition-opacity"
           >
-            My Portfolio
+            Faraz Faramarzi
           </a>
           <span
             className="text-[25px] sm:text-[30px] text-white select-none inline-block"
@@ -171,17 +171,17 @@ export default function App() {
           </span>
         </div>
 
-        {/* Desktop nav links (center, hidden below md) */}
+        {/* Desktop nav links (center, hidden below lg – the Swedish labels need the room) */}
         <nav
-          aria-label="Primary"
-          className="hidden md:flex items-center text-[23px] text-white font-normal"
+          aria-label="Huvudmeny"
+          className="hidden lg:flex items-center whitespace-nowrap text-[23px] text-white font-normal"
         >
           <button
             type="button"
             onClick={() => setActiveModal('projects')}
             className="hover:opacity-60 transition-opacity cursor-pointer bg-transparent border-none p-0 text-white"
           >
-            Projects
+            Projekt
           </button>
           <span className="select-none">,&nbsp;</span>
           <button
@@ -189,7 +189,7 @@ export default function App() {
             onClick={() => setActiveModal('about')}
             className="hover:opacity-60 transition-opacity cursor-pointer bg-transparent border-none p-0 text-white"
           >
-            About
+            Om mig
           </button>
           <span className="select-none">,&nbsp;</span>
           <button
@@ -197,7 +197,7 @@ export default function App() {
             onClick={() => setActiveModal('skills')}
             className="hover:opacity-60 transition-opacity cursor-pointer bg-transparent border-none p-0 text-white"
           >
-            Skills
+            Kompetenser
           </button>
           <span className="select-none">,&nbsp;</span>
           <button
@@ -205,29 +205,29 @@ export default function App() {
             onClick={() => setActiveModal('experiments')}
             className="hover:opacity-60 transition-opacity cursor-pointer bg-transparent border-none p-0 text-white"
           >
-            Experiments
+            Experiment
           </button>
         </nav>
 
-        {/* Desktop CTA (right, hidden below md) */}
+        {/* Desktop CTA (right, hidden below lg) */}
         <a
           href="#contact"
           onClick={(e) => {
             e.preventDefault();
             setActiveModal('contact');
           }}
-          className="hidden md:inline-block text-[23px] text-white underline underline-offset-2 hover:opacity-60 transition-opacity cursor-pointer"
+          className="hidden lg:inline-block whitespace-nowrap text-[23px] text-white underline underline-offset-2 hover:opacity-60 transition-opacity cursor-pointer"
         >
-          Get in touch
+          Kontakta mig
         </a>
 
-        {/* Mobile hamburger (visible below md) */}
+        {/* Mobile hamburger (visible below lg) */}
         <button
           type="button"
-          aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'}
+          aria-label={mobileMenuOpen ? 'Stäng menyn' : 'Öppna menyn'}
           aria-expanded={mobileMenuOpen}
           onClick={() => setMobileMenuOpen((prev) => !prev)}
-          className="md:hidden flex flex-col justify-center items-center gap-[5px] p-2 focus:outline-none z-20 cursor-pointer"
+          className="lg:hidden flex flex-col justify-center items-center gap-[5px] p-2 focus:outline-none z-20 cursor-pointer"
         >
           <span
             className={`w-6 h-[2px] bg-white transition-all duration-300 ${
@@ -249,7 +249,7 @@ export default function App() {
 
       {/* Mobile overlay (z-index: 9) */}
       <div
-        className={`fixed inset-0 z-[9] bg-black/90 backdrop-blur-md flex flex-col justify-center items-start px-8 gap-8 md:hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-[9] bg-black/90 backdrop-blur-md flex flex-col justify-center items-start px-8 gap-8 lg:hidden transition-all duration-300 ${
           mobileMenuOpen
             ? 'opacity-100 pointer-events-auto visible'
             : 'opacity-0 pointer-events-none invisible'
@@ -263,7 +263,7 @@ export default function App() {
           }}
           className="text-[32px] font-medium text-white hover:opacity-60 transition-opacity text-left bg-transparent border-none p-0"
         >
-          Projects
+          Projekt
         </button>
         <button
           type="button"
@@ -273,7 +273,7 @@ export default function App() {
           }}
           className="text-[32px] font-medium text-white hover:opacity-60 transition-opacity text-left bg-transparent border-none p-0"
         >
-          About
+          Om mig
         </button>
         <button
           type="button"
@@ -283,7 +283,7 @@ export default function App() {
           }}
           className="text-[32px] font-medium text-white hover:opacity-60 transition-opacity text-left bg-transparent border-none p-0"
         >
-          Skills
+          Kompetenser
         </button>
         <button
           type="button"
@@ -293,7 +293,7 @@ export default function App() {
           }}
           className="text-[32px] font-medium text-white hover:opacity-60 transition-opacity text-left bg-transparent border-none p-0"
         >
-          Experiments
+          Experiment
         </button>
         <a
           href="#contact"
@@ -304,7 +304,7 @@ export default function App() {
           }}
           className="text-[32px] font-medium text-white underline underline-offset-2 hover:opacity-60 transition-opacity text-left"
         >
-          Get in touch
+          Kontakta mig
         </a>
       </div>
 
@@ -323,9 +323,9 @@ export default function App() {
               filter: 'blur(4px)',
             }}
           >
-            Hi there, I&apos;m a creative technologist & designer,
+            Hej, jag studerar Byggteknik och design på KTH,
             <br />
-            Crafting interactive web flagships and tactile digital experiences
+            med fokus på BIM, parametrisk design och fastighetsutveckling
           </div>
 
           {/* 2. Typewriter text */}
@@ -360,7 +360,7 @@ export default function App() {
               onClick={() => setActiveModal('projects')}
               className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
             >
-              See My Projects
+              Se mina projekt
             </button>
 
             {/* White pill button 2: About Me */}
@@ -369,7 +369,7 @@ export default function App() {
               onClick={() => setActiveModal('about')}
               className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
             >
-              About Me
+              Om mig
             </button>
 
             {/* White pill button 3: My Skills & Stack */}
@@ -378,7 +378,7 @@ export default function App() {
               onClick={() => setActiveModal('skills')}
               className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
             >
-              My Skills & Stack
+              Kompetenser & verktyg
             </button>
 
             {/* White pill button 4: My Creative Process */}
@@ -387,20 +387,20 @@ export default function App() {
               onClick={() => setActiveModal('process')}
               className="inline-flex items-center justify-center bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
             >
-              My Creative Process
+              Min arbetsprocess
             </button>
 
             {/* Outline pill button with copy icon */}
             <button
               type="button"
               onClick={handleCopyEmail}
-              title="Click to copy email address"
+              title="Klicka för att kopiera e-postadressen"
               className="inline-flex items-center justify-center text-white bg-transparent border border-white rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.3em] mx-[0.2em] mb-[0.4em] whitespace-nowrap gap-2 sm:gap-3 hover:bg-white hover:text-black transition-colors duration-200 cursor-pointer"
             >
               <span>
-                Reach me:{' '}
+                Nå mig:{' '}
                 <span className="underline underline-offset-1">
-                  {copied ? 'Copied to clipboard!' : CONTACT_EMAIL}
+                  {copied ? 'Kopierad!' : CONTACT_EMAIL}
                 </span>
               </span>
               <svg
