@@ -18,7 +18,7 @@ window.__skyviewReady = true;
    matcha objektnamnet i Blender (interactive_...).
    --------------------------------------------------------- */
 // Filen ligger i public/models/ och kopieras oförändrad till dist/models/ vid bygget.
-const MODEL_URL = './models/scene.glb';
+const MODEL_URL = '/models/scene.glb';
 
 const PROJECTS = {
   interactive_stadshuset: {
@@ -35,7 +35,7 @@ const PROJECTS = {
       där nya funktioner ska passa in utan att bygga nytt.</p>`,
     tags: ['Examensarbete', 'Samhällsbyggnad', 'Parkering'],
     links: [
-      { label: 'Öppna rapport (PDF)', url: './pdfs/Parkering%20i%20befintlig%20bebyggelse%20(2).pdf' },
+      { label: 'Öppna rapport (PDF)', url: 'public/pdfs/Parkering%20i%20befintlig%20bebyggelse%20(2).pdf' },
     ],
   },
     interactive_Rhino: {
@@ -53,11 +53,11 @@ const PROJECTS = {
     links: [
       {
         label: 'Öppna projekt (GH)',
-        url: './pdfs/Faraz%20tunnel.gh'
+        url: 'public/pdfs/Faraz%20tunnel.gh'
       },
       {
         label: 'Öppna projekt (RVT)',
-        url: './pdfs/Faraz%20Tunnel.rvt'
+        url: 'public/pdfs/Faraz%20Tunnel.rvt'
       },
     ],
   },
@@ -76,7 +76,7 @@ const PROJECTS = {
     links: [
       {
         label: 'Öppna projekt (XLSX)',
-        url: './pdfs/investeringskalkyl.xlsx'
+        url: 'public/pdfs/investeringskalkyl.xlsx'
       },
     ],
   },
@@ -93,8 +93,8 @@ const PROJECTS = {
       <p>Detta är en projekt ritat av mig men sedan inmatad till Claude opus för att mäta till vilken grad verktyget kan brukas. Intressant nog så är alla planritningar fåniga, kika gärna på dörr och väggplaceringar.</p>`,
     tags: ['Projektering', 'Konstruktion', 'CAD'],
     links: [
-      { label: 'Öppna projekt Svenska (PDF)', url: './pdfs/Skogsterrasserna_Gestaltningsprogram.pdf'},
-      {  label: 'Öppna projekt Engelska (PDF)', url: './pdfs/Skogsterrasserna_DesignProgramme.pdf'},
+      { label: 'Öppna projekt Svenska (PDF)', url: 'public/pdfs/Skogsterrasserna_Gestaltningsprogram.pdf'},
+      {  label: 'Öppna projekt Engelska (PDF)', url: 'public/pdfs/Skogsterrasserna_DesignProgramme.pdf'},
       
     ],
   },
@@ -112,9 +112,9 @@ const PROJECTS = {
       interiören och utemiljön.</p>`,
     tags: ['Skiss', 'Rendering', 'Portal'],
     links: [
-      { label: 'Schematisk portal (PDF)', url: './pdfs/verk_01_portal.pdf' },
-      { label: 'Rendering — interiör', url: './pdfs/baren%20(1).jpg' },
-      { label: 'Rendering — utemiljö', url: './pdfs/Utomhus%20(1).jpg' },
+      { label: 'Schematisk portal (PDF)', url: 'public/pdfs/verk_01_portal.pdf' },
+      { label: 'Rendering — interiör', url: 'public/pdfs/baren%20(1).jpg' },
+      { label: 'Rendering — utemiljö', url: 'public/pdfs/Utomhus%20(1).jpg' },
     ],
   },
 
@@ -132,8 +132,8 @@ const PROJECTS = {
       om ombyggnad av en befintlig byggnad.</p>`,
     tags: ['Konstruktion', 'ROT', 'Grupparbete'],
     links: [
-      { label: 'Projekt 2:1 (PDF)', url: './pdfs/AF1752grupp7.pdf' },
-      { label: 'Projekt 2:2 — ROT (PDF)', url: './pdfs/ProjROT2Grupp7%20(1).pdf' },
+      { label: 'Projekt 2:1 (PDF)', url: 'public/pdfs/AF1752grupp7.pdf' },
+      { label: 'Projekt 2:2 — ROT (PDF)', url: 'public/pdfs/ProjROT2Grupp7%20(1).pdf' },
     ],
   },
 };
