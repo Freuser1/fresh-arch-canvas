@@ -16,6 +16,22 @@
   <body class="bg-black text-white selection:bg-white selection:text-black">
     <div id="root"></div>
     <noscript>This page needs JavaScript. <a href="index.html">Back to the main portfolio</a>.</noscript>
+    <script>
+      // If this page is served straight from the source (Live Server, a double-clicked
+      // file, or GitHub Pages set to "Deploy from a branch"), the .tsx below can't run.
+      // Show a clear message instead of a blank black page.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var root = document.getElementById('root');
+          var unbuilt = document.querySelector('script[type="module"][src*="/src/"]');
+          if (root && !root.hasChildNodes() && unbuilt) {
+            root.innerHTML = '<p style="font-family:sans-serif;padding:24px;line-height:1.5">' +
+              'This page has not been built. Run <code>npm run dev</code> locally, or set GitHub Pages to ' +
+              '<strong>Source: GitHub Actions</strong>. <a style="color:#fff" href="index.html">Back to the start page</a></p>';
+          }
+        }, 1500);
+      });
+    </script>
     <!-- In dev Vite serves this TypeScript directly; `npm run build` compiles it to plain JS in dist/. -->
     <script type="module" src="/src/portfolio/main.tsx"></script>
   </body>

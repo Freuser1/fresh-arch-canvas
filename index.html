@@ -231,19 +231,31 @@
   </noscript>
 
   <script>
-    // Om three.js-modulen inte har startat (t.ex. CDN blockerad), dölj loadern så
-    // den statiska fallbacken med CV och kontakt blir synlig. main.js sätter flaggan
-    // när modulen laddats och gömmer fallbacken när 3D-scenen är klar.
+    // Om main.js inte har startat, dölj loadern så att den statiska fallbacken med
+    // CV och kontakt blir synlig. main.js sätter flaggan när modulen körs och gömmer
+    // fallbacken när 3D-scenen är klar.
     window.__skyviewReady = false;
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        if (!window.__skyviewReady) {
-          var loader = document.getElementById('loader');
-          var note = document.getElementById('fallback-note');
-          if (loader) loader.classList.add('is-done');
-          if (note) note.hidden = false;
+
+    // Pekar skript-taggen fortfarande på /src/ har sidan inte byggts av Vite
+    // (t.ex. Live Server, dubbelklickad fil eller GitHub Pages inställt på "Deploy
+    // from a branch"). Då kan webbläsaren inte hitta "three" och 3D-scenen startar aldrig.
+    var unbuilt = !!document.querySelector('script[type="module"][src*="/src/"]');
+
+    function showFallback() {
+      var loader = document.getElementById('loader');
+      var note = document.getElementById('fallback-note');
+      if (loader) loader.classList.add('is-done');
+      if (note) {
+        note.hidden = false;
+        if (unbuilt) {
+          note.innerHTML = 'Sidan visas utan att ha byggts. Kör <code>npm run dev</code> lokalt, ' +
+            'eller ställ in GitHub Pages på <strong>Source: GitHub Actions</strong> för den publicerade sidan.';
+          console.error('[skyview] index.html körs direkt från källkoden. Använd "npm run dev" eller den byggda dist/-mappen.');
         }
-      }, 8000);
+      }
+    }
+    window.addEventListener('load', function () {
+      setTimeout(function () { if (!window.__skyviewReady) showFallback(); }, unbuilt ? 1500 : 8000);
     });
   </script>
 </body>
