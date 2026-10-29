@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Hus i skogen — Faraz Faramarzi</title>
+    <meta name="description" content="Hus i skogen: en herrgård under djupa japanska tak, i platsgjuten betong, limträ och ljus. Inspirerad av Tadao Ando och Pedro Ramírez Vázquez." />
+    <meta property="og:title" content="Hus i skogen — Faraz Faramarzi" />
+    <meta property="og:description" content="En herrgård under djupa japanska tak, i platsgjuten betong, limträ och ljus." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./hus-i-skogen/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1C1B19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Sidan behöver JavaScript. <a href="index.html">Tillbaka till startsidan</a>.</noscript>
+    <script>
+      // Same guard as portfolio.html: if the page is served unbuilt, say so instead of showing a blank page.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var root = document.getElementById('root');
+          var unbuilt = document.querySelector('script[type="module"][src*="/src/"]');
+          if (root && !root.hasChildNodes() && unbuilt) {
+            root.innerHTML = '<p style="font-family:sans-serif;padding:24px;line-height:1.5">' +
+              'Sidan är inte byggd. Kör <code>npm run dev</code> lokalt, eller ställ in GitHub Pages på ' +
+              '<strong>Source: GitHub Actions</strong>. <a href="index.html">Tillbaka till startsidan</a></p>';
+          }
+        }, 1500);
+      });
+    </script>
+    <!-- In dev Vite serves this TypeScript directly; `npm run build` compiles it to plain JS in dist/. -->
+    <script type="module" src="/src/husiskogen/main.tsx"></script>
+  </body>
+</html>

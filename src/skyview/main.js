@@ -676,6 +676,7 @@ function updatePins() {
 const EXTRA_PAGES = [
   { href: 'portfolio.html', title: '3D Faraz', small: 'Interaktiv portfolio' },
   { href: 'render.html', title: 'Parametrisk förmåga', small: 'Renderad video' },
+  { href: 'hus-i-skogen.html', title: 'Hus i skogen', small: 'Villa i betong och trä' },
 ];
 
 function buildProjectsMenu() {
