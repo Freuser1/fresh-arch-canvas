@@ -1,6 +1,6 @@
 import Nav from './components/Nav.tsx';
 import Hero from './components/Hero.tsx';
-import Idea from './components/Idea.tsx';
+import Name from './components/Name.tsx';
 import References from './components/References.tsx';
 import Gallery from './components/Gallery.tsx';
 import Drawings from './components/Drawings.tsx';
@@ -15,7 +15,7 @@ export default function App() {
       <Nav />
       <main className="flex flex-col">
         <Hero />
-        <Idea />
+        <Name />
         <References />
         <Gallery />
         <Drawings />

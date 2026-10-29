@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { media } from '../data.ts';
+import { Hanko } from './Japanese.tsx';
 
 // Opens like Ando's Church of Light: a concrete wall split by a slit of light that parts to reveal the house.
 export default function Hero() {
@@ -46,6 +47,16 @@ export default function Hero() {
         }`}
       />
 
+      {/* the name written top to bottom, as on a hanging scroll */}
+      <a
+        href="#namn"
+        aria-label="森の家, mori no ie, skogens hus. Läs om namnet."
+        className={`tategaki absolute right-[max(1rem,4vw)] top-24 flex items-center gap-6 font-serif text-paper/85 delay-[2000ms] sm:top-28 ${fade}`}
+      >
+        <span className="text-4xl tracking-[0.35em] sm:text-6xl">森の家</span>
+        <Hanko size="h-9 w-9 text-xl sm:h-11 sm:w-11 sm:text-2xl" className="[writing-mode:horizontal-tb]" />
+      </a>
+
       <div className="wrap relative flex flex-1 flex-col justify-end pb-16 text-paper sm:pb-24">
         <p className={`label !text-oak-light delay-[1400ms] ${fade}`}>Koncept · Råskiss</p>
         <h1 className={`mt-4 font-serif text-[clamp(3.25rem,2rem+8vw,8rem)] leading-none delay-[1600ms] ${fade}`}>
@@ -55,7 +66,7 @@ export default function Hero() {
           En herrgård under djupa japanska tak — i platsgjuten betong, limträ och ljus.
         </p>
         <a
-          href="#ide"
+          href="#namn"
           className={`mt-12 flex w-fit items-center gap-4 text-xs uppercase tracking-label text-paper/70 hover:text-paper delay-[2200ms] ${fade}`}
         >
           <span className="block h-12 w-px animate-pulse bg-paper/60" /> Skrolla

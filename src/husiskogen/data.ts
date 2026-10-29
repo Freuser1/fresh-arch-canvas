@@ -3,21 +3,35 @@
 export const media = (file: string) => `./hus-i-skogen/${file}`;
 
 export const nav = [
-  { id: 'ide', label: 'Idé' },
-  { id: 'referenser', label: 'Referenser' },
-  { id: 'huset', label: 'Huset' },
-  { id: 'ritningar', label: 'Ritningar' },
-  { id: 'tid', label: 'Tid' },
-  { id: 'material', label: 'Material' },
-  { id: 'val', label: 'Val' },
+  { id: 'namn', label: 'Namnet', jp: '名前' },
+  { id: 'referenser', label: 'Referenser', jp: '参考' },
+  { id: 'huset', label: 'Huset', jp: '家' },
+  { id: 'ritningar', label: 'Ritningar', jp: '図面' },
+  { id: 'tid', label: 'Tid', jp: '時' },
+  { id: 'material', label: 'Material', jp: '素材' },
+  { id: 'val', label: 'Val', jp: '選択' },
 ];
 
-export const kept = [
-  'Tre delar à 9,2 m',
-  'Hallen genom hela huset',
-  'Fyra pardörrar',
-  'Bakdörren',
-  'Ett tak över varje del',
+// 森の家 (mori no ie), the house's name, one character at a time.
+export const glyphs = [
+  {
+    char: '森',
+    reading: 'mori',
+    meaning: 'Skog',
+    text: 'Skrivs med tre träd, 木 — ett överst och två under. Som huset: tre delar, med det höga mitttaket mellan två lägre flyglar.',
+  },
+  {
+    char: 'の',
+    reading: 'no',
+    meaning: 'Av, i',
+    text: 'Den lilla länken mellan orden. Den gör skogen till en del av huset, inte bara platsen det står på.',
+  },
+  {
+    char: '家',
+    reading: 'ie',
+    meaning: 'Hus, hem',
+    text: 'Överst sitter tecknet för tak, 宀. Ett hus börjar med sitt tak — därför är de djupa takfötterna husets viktigaste linje.',
+  },
 ];
 
 export type Tag = 'natt' | 'dag' | 'vinter' | 'lumion';

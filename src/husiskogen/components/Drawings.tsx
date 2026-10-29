@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Reveal from './Reveal.tsx';
 import { drawings, media } from '../data.ts';
+import { SectionHead } from './Japanese.tsx';
 
 export default function Drawings() {
   const [active, setActive] = useState(drawings[0].id);
@@ -8,10 +8,9 @@ export default function Drawings() {
   const d = drawings.find((x) => x.id === active) ?? drawings[0];
 
   return (
-    <section id="ritningar" className="bg-stone py-24 sm:py-36">
+    <section id="ritningar" className="washi bg-stone py-24 sm:py-36">
       <div className="wrap">
-        <Reveal as="p" className="label">04 — Ritningar</Reveal>
-        <Reveal as="h2" delay={80} className="heading mt-6">Ritningarna</Reveal>
+        <SectionHead n="四" jp="図面" sv="Ritningar" title="Ritningarna" />
 
         {/* scrolls sideways on phones, wraps on wider screens */}
         <div className="-mx-4 mt-10 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">

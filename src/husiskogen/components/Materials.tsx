@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Reveal from './Reveal.tsx';
 import { useInView } from '../hooks.ts';
 import { materials, media, numbers } from '../data.ts';
+import { SectionHead } from './Japanese.tsx';
 
 function Count({ to, run }: { to: number; run: boolean }) {
   const [n, setN] = useState(0);
@@ -25,10 +26,9 @@ export default function Materials() {
   const [numRef, numIn] = useInView<HTMLDivElement>(0.4);
 
   return (
-    <section id="material" className="bg-paper py-24 sm:py-36">
+    <section id="material" className="washi bg-paper py-24 sm:py-36">
       <div className="wrap">
-        <Reveal as="p" className="label">06 — Material</Reveal>
-        <Reveal as="h2" delay={80} className="heading mt-6 max-w-3xl">Fyra material och inget annat</Reveal>
+        <SectionHead n="六" jp="素材" sv="Material" title="Fyra material och inget annat" />
 
         <div className="mt-14 flex flex-col gap-3 md:h-[520px] md:flex-row" onMouseLeave={() => setHover(null)}>
           {materials.map((m, i) => (
@@ -65,7 +65,10 @@ export default function Materials() {
         </div>
 
         <div className="mt-24 flex flex-col gap-6 sm:mt-28">
-          <Reveal as="p" className="label">Detalj</Reveal>
+          <Reveal as="p" className="flex items-center gap-4">
+            <span className="font-serif tracking-[0.3em] text-ink-soft">納まり</span>
+            <span className="label">Detalj</span>
+          </Reveal>
           <Reveal as="h3" delay={80} className="heading">Där trä möter sten</Reveal>
           <div className="mt-4 flex flex-col gap-8 md:flex-row md:gap-6">
             {[
