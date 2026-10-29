@@ -33,7 +33,12 @@ export default function Time() {
           <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-ink/40" />
           <div className="wrap relative flex flex-1 flex-col justify-between pb-10 pt-24 sm:pb-16">
             <div className="flex flex-col gap-4">
-              <p className="label !text-oak-light">05 — Tid</p>
+              <p className="flex items-center gap-4">
+                <span className="font-serif text-2xl text-oak-light">五</span>
+                <span className="h-px w-10 bg-paper/40" />
+                <span className="font-serif tracking-[0.3em] text-paper/85">時</span>
+                <span className="label !text-paper/60">Tid</span>
+              </p>
               <h2 className="heading max-w-2xl">Dag ett. År X.</h2>
             </div>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -56,7 +61,10 @@ export default function Time() {
 
       <div className="wrap flex flex-col gap-10 py-20 sm:py-28 lg:flex-row lg:items-center lg:gap-16">
         <Reveal className="flex flex-col gap-6 lg:flex-1">
-          <p className="label !text-oak-glow">Jämför</p>
+          <p className="flex items-center gap-4">
+            <span className="font-serif tracking-[0.3em] text-oak-glow">経年</span>
+            <span className="label !text-paper/50">Jämför</span>
+          </p>
           <h3 className="font-serif text-4xl leading-tight sm:text-5xl">Samma vy, några år senare</h3>
           <p className="text-lg leading-relaxed text-paper/70">
             Obehandlat eller lätt oljat trä blir silvergrått inom några år, den platsgjutna betongen mörknar och samlar

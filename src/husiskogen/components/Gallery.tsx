@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Reveal from './Reveal.tsx';
 import { filters, media, renders, type Render } from '../data.ts';
+import { SectionHead } from './Japanese.tsx';
 
 interface LightboxProps {
   items: Render[];
@@ -94,16 +95,14 @@ export default function Gallery() {
   );
 
   return (
-    <section id="huset" className="bg-paper py-24 sm:py-36">
+    <section id="huset" className="washi bg-paper py-24 sm:py-36">
       <div className="wrap">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <Reveal as="p" className="label">03 — Huset</Reveal>
-            <Reveal as="h2" delay={80} className="heading mt-6">En lykta i skogen</Reveal>
-            <Reveal as="p" delay={160} className="mt-6 max-w-xl text-lg text-ink-mute">
+          <SectionHead n="三" jp="家" sv="Huset" title="En lykta i skogen">
+            <Reveal as="p" delay={160} className="max-w-xl text-lg text-ink-mute">
               Platsgjuten betong nedtill, träband ovanför, falsade zinktak med djupa takfötter. Genom årstiderna.
             </Reveal>
-          </div>
+          </SectionHead>
           <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filtrera bilder">
             {filters.map((f) => (
               <button

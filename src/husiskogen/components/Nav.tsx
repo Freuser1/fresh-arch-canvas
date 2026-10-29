@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { nav } from '../data.ts';
+import { Hanko } from './Japanese.tsx';
 
 export default function Nav() {
   const [solid, setSolid] = useState(false);
@@ -34,21 +35,33 @@ export default function Nav() {
       }`}
     >
       <div className="wrap flex h-16 items-center justify-between gap-4">
-        <a href="#top" className={`flex min-w-0 items-baseline gap-2 font-serif text-lg ${light ? 'text-paper' : 'text-ink'}`}>
-          <span className="truncate">Hus i skogen</span>
-          <span className="hidden text-sm tracking-[0.3em] opacity-70 sm:inline">森の家</span>
-        </a>
-        <nav className="hidden items-center gap-6 lg:flex">
-          {nav.map(({ id, label }) => (
+        <div className={`flex min-w-0 items-center gap-3 font-serif ${light ? 'text-paper' : 'text-ink'}`}>
+          <a href="#top" className="flex min-w-0 items-center gap-3 text-lg" aria-label="Hus i skogen, till toppen">
+            <Hanko size="h-8 w-8 text-lg" />
+            <span className="truncate">Hus i skogen</span>
+          </a>
+          <a
+            href="#namn"
+            title="森の家, mori no ie: skogens hus. Läs mer om namnet."
+            className={`hidden text-sm tracking-[0.3em] underline-offset-4 transition-opacity hover:underline sm:inline ${
+              active === 'namn' ? 'opacity-100' : 'opacity-70 hover:opacity-100'
+            }`}
+          >
+            森の家
+          </a>
+        </div>
+        <nav className="hidden items-center gap-5 lg:flex">
+          {nav.map(({ id, label, jp }) => (
             <a
               key={id}
               href={`#${id}`}
-              className={`text-xs uppercase tracking-label transition-colors ${
+              className={`flex items-baseline gap-1.5 text-xs uppercase tracking-label transition-colors ${
                 active === id
-                  ? light ? 'text-oak-light' : 'text-oak-deep'
+                  ? light ? 'text-oak-light' : 'text-shu'
                   : light ? 'text-paper/80 hover:text-paper' : 'text-ink-mute hover:text-ink'
               }`}
             >
+              <span className="hidden font-serif text-sm normal-case tracking-normal xl:inline">{jp}</span>
               {label}
             </a>
           ))}
@@ -73,13 +86,14 @@ export default function Nav() {
       </div>
       <div className={`overflow-hidden transition-[max-height] duration-500 lg:hidden ${open ? 'max-h-[32rem]' : 'max-h-0'}`}>
         <nav className="wrap flex flex-col pb-6">
-          {nav.map(({ id, label }) => (
+          {nav.map(({ id, label, jp }) => (
             <a
               key={id}
               href={`#${id}`}
               onClick={() => setOpen(false)}
-              className="border-t border-ink/10 py-3 text-sm uppercase tracking-label text-ink-soft"
+              className="flex items-baseline gap-4 border-t border-ink/10 py-3 text-sm uppercase tracking-label text-ink-soft"
             >
+              <span className="w-8 font-serif text-base normal-case tracking-normal text-shu">{jp}</span>
               {label}
             </a>
           ))}

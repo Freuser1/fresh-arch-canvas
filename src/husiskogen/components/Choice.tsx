@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Reveal from './Reveal.tsx';
 import Compare from './Compare.tsx';
 import { media } from '../data.ts';
+import { SectionHead } from './Japanese.tsx';
 
 const options = [
   { id: 'A', name: 'Silver', text: 'Obehandlat trä, ljus zink. Mjukt, åldras av sig självt.', detail: 'Furu eller lärk som silvrar, ljusgrå zink. Lite underhåll och stilla.' },
@@ -13,15 +14,12 @@ export default function Choice() {
   const [pick, setPick] = useState<'A' | 'B' | null>(null);
 
   return (
-    <section id="val" className="bg-stone py-24 sm:py-36">
+    <section id="val" className="washi bg-stone py-24 sm:py-36">
       <div className="wrap">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <Reveal as="p" className="label">07 — Val</Reveal>
-            <Reveal as="h2" delay={80} className="heading mt-6">Ett hus, en palett</Reveal>
-          </div>
+          <SectionHead n="七" jp="選択" sv="Val" title="Ett hus, två paletter" />
           <Reveal as="p" delay={160} className="max-w-md text-lg text-ink-mute">
-            Bilderna visar två olika hus. Dra för att jämföra, och välj ett innan nästa renderingar.
+            Samma hus i två fasadpaletter, från samma kamera. Dra i bilden för att jämföra.
           </Reveal>
         </div>
 
@@ -56,7 +54,7 @@ export default function Choice() {
           ))}
         </div>
         <p className="mt-6 text-sm text-ink-mute" aria-live="polite">
-          {pick ? `Alternativ ${pick} valt. ` : ''}Att blanda dem får huset att läsas som två projekt.
+          {pick ? `Alternativ ${pick} visas. ` : ''}En palett i taget håller ihop huset — blandade läses de som två projekt.
         </p>
       </div>
     </section>

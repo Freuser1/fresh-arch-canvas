@@ -1,6 +1,7 @@
 import Reveal from './Reveal.tsx';
 import { useScrollProgress } from '../hooks.ts';
 import { media } from '../data.ts';
+import { Hanko } from './Japanese.tsx';
 
 export default function Closing() {
   const [ref, p] = useScrollProgress<HTMLElement>();
@@ -15,15 +16,20 @@ export default function Closing() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/60" />
       <div className="wrap relative flex min-h-[90svh] flex-col justify-between gap-16 py-24">
-        <p className="font-serif text-2xl tracking-[0.4em] text-paper/70">森の家</p>
+        <div className="flex items-start justify-between gap-6">
+          <Hanko size="h-12 w-12 text-2xl" />
+          <p aria-hidden="true" className="tategaki font-serif text-3xl tracking-[0.4em] text-paper/70 sm:text-4xl">森の家</p>
+        </div>
         <div className="flex flex-col gap-10">
-          <Reveal as="hr" className="w-28 border-t-2 border-oak" />
+          <Reveal as="hr" className="w-28 border-t-2 border-shu" />
           <Reveal as="h2" delay={100} className="font-serif text-[clamp(2.75rem,1.5rem+6vw,6rem)] leading-[1.1]">
             Låt skogen<br />göra huset färdigt.
           </Reveal>
-          <Reveal as="p" delay={220} className="max-w-xl text-lg text-paper/70">
-            Nästa steg: placera modellen på tomten, pröva sluttningen mot norra stödmuren och vrid gården mot sjön och
-            solen.
+          {/* three short lines, in the spirit of a haiku */}
+          <Reveal as="p" delay={220} className="flex flex-col gap-1 font-serif text-xl text-paper/70 sm:text-2xl">
+            <span>Tre träd, tre tak.</span>
+            <span>Ljus faller genom hallen.</span>
+            <span>Träet blir silver.</span>
           </Reveal>
         </div>
         <div className="flex flex-col gap-4 border-t border-paper/15 pt-6 text-xs uppercase tracking-label text-paper/50 md:flex-row md:justify-between">

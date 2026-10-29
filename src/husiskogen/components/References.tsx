@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Reveal from './Reveal.tsx';
 import { useScrollProgress } from '../hooks.ts';
 import { media } from '../data.ts';
+import { SectionHead } from './Japanese.tsx';
 
 interface RefProps {
   file: string;
@@ -40,10 +41,9 @@ function Ref({ file, alt, name, lines, note, tone, delay }: RefProps) {
 
 export default function References() {
   return (
-    <section id="referenser" className="bg-stone py-24 sm:py-36">
+    <section id="referenser" className="washi bg-stone py-24 sm:py-36">
       <div className="wrap">
-        <Reveal as="p" className="label">02 — Referenser</Reveal>
-        <Reveal as="h2" delay={80} className="heading mt-6 max-w-3xl">Två hus att lära av</Reveal>
+        <SectionHead n="二" jp="参考" sv="Referenser" title="Två hus att lära av" />
         <div className="mt-14 flex flex-col gap-16 md:flex-row md:gap-12 lg:gap-24">
           <Ref
             file="ref-ando.webp"
