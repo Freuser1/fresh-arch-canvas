@@ -18,6 +18,7 @@ export default defineConfig({
         index: 'index.html',         // 3D sky view (start page)
         portfolio: 'portfolio.html', // React portfolio subsite
         render: 'render.html',       // rendered video page
+        husiskogen: 'hus-i-skogen.html', // Hus i skogen project page
       },
     },
   },
